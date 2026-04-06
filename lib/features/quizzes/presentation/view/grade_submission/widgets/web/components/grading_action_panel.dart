@@ -25,13 +25,17 @@ class GradingActionPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int gradedCount =
-        questions.where((q) => q.isGraded || !q.isWritten).length;
+    final int gradedCount = questions
+        .where((q) => q.isGraded || !q.isWritten)
+        .length;
     final int totalPoints = questions.fold(0, (sum, q) => sum + q.points);
-    final int earnedPoints =
-        questions.fold(0, (sum, q) => sum + q.earnedPoints);
-    final double progressValue =
-        totalPoints == 0 ? 0 : earnedPoints / totalPoints;
+    final int earnedPoints = questions.fold(
+      0,
+      (sum, q) => sum + q.earnedPoints,
+    );
+    final double progressValue = totalPoints == 0
+        ? 0
+        : earnedPoints / totalPoints;
 
     return Container(
       width: 300,
@@ -79,7 +83,7 @@ class GradingActionPanel extends StatelessWidget {
                         letterSpacing: 1.4,
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 24),
 
                     // Reuse the shared GradingInputScoreField
                     BlocBuilder<GradingCubit, GradingState>(
@@ -100,56 +104,12 @@ class GradingActionPanel extends StatelessWidget {
                         );
                       },
                     ),
-
-                    const SizedBox(height: 24),
-                    const Divider(),
-                    const SizedBox(height: 16),
                   ],
 
                   // MCQ/TF: show auto-grade summary
                   if (!question.isWritten) ...[
                     AutoGradeInfoCard(question: question),
-                    const SizedBox(height: 24),
-                    const Divider(),
-                    const SizedBox(height: 16),
                   ],
-
-                  // Rubric / Notes area (placeholder — ready for API)
-                  Text(
-                    'INSTRUCTOR NOTE',
-                    style: AppStyles.webAgBodyBold.copyWith(
-                      fontSize: 10,
-                      color: AppColors.whiteDarkActive,
-                      letterSpacing: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: AppColors.secondaryLightActive.withValues(
-                          alpha: 0.5,
-                        ),
-                      ),
-                    ),
-                    child: TextField(
-                      maxLines: 4,
-                      style:
-                          AppStyles.webAgBodyRegular.copyWith(fontSize: 13),
-                      decoration: InputDecoration(
-                        hintText:
-                            'Add a note for this question (optional)...',
-                        hintStyle: AppStyles.webAgBodyRegular.copyWith(
-                          fontSize: 12,
-                          color: AppColors.whiteDark,
-                        ),
-                        contentPadding: const EdgeInsets.all(12),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -239,8 +199,7 @@ class GradingActionPanel extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
                     value: progressValue,
-                    backgroundColor:
-                        AppColors.primary.withValues(alpha: 0.12),
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.12),
                     valueColor: const AlwaysStoppedAnimation<Color>(
                       AppColors.primary,
                     ),
