@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
-import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/mobile/grading_input_score_field.dart';
-import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/mobile/mcq_options_list.dart';
-import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/mobile/written_answer.dart';
+import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/shared/grading_input_score_field.dart';
+import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/shared/mcq_options_list.dart';
+import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/shared/written_answer.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/grading_cubit/grading_cubit.dart';
 
 class QuestionCard extends StatelessWidget {

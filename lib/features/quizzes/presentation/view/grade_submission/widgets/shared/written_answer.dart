@@ -9,7 +9,7 @@ class WrittenAnswer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasAnswer = answer!= null && answer!.isNotEmpty;
+    final bool hasAnswer = answer != null && answer!.isNotEmpty;
 
     return Container(
       width: double.infinity,

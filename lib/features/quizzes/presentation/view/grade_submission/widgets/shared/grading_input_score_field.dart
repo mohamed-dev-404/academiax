@@ -243,7 +243,9 @@ class _GradingInputScoreFieldState extends State<GradingInputScoreField> {
         width: 42,
         height: 42,
         decoration: BoxDecoration(
-          color: isSaving ? AppColors.primary.withValues(alpha: 0.1) : _buttonColor,
+          color: isSaving
+              ? AppColors.primary.withValues(alpha: 0.1)
+              : _buttonColor,
           borderRadius: BorderRadius.circular(14),
           border: _isUngradedEmpty && !isSaving
               ? Border.all(
