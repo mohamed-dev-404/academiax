@@ -40,6 +40,15 @@ class _GradingInputScoreFieldState extends State<GradingInputScoreField> {
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(covariant GradingInputScoreField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.question.id != widget.question.id) {
+      _scoreController.text = _initialText;
+      _isModified = false;
+    }
+  }
+
   //! ==================== State Logic ====================
 
   String get _initialText =>

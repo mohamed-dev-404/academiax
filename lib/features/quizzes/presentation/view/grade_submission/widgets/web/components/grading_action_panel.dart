@@ -91,6 +91,7 @@ class GradingActionPanel extends StatelessWidget {
                           state is GradingQuestionSaving &&
                           state.savingQuestionId == question.id;
                       return GradingInputScoreField(
+                        key: ValueKey(question.id),
                         question: question,
                         isSaving: isSavingThis,
                         onSave: (score) {
