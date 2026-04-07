@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/web/components/grading_action_panel.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/web/components/question_detail_panel.dart';
@@ -37,6 +40,9 @@ class _WebGradingPanelsState extends State<WebGradingPanels> {
 
   @override
   Widget build(BuildContext context) {
+    final width = SizeConfig.screenWidth(context);
+    log(width.toString());
+
     // Clamp selected index if questions shrink
     if (widget.questions.isNotEmpty &&
         _selectedIndex >= widget.questions.length) {
@@ -57,14 +63,15 @@ class _WebGradingPanelsState extends State<WebGradingPanels> {
       body: Row(
         children: [
           // ── Left Panel: Question Navigator ──────────────────────
-          QuestionNavigatorPanel(
-            questions: widget.questions,
-            selectedIndex: _selectedIndex,
-            onSelect: (i) {
-              setState(() => _selectedIndex = i);
-              _pageController.jumpToPage(i);
-            },
-          ),
+          if (width > 980)
+            QuestionNavigatorPanel(
+              questions: widget.questions,
+              selectedIndex: _selectedIndex,
+              onSelect: (i) {
+                setState(() => _selectedIndex = i);
+                _pageController.jumpToPage(i);
+              },
+            ),
 
           // ── Center Panel: Question Detail ───────────────────────
           Expanded(

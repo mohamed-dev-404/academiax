@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
+import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/shared/grading_input_score_field.dart';
@@ -25,6 +27,11 @@ class GradingActionPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = SizeConfig.screenWidth(context);
+
+    final bool isSamll = screenWidth < 630;
+    final bool isVerySmall = screenWidth < 530;
+
     final int gradedCount = questions
         .where((q) => q.state != QuestionUIState.unmarked)
         .length;
@@ -38,7 +45,12 @@ class GradingActionPanel extends StatelessWidget {
         : earnedPoints / totalPoints;
 
     return Container(
-      width: 300,
+      width: isVerySmall
+          ? 170
+          : isSamll
+          ? 200
+          : 300,
+
       decoration: BoxDecoration(
         color: AppColors.whiteLight,
         border: Border(
@@ -64,6 +76,8 @@ class GradingActionPanel extends StatelessWidget {
             totalPoints: totalPoints,
             earnedPoints: earnedPoints,
             progressValue: progressValue,
+            isVerySmall: isVerySmall,
+            isSamll: isSamll,
           ),
 
           // Grading action area
@@ -90,17 +104,20 @@ class GradingActionPanel extends StatelessWidget {
                       final isSavingThis =
                           state is GradingQuestionSaving &&
                           state.savingQuestionId == question.id;
-                      return GradingInputScoreField(
-                        key: ValueKey(question.id),
-                        question: question,
-                        isSaving: isSavingThis,
-                        onSave: (score) {
-                          context.read<GradingCubit>().gradeQuestion(
-                            submissionId: submissionId,
-                            questionId: question.id,
-                            score: score,
-                          );
-                        },
+                      return FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: GradingInputScoreField(
+                          key: ValueKey(question.id),
+                          question: question,
+                          isSaving: isSavingThis,
+                          onSave: (score) {
+                            context.read<GradingCubit>().gradeQuestion(
+                              submissionId: submissionId,
+                              questionId: question.id,
+                              score: score,
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
@@ -123,9 +140,11 @@ class GradingActionPanel extends StatelessWidget {
     required int totalPoints,
     required int earnedPoints,
     required double progressValue,
+    required bool isVerySmall,
+    required bool isSamll,
   }) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
+      padding: EdgeInsets.fromLTRB(20.h, 24, 20.h, 20),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -180,14 +199,24 @@ class GradingActionPanel extends StatelessWidget {
                     Text(
                       'Total Score',
                       style: AppStyles.webAgBodyRegular.copyWith(
-                        fontSize: 12,
+                        fontSize: isVerySmall
+                            ? 9
+                            : isSamll
+                            ? 10
+                            : 12,
                         color: AppColors.primaryDark,
                       ),
                     ),
+
+                    //                      const SizedBox(width: 10),
                     Text(
                       '$earnedPoints / $totalPoints pts',
                       style: AppStyles.webAgBodyBold.copyWith(
-                        fontSize: 13,
+                        fontSize: isVerySmall
+                            ? 7
+                            : isSamll
+                            ? 10
+                            : 13,
                         color: AppColors.primary,
                       ),
                     ),
@@ -212,7 +241,11 @@ class GradingActionPanel extends StatelessWidget {
                     Text(
                       '$gradedCount/${questions.length} reviewed',
                       style: AppStyles.webAgBodyRegular.copyWith(
-                        fontSize: 11,
+                        fontSize: isVerySmall
+                            ? 7
+                            : isSamll
+                            ? 10
+                            : 11,
                         color: AppColors.whiteDarkActive,
                       ),
                     ),
