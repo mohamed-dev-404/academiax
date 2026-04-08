@@ -5,17 +5,16 @@ import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/web/create_quiz_web_layout.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/manage_quiz_cubit/manage_quiz_cubit.dart';
 
+import 'package:sams_app/features/quizzes/presentation/view/quiz_form/quiz_form_args.dart';
+
 /// Adaptive shell for the Create Quiz flow.
 ///
-/// Routes mobile → [CreateQuizMobileLayout] (which delegates to [QuizFormScreen])
-/// Routes web    → [CreateQuizWebLayout] (stub, to be implemented).
-///
-/// NOTE: The router creates [QuizFormScreen] directly via the `quizForm` route.
-/// This view remains as the adaptive wrapper called by the legacy `createQuiz` route.
+/// NOTE: The router creates [CreateQuizView] directly via both `createQuiz`
+/// and `quizForm` routes using [QuizFormArgs].
 class CreateQuizView extends StatelessWidget {
-  final String courseId;
+  final QuizFormArgs args;
 
-  const CreateQuizView({super.key, required this.courseId});
+  const CreateQuizView({super.key, required this.args});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +25,7 @@ class CreateQuizView extends StatelessWidget {
       },
       builder: (context, state) {
         return AdaptiveLayout(
-          mobileLayout: (context) =>
-              CreateQuizMobileLayout(courseId: courseId),
+          mobileLayout: (context) => CreateQuizMobileLayout(args: args),
           webLayout: (context) => const CreateQuizWebLayout(),
         );
       },

@@ -41,7 +41,7 @@ class InstructorActionHandler {
     final courseId = getCourseId(context);
     log('Navigating to EditQuiz: ${quiz.id}');
     context.pushNamed(
-      RoutesName.quizForm,
+      RoutesName.createQuiz,
       pathParameters: {'courseId': courseId},
       extra: QuizFormArgs(
         courseId: courseId,

@@ -38,10 +38,11 @@ import 'package:sams_app/features/profile/presentation/views/profile/profile_vie
 
 // Quiz Views & Cubits
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
-import 'package:sams_app/features/quizzes/presentation/view/create_quiz/create_quiz_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/grade_submission_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/manage_questions_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_details/quiz_details_view.dart';
+import 'package:sams_app/features/quizzes/presentation/view/create_quiz/create_quiz_view.dart';
+import 'package:sams_app/features/quizzes/presentation/view/quiz_form/quiz_form_args.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_tab/quizzes_tab_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/submissions_list/submissions_list_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/take_quiz/take_quiz_view.dart';
@@ -277,15 +278,22 @@ class AppRouter {
                   ),
                 ],
               ),
-              // ? --- CREATE QUIZ (Breaks out to Full Screen)
+              // ? --- CREATE QUIZ 
               GoRoute(
                 name: RoutesName.createQuiz,
                 path: RoutesName.createQuiz,
                 parentNavigatorKey: navigatorKey, // FULL SCREEN
-                builder: (context, state) => BlocProvider(
-                  create: (context) => ManageQuizCubit(getIt<QuizRepository>()),
-                  child: const CreateQuizView(),
-                ),
+                builder: (context, state) {
+                  final courseId = state.pathParameters['courseId'] ?? '';
+                  final args = state.extra as QuizFormArgs? ??
+                      QuizFormArgs(courseId: courseId);
+                      
+                  return BlocProvider(
+                    create: (context) =>
+                        ManageQuizCubit(getIt<QuizRepository>()),
+                    child: CreateQuizView(args: args),
+                  );
+                },
               ),
             ],
           ),
