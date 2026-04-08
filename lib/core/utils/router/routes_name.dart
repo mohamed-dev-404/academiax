@@ -18,6 +18,9 @@ class RoutesName {
   static const String courseCode = 'courseCode';
   static const String membersList = 'membersList';
 
+  //? announcement sub-routes
+  static const String announcementDetails = 'announcementDetails';
+
   //?auth routes
   //login
   static const String login = '/login';

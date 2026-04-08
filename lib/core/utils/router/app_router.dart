@@ -9,6 +9,7 @@ import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/utils/services/service_locator.dart';
 import 'package:sams_app/core/widgets/shared/general_error_page.dart';
 import 'package:sams_app/features/Grades/presentation/view/grades_tab_view.dart';
+import 'package:sams_app/features/announcements/presentation/view/announcement_details/announcement_details_view.dart';
 import 'package:sams_app/features/announcements/presentation/view/announcement_tab_view/announcements_tab_view.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignments_tab_view.dart';
 // Repos & Cubits
@@ -189,6 +190,21 @@ class AppRouter {
           _buildTabRoute(
             RoutesName.announcements,
             (id) => AnnouncementsTabView(courseId: id),
+            subRoutes: [
+              //* Announcement Details Route 
+              GoRoute(
+                name: RoutesName.announcementDetails,
+                // Path format: /courses/:courseId/announcements/announcementDetails/:announcementId
+                path: '${RoutesName.announcementDetails}/:announcementId',
+                // Using parentNavigatorKey to push the view on top of the Shell (Full Screen)
+                parentNavigatorKey: navigatorKey, 
+                builder: (context, state) {
+                  // Announcement ID can be extracted here for future logic/API calls
+                  // final announcementId = state.pathParameters['announcementId'] ?? '';
+                  return const AnnouncementDetailsView();
+                },
+              ),
+            ],
           ),
           _buildTabRoute(
             RoutesName.grades,
@@ -218,12 +234,14 @@ class AppRouter {
   //? Helper method to build tab routes under course details
   static GoRoute _buildTabRoute(
     String path,
-    Widget Function(String courseId) viewBuilder,
-  ) {
+    Widget Function(String courseId) viewBuilder, {
+    List<RouteBase> subRoutes = const [],
+  }) {
     return GoRoute(
       path: '${RoutesName.courses}/:courseId/$path',
       builder: (context, state) =>
           viewBuilder(state.pathParameters['courseId'] ?? ''),
+      routes: subRoutes
     );
   }
 }
