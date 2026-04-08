@@ -16,7 +16,7 @@ enum OptionUIState {
   unselected, // Default (Wrong answer, student did not select it)
 }
 
-class SubmissionDetailsModel {
+class StudentSubmissionModel {
   final String id;
   final String text;
   final String questionType;
@@ -33,7 +33,7 @@ class SubmissionDetailsModel {
   // Written specific field
   final String? writtenAnswer;
 
-  const SubmissionDetailsModel({
+  const StudentSubmissionModel({
     required this.id,
     required this.text,
     required this.questionType,
@@ -92,7 +92,7 @@ class SubmissionDetailsModel {
 
   //! --- Serialization ---
 
-  factory SubmissionDetailsModel.fromJson(Map<String, dynamic> json) {
+  factory StudentSubmissionModel.fromJson(Map<String, dynamic> json) {
     // 1. Extract the question type first to determine how to parse the rest
     final String parsedQuestionType = json[ApiKeys.questionType] ?? '';
 
@@ -121,7 +121,7 @@ class SubmissionDetailsModel {
     }
 
     // 4. Construct and return the clean object
-    return SubmissionDetailsModel(
+    return StudentSubmissionModel(
       id: json[ApiKeys.id] ?? '',
       text: json[ApiKeys.text] ?? '',
       questionType: parsedQuestionType,

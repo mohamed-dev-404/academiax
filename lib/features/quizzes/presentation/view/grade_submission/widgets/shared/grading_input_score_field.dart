@@ -4,10 +4,10 @@ import 'package:sams_app/core/helper/app_toast.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/core/widgets/base/app_text_field.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
 
 class GradingInputScoreField extends StatefulWidget {
-  final SubmissionDetailsModel question;
+  final StudentSubmissionModel question;
   final Function(num score) onSave;
   final bool isSaving;
 

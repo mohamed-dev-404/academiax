@@ -1,11 +1,10 @@
-import 'package:sams_app/features/quizzes/data/model/data_models/all_submission_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/submission_model.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/quiz_model.dart';
-
 import 'package:sams_app/features/quizzes/data/model/data_models/question/question_model.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/question/choice_question_model.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/question/written_question_model.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/question/option_model.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
 
 //! get all Quizes
 List<QuizModel> mockQuizzes = [
@@ -104,8 +103,8 @@ final List<QuestionModel> mockQuestions = [
 
 //! get All Submission
 
-final List<AllSubmissionModel> mockSubmissions = [
-  AllSubmissionModel(
+final List<SubmissionModel> mockSubmissions = [
+  SubmissionModel(
     id: 'sub_1',
     quizId: 'q1',
     academicId: '20113564',
@@ -115,7 +114,7 @@ final List<AllSubmissionModel> mockSubmissions = [
     submittedAt: DateTime.now().subtract(const Duration(minutes: 45)),
     isGraded: true,
   ),
-  AllSubmissionModel(
+  SubmissionModel(
     id: 'sub_2',
     quizId: 'q1',
     academicId: '20113565',
@@ -125,7 +124,7 @@ final List<AllSubmissionModel> mockSubmissions = [
     submittedAt: DateTime.now().subtract(const Duration(hours: 1)),
     isGraded: true,
   ),
-  AllSubmissionModel(
+  SubmissionModel(
     id: 'sub_3',
     quizId: 'q1',
     academicId: '20113566',
@@ -208,10 +207,8 @@ final List<AllSubmissionModel> mockSubmissions = [
 ];
 
 //! get Submission Details
-//! get Submission Details (30 Mock Questions for testing)
-final List<SubmissionDetailsModel> mockSubmissionDetails = [
-  // 1-10: Original & Basic Mix
-  const SubmissionDetailsModel(
+final List<StudentSubmissionModel> mockSubmissionDetails = [
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d94370043b',
     text: "Which HTTP status code means 'Unauthorized'?",
     questionType: 'WRITTEN',
@@ -222,7 +219,7 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: null,
     isGraded: false,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d94370043c',
     text: "Explain the purpose of Middleware in an Express.js application.",
     questionType: 'WRITTEN',
@@ -233,7 +230,7 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: null,
     isGraded: false,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d94370043d',
     text: "What is the difference between final and const in Dart?",
     questionType: 'WRITTEN',
@@ -244,7 +241,7 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: false,
     isGraded: true,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d94370043e',
     text: "Which HTTP status code means 'Unauthorized'?",
     questionType: 'MCQ',
@@ -252,25 +249,25 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     points: 2,
     options: [
       AnswerOptionModel(
-        id: 'f1',
+        id: '69c00b00c02d96d94370043f',
         text: '401',
         isCorrect: true,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 'f2',
+        id: '69c00b00c02d96d943700440',
         text: '403',
         isCorrect: false,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 'f3',
+        id: '69c00b00c02d96d943700441',
         text: '404',
         isCorrect: false,
         isSelected: true,
       ),
       AnswerOptionModel(
-        id: 'f4',
+        id: '69c00b00c02d96d943700442',
         text: '400',
         isCorrect: false,
         isSelected: false,
@@ -281,7 +278,7 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: false,
     isGraded: true,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d943700443',
     text: "Flutter uses Skia as its primary 2D rendering engine.",
     questionType: 'TRUE_FALSE',
@@ -289,15 +286,15 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     points: 5,
     options: [
       AnswerOptionModel(
-        id: 'tf1',
+        id: '69c00b00c02d96d943700444',
         text: 'True',
-        isCorrect: true,
+        isCorrect: false,
         isSelected: true,
       ),
       AnswerOptionModel(
-        id: 'tf2',
+        id: '69c00b00c02d96d943700445',
         text: 'False',
-        isCorrect: false,
+        isCorrect: true,
         isSelected: false,
       ),
     ],
@@ -306,33 +303,34 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: true,
     isGraded: true,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d943700446',
-    text: 'Which status code indicates a "Created" resource?',
+    text:
+        'Which HTTP status code is used when a resource has been successfully created?',
     questionType: 'MCQ',
     timeLimit: 30,
     points: 2,
     options: [
       AnswerOptionModel(
-        id: 'c1',
+        id: '69c00b00c02d96d943700447',
         text: '200',
         isCorrect: false,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 'c2',
+        id: '69c00b00c02d96d943700448',
         text: '201',
         isCorrect: true,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 'c3',
+        id: '69c00b00c02d96d943700449',
         text: '204',
         isCorrect: false,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 'c4',
+        id: '69c00b00c02d96d94370044a',
         text: '400',
         isCorrect: false,
         isSelected: true,
@@ -343,22 +341,35 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: false,
     isGraded: true,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d94370044b',
-    text: '403 status code indicates "Forbidden".',
-    questionType: 'TRUE_FALSE',
+    text:
+        'Which status code indicates that the server is refusing to fulfill the request because the user lacks necessary permissions (Forbidden)?',
+    questionType: 'MCQ',
     timeLimit: 50,
     points: 2,
     options: [
       AnswerOptionModel(
-        id: 'tf3',
-        text: 'True',
-        isCorrect: true,
+        id: '69c00b00c02d96d94370044c',
+        text: '401',
+        isCorrect: false,
         isSelected: true,
       ),
       AnswerOptionModel(
-        id: 'tf4',
-        text: 'False',
+        id: '69c00b00c02d96d94370044d',
+        text: '403',
+        isCorrect: true,
+        isSelected: false,
+      ),
+      AnswerOptionModel(
+        id: '69c00b00c02d96d94370044e',
+        text: '404',
+        isCorrect: false,
+        isSelected: false,
+      ),
+      AnswerOptionModel(
+        id: '69c00b00c02d96d94370044f',
+        text: '500',
         isCorrect: false,
         isSelected: false,
       ),
@@ -368,7 +379,7 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: true,
     isGraded: true,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d943700450',
     text: 'What does a 500 Internal Server Error signify?',
     questionType: 'MCQ',
@@ -376,26 +387,26 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     points: 2,
     options: [
       AnswerOptionModel(
-        id: 's1',
-        text: 'Bad Request',
+        id: '69c00b00c02d96d943700451',
+        text: 'The client sent a bad request.',
         isCorrect: false,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 's2',
-        text: 'Unexpected Condition',
+        id: '69c00b00c02d96d943700452',
+        text: 'The server encountered an unexpected condition.',
         isCorrect: true,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 's3',
-        text: 'Not Found',
+        id: '69c00b00c02d96d943700453',
+        text: 'The resource was not found.',
         isCorrect: false,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 's4',
-        text: 'Timeout',
+        id: '69c00b00c02d96d943700454',
+        text: 'The request timed out.',
         isCorrect: false,
         isSelected: true,
       ),
@@ -405,22 +416,35 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: false,
     isGraded: true,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d943700455',
-    text: 'DTOs should live in the Data Layer in Clean Architecture.',
-    questionType: 'TRUE_FALSE',
+    text:
+        'In a Clean Architecture approach, which layer should contain the Data Transfer Objects (DTOs)?',
+    questionType: 'MCQ',
     timeLimit: 30,
     points: 2,
     options: [
       AnswerOptionModel(
-        id: 'tf5',
-        text: 'True',
-        isCorrect: true,
+        id: '69c00b00c02d96d943700456',
+        text: 'Domain Layer',
+        isCorrect: false,
         isSelected: true,
       ),
       AnswerOptionModel(
-        id: 'tf6',
-        text: 'False',
+        id: '69c00b00c02d96d943700457',
+        text: 'Presentation Layer',
+        isCorrect: false,
+        isSelected: false,
+      ),
+      AnswerOptionModel(
+        id: '69c00b00c02d96d943700458',
+        text: 'Data Layer',
+        isCorrect: true,
+        isSelected: false,
+      ),
+      AnswerOptionModel(
+        id: '69c00b00c02d96d943700459',
+        text: 'Core Layer',
         isCorrect: false,
         isSelected: false,
       ),
@@ -430,34 +454,35 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: true,
     isGraded: true,
   ),
-  const SubmissionDetailsModel(
+  const StudentSubmissionModel(
     id: '69c00b00c02d96d94370045a',
-    text: 'Which SOLID principle stands for S?',
+    text:
+        'Which principle of SOLID states that a class should have only one reason to change?',
     questionType: 'MCQ',
     timeLimit: 30,
     points: 2,
     options: [
       AnswerOptionModel(
-        id: 'so1',
-        text: 'Open-Closed',
+        id: '69c00b00c02d96d94370045b',
+        text: 'Open-Closed Principle',
         isCorrect: false,
         isSelected: true,
       ),
       AnswerOptionModel(
-        id: 'so2',
-        text: 'Liskov',
+        id: '69c00b00c02d96d94370045c',
+        text: 'Liskov Substitution Principle',
         isCorrect: false,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 'so3',
-        text: 'Single Responsibility',
+        id: '69c00b00c02d96d94370045d',
+        text: 'Single Responsibility Principle',
         isCorrect: true,
         isSelected: false,
       ),
       AnswerOptionModel(
-        id: 'so4',
-        text: 'Dependency Inversion',
+        id: '69c00b00c02d96d94370045e',
+        text: 'Dependency Inversion Principle',
         isCorrect: false,
         isSelected: false,
       ),
@@ -467,50 +492,4 @@ final List<SubmissionDetailsModel> mockSubmissionDetails = [
     isCorrect: false,
     isGraded: true,
   ),
-
-  // 11-20: Advanced Testing (Mainly Pending/Written)
-  ...List.generate(
-    10,
-    (index) => SubmissionDetailsModel(
-      id: 'pending_${index + 11}',
-      text: 'Detailed explanation for advanced topic #${index + 11}?',
-      questionType: 'WRITTEN',
-      timeLimit: 120,
-      points: 5,
-      writtenAnswer: 'Sample student answer for question ${index + 11}',
-      earnedPoints: 0,
-      isCorrect: null,
-      isGraded: false,
-    ),
-  ),
-
-  // 21-30: Quick Mix (Correct/Incorrect)
-  ...List.generate(10, (index) {
-    bool isCorrect = index % 2 == 0;
-    return SubmissionDetailsModel(
-      id: 'mix_${index + 21}',
-      text: 'Automated test question number ${index + 21} (True/False)',
-      questionType: 'TRUE_FALSE',
-      timeLimit: 15,
-      points: 1,
-      options: [
-        AnswerOptionModel(
-          id: 'a',
-          text: 'True',
-          isCorrect: isCorrect,
-          isSelected: true,
-        ),
-        AnswerOptionModel(
-          id: 'b',
-          text: 'False',
-          isCorrect: !isCorrect,
-          isSelected: false,
-        ),
-      ],
-      selectedOptionId: 'a',
-      earnedPoints: isCorrect ? 1 : 0,
-      isCorrect: isCorrect,
-      isGraded: true,
-    );
-  }),
 ];

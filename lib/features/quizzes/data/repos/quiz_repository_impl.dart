@@ -4,6 +4,8 @@ import 'package:sams_app/core/network/api_consumer.dart';
 import 'package:sams_app/core/utils/constants/api_endpoints.dart';
 import 'package:sams_app/core/utils/constants/api_keys.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/question/question_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/submission_model.dart';
 import 'package:sams_app/features/quizzes/data/model/request_bodies_models/submit_quiz/quiz_answer_model.dart';
 import 'package:sams_app/features/quizzes/data/model/request_bodies_models/submit_quiz/submit_quiz_request_body.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/quiz_model.dart';
@@ -161,31 +163,83 @@ class QuizRepositoryImpl implements QuizRepository {
     }
   }
 
-  // --- Instructor Flow: Grading ---
+  // ! --- Instructor Flow: Grading ---
 
+  // * get all submissions (/api/v1/instructor/quizzes/:quizId/submissions)
   @override
-  Future<Either<String, List<dynamic>>> getQuizSubmissions(
+  Future<Either<String, List<SubmissionModel>>> getAllSubmissions(
     String quizId,
   ) async {
-    // TODO: implement getQuizSubmissions
-    throw UnimplementedError();
+    try {
+      // hit getAllSubmissions request
+      Map<String, dynamic> response = await api.get(
+        EndPoints.getQuizSubmissions(quizId),
+      );
+
+      // parsing and initialize submissionsList
+      final submissionsList = response[ApiKeys.data] as List<dynamic>;
+      final submissions = submissionsList
+          .map((e) => SubmissionModel.fromJson(e))
+          .toList();
+
+      return Right(submissions); // success case, return list of submissions
+    } on ApiException catch (e) {
+      return Left(e.errorModel.errorMessage); // failure case
+    } catch (e) {
+      return Left(e.toString()); // failure case
+    }
   }
 
+  // * get student submission (/api/v1/instructor/submissions/:submissionId)
   @override
-  Future<Either<String, dynamic>> getSubmissionDetails(
+  Future<Either<String, List<StudentSubmissionModel>>> getStudentSubmission(
     String submissionId,
   ) async {
-    // TODO: implement getSubmissionDetails
-    throw UnimplementedError();
+    try {
+      // hit getStudentSubmission request
+      Map<String, dynamic> response = await api.get(
+        EndPoints.getSubmissionDetails(submissionId),
+      );
+
+      // parsing and initialize studentSubmissionList
+      final studentSubmissionList = response[ApiKeys.data] as List<dynamic>;
+      final studentSubmissions = studentSubmissionList
+          .map((e) => StudentSubmissionModel.fromJson(e))
+          .toList();
+
+      return Right(
+        studentSubmissions,
+      ); // success case, return list of student submissions
+    } on ApiException catch (e) {
+      return Left(e.errorModel.errorMessage); // failure case
+    } catch (e) {
+      return Left(e.toString()); // failure case
+    }
   }
 
+  // * grade written question (/api/v1/submissions/:submissionId/questions/:questionId)
   @override
-  Future<Either<String, String>> gradeSubmissionQuestion(
+  Future<Either<String, String>> gradeWrittenQuestion(
     String submissionId,
     String questionId,
-    Map<String, dynamic> data,
+    int grade,
   ) async {
-    // TODO: implement gradeSubmissionQuestion
-    throw UnimplementedError();
+    try {
+      // hit gradeWrittenQuestion request
+      Map<String, dynamic> response = await api.patch(
+        EndPoints.gradeQuestion(submissionId, questionId),
+        data: {
+          ApiKeys.earnedPoints: grade,
+        },
+      );
+
+      return Right(
+        response[ApiKeys.message],
+      ); // success case, return success message
+    } on ApiException catch (e) {
+      return Left(e.errorModel.errorMessage); // failure case
+    } catch (e) {
+      return Left(e.toString()); // failure case
+    }
   }
 }

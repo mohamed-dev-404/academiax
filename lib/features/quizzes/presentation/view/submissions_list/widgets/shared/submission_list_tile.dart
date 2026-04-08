@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/all_submission_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/submission_model.dart';
 
 class SubmissionListTile extends StatelessWidget {
-  final AllSubmissionModel submission;
+  final SubmissionModel submission;
   final int maxScore;
   final void Function() onTap;
   const SubmissionListTile({

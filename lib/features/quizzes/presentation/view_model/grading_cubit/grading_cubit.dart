@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_app/features/quizzes/data/mock_data.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
 
 part 'grading_state.dart';
@@ -54,7 +54,7 @@ class GradingCubit extends Cubit<GradingState> {
       // 3. Optimistically update the local list so the UI refreshes instantly
       final updatedQuestions = currentQuestions.map((q) {
         if (q.id != questionId) return q;
-        return SubmissionDetailsModel(
+        return StudentSubmissionModel(
           id: q.id,
           text: q.text,
           questionType: q.questionType,

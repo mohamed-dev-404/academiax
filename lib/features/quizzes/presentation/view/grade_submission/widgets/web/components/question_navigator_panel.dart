@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/utils/ui_state_mapper.dart';
 
 /// Left sidebar panel for the web grading layout.
@@ -9,7 +9,7 @@ import 'package:sams_app/features/quizzes/presentation/view/grade_submission/uti
 /// Shows a progress header with grading stats and a scrollable list
 /// of questions for quick navigation.
 class QuestionNavigatorPanel extends StatelessWidget {
-  final List<SubmissionDetailsModel> questions;
+  final List<StudentSubmissionModel> questions;
   final int selectedIndex;
   final ValueChanged<int> onSelect;
 
@@ -232,7 +232,7 @@ class _PendingStatusBadge extends StatelessWidget {
 
 // ── Single nav row ──────────────────────────────────────────────────────────
 class _QuestionNavItem extends StatelessWidget {
-  final SubmissionDetailsModel question;
+  final StudentSubmissionModel question;
   final int index;
   final bool isSelected;
   final VoidCallback onTap;

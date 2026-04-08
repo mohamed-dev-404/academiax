@@ -4,7 +4,7 @@ import 'package:sams_app/features/quizzes/data/model/helper/parse_date_helper.da
 
 enum SubmissionStatus { marked, unmarked }
 
-class AllSubmissionModel {
+class SubmissionModel {
   final String id;
   final String quizId;
   final String academicId;
@@ -14,7 +14,7 @@ class AllSubmissionModel {
   final DateTime submittedAt;
   final bool isGraded;
 
-  const AllSubmissionModel({
+  const SubmissionModel({
     required this.id,
     required this.quizId,
     required this.totalPoints,
@@ -40,8 +40,8 @@ class AllSubmissionModel {
   SubmissionStatus get status =>
       isGraded ? SubmissionStatus.marked : SubmissionStatus.unmarked;
 
-  factory AllSubmissionModel.fromJson(Map<String, dynamic> json) {
-    return AllSubmissionModel(
+  factory SubmissionModel.fromJson(Map<String, dynamic> json) {
+    return SubmissionModel(
       id: json[ApiKeys.id] ?? '',
       quizId: json[ApiKeys.quizId] ?? '',
       academicId: json[ApiKeys.academicId] ?? '',

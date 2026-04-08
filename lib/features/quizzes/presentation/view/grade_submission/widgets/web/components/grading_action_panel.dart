@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/shared/grading_input_score_field.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/web/components/auto_grade_info_card.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/grading_cubit/grading_cubit.dart';
@@ -14,9 +14,9 @@ import 'package:sams_app/features/quizzes/presentation/view_model/grading_cubit/
 /// Shows: total score summary card, grading input (for written questions)
 /// or auto-grade info (for MCQ/TF), and an instructor note field.
 class GradingActionPanel extends StatelessWidget {
-  final SubmissionDetailsModel question;
+  final StudentSubmissionModel question;
   final String submissionId;
-  final List<SubmissionDetailsModel> questions;
+  final List<StudentSubmissionModel> questions;
 
   const GradingActionPanel({
     super.key,

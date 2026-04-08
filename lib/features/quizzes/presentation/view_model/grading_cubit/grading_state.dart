@@ -10,14 +10,14 @@ class GradingLoading extends GradingState {}
 
 // Data is ready — holds the questions list to display
 class GradingLoaded extends GradingState {
-  final List<SubmissionDetailsModel> questions;
+  final List<StudentSubmissionModel> questions;
 
   GradingLoaded(this.questions);
 }
 
 // A single question score is being saved (shows per-row loading indicator)
 class GradingQuestionSaving extends GradingState {
-  final List<SubmissionDetailsModel> questions; // keeps the list visible
+  final List<StudentSubmissionModel> questions; // keeps the list visible
   final String savingQuestionId;
 
   GradingQuestionSaving({

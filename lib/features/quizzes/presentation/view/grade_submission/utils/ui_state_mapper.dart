@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
 
 /// Extension to map [QuestionUIState] to UI properties.
 extension QuestionUIStateExtension on QuestionUIState {
@@ -79,8 +79,8 @@ extension QuestionUIStateExtension on QuestionUIState {
       : Icons.cancel_rounded;
 }
 
-/// Extension to map [SubmissionDetailsModel] properties to UI parameters.
-extension SubmissionDetailsModelUIExtension on SubmissionDetailsModel {
+/// Extension to map [StudentSubmissionModel] properties to UI parameters.
+extension StudentSubmissionModelUIExtension on StudentSubmissionModel {
   // Type Badge Styling
   Color get typeBadgeColor =>
       isWritten ? AppColors.primary : AppColors.secondary;

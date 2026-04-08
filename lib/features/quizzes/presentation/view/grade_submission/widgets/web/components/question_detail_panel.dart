@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/submission_details_model.dart';
+import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/shared/mcq_options_list.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/web/components/question_state_chip.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/shared/written_answer.dart';
@@ -14,7 +14,7 @@ import 'package:sams_app/features/quizzes/presentation/view/grade_submission/uti
 /// scrollable question text + student answer body,
 /// bottom navigation with prev/next and dot indicators.
 class QuestionDetailPanel extends StatelessWidget {
-  final List<SubmissionDetailsModel> questions;
+  final List<StudentSubmissionModel> questions;
   final int selectedIndex;
   final PageController pageController;
   final ValueChanged<int> onPageChanged;
@@ -72,7 +72,9 @@ class QuestionDetailPanel extends StatelessWidget {
 
                     // Divider
                     Divider(
-                      color: AppColors.secondaryLightActive.withValues(alpha: 0.5),
+                      color: AppColors.secondaryLightActive.withValues(
+                        alpha: 0.5,
+                      ),
                     ),
                     const SizedBox(height: 20),
 
@@ -117,7 +119,7 @@ class QuestionDetailPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildTopBar(BuildContext context, SubmissionDetailsModel question) {
+  Widget _buildTopBar(BuildContext context, StudentSubmissionModel question) {
     return Container(
       height: 56,
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -145,7 +147,7 @@ class QuestionDetailPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildBadgesRow(SubmissionDetailsModel question) {
+  Widget _buildBadgesRow(StudentSubmissionModel question) {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
