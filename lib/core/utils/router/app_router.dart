@@ -46,10 +46,11 @@ import 'package:sams_app/features/quizzes/presentation/view/quiz_tab/quizzes_tab
 import 'package:sams_app/features/quizzes/presentation/view/submissions_list/submissions_list_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/take_quiz/take_quiz_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/get_all_quizes_cubit/get_all_quizes_cubit.dart';
+import 'package:sams_app/features/quizzes/presentation/view_model/test_grading_cubit/test_grading_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/manage_quiz_cubit/manage_quiz_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/quiz_details_cubit/quiz_details_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/take_quiz_cubit/take_quiz_cubit.dart';
-import 'package:sams_app/features/quizzes/presentation/view_model/grading_cubit/grading_cubit.dart';
+import 'package:sams_app/features/quizzes/presentation/view_model/submissions_cubit/submissions_cubit.dart';
 
 class AppRouter {
   AppRouter._();
@@ -229,18 +230,22 @@ class AppRouter {
                     name: RoutesName.submissionsList,
                     path: RoutesName.submissionsList,
                     parentNavigatorKey: navigatorKey, // FULL SCREEN
-                    builder: (context, state) => BlocProvider(
-                      create: (context) =>
-                          GradingCubit(getIt<QuizRepository>()),
-                      child: const SubmissionsListView(),
-                    ),
+                    builder: (context, state) {
+                      final quizId = state.pathParameters['quizId']!;
+                      return BlocProvider(
+                        create: (context) =>
+                            SubmissionsCubit(getIt<QuizRepository>())
+                              ..fetchAllSubmissions(quizId: quizId),
+                        child: const SubmissionsListView(),
+                      );
+                    },
                     routes: [
                       GoRoute(
                         name: RoutesName.gradeSubmission,
                         path: '${RoutesName.gradeSubmission}/:submissionId',
                         builder: (context, state) => BlocProvider(
                           create: (context) =>
-                              GradingCubit(getIt<QuizRepository>()),
+                              TestGradingCubit(getIt<QuizRepository>()),
                           child: const GradeSubmissionView(),
                         ),
                       ),
