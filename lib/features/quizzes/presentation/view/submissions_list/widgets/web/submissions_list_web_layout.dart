@@ -3,7 +3,9 @@ import 'package:lottie/lottie.dart';
 import 'package:sams_app/core/utils/assets/app_lottie.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/quizzes/data/mock_data.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sams_app/core/widgets/base/app_animated_loading_indicator.dart';
+import 'package:sams_app/features/quizzes/presentation/view_model/submissions_cubit/submissions_cubit.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/submission_model.dart';
 import 'package:sams_app/features/quizzes/presentation/view/submissions_list/widgets/shared/submission_list_tile.dart';
 import 'package:sams_app/features/quizzes/presentation/view/submissions_list/widgets/shared/submissions_stats_bar.dart';
@@ -13,13 +15,6 @@ class SubmissionsListWebLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final markedList = mockSubmissions
-        .where((e) => e.status == SubmissionStatus.marked)
-        .toList();
-    final unmarkedList = mockSubmissions
-        .where((e) => e.status == SubmissionStatus.unmarked)
-        .toList();
-
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Row(
@@ -59,35 +54,122 @@ class SubmissionsListWebLayout extends StatelessWidget {
 
                             const SizedBox(height: 32),
 
-                            SubmissionsStatsBar(
-                              totalSubmitted: mockSubmissions.length,
-                              totalMarked: markedList.length,
-                              totalUnmarked: unmarkedList.length,
+                            BlocBuilder<SubmissionsCubit, SubmissionsState>(
+                              builder: (context, state) {
+                                if (state is SubmissionsLoading) {
+                                  return const Padding(
+                                    padding: EdgeInsets.only(top: 50.0),
+                                    child: Center(
+                                      child: AppAnimatedLoadingIndicator(),
+                                    ),
+                                  );
+                                } else if (state is SubmissionsFailure) {
+                                  return Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 50.0),
+                                      child: Text(
+                                        state.errorMessage,
+                                        style: AppStyles.mobileBodyLargeMd
+                                            .copyWith(
+                                              color: AppColors.red,
+                                            ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                int totalSubmitted = 0;
+                                int totalMarked = 0;
+                                int totalUnmarked = 0;
+                                List<SubmissionModel> markedList = [];
+                                List<SubmissionModel> unmarkedList = [];
+
+                                if (state is SubmissionsSuccess) {
+                                  final list = state.submissions;
+                                  totalSubmitted = list.length;
+                                  markedList = list
+                                      .where(
+                                        (e) =>
+                                            e.status == SubmissionStatus.marked,
+                                      )
+                                      .toList();
+                                  unmarkedList = list
+                                      .where(
+                                        (e) =>
+                                            e.status ==
+                                            SubmissionStatus.unmarked,
+                                      )
+                                      .toList();
+                                  totalMarked = markedList.length;
+                                  totalUnmarked = unmarkedList.length;
+                                }
+
+                                return Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    SubmissionsStatsBar(
+                                      totalSubmitted: totalSubmitted,
+                                      totalMarked: totalMarked,
+                                      totalUnmarked: totalUnmarked,
+                                    ),
+
+                                    const SizedBox(height: 48),
+
+                                    if (state is SubmissionsEmpty) ...[
+                                      Center(
+                                        child: Lottie.asset(
+                                          AppLottie.empty,
+                                          width: 300,
+                                          repeat: true,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Center(
+                                        child: Text(
+                                          'No submissions yet!',
+                                          style: AppStyles.mobileBodyXXlargeMd
+                                              .copyWith(
+                                                color: AppColors.primaryDark,
+                                              ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 100),
+                                    ] else ...[
+                                      // --- UNMARKED SECTION ---
+                                      if (unmarkedList.isNotEmpty) ...[
+                                        _buildSectionTitle(
+                                          'Needs Immediate Review',
+                                          StatusColors.orangeDark,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        _buildResponsiveGrid(
+                                          context,
+                                          unmarkedList,
+                                        ),
+                                        const SizedBox(height: 48),
+                                      ],
+
+                                      // --- MARKED SECTION ---
+                                      if (markedList.isNotEmpty) ...[
+                                        _buildSectionTitle(
+                                          'Graded Submissions',
+                                          StatusColors.green,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        _buildResponsiveGrid(
+                                          context,
+                                          markedList,
+                                        ),
+                                      ],
+                                      const SizedBox(height: 100),
+                                    ],
+                                  ],
+                                );
+                              },
                             ),
-
-                            const SizedBox(height: 48),
-
-                            // --- UNMARKED SECTION ---
-                            if (unmarkedList.isNotEmpty) ...[
-                              _buildSectionTitle(
-                                'Needs Immediate Review',
-                                StatusColors.orangeDark,
-                              ),
-                              const SizedBox(height: 20),
-                              _buildResponsiveGrid(context, unmarkedList),
-                              const SizedBox(height: 48),
-                            ],
-
-                            // --- MARKED SECTION ---
-                            if (markedList.isNotEmpty) ...[
-                              _buildSectionTitle(
-                                'Graded Submissions',
-                                StatusColors.green,
-                              ),
-                              const SizedBox(height: 20),
-                              _buildResponsiveGrid(context, markedList),
-                            ],
-                            const SizedBox(height: 100),
                           ],
                         ),
                       ),
