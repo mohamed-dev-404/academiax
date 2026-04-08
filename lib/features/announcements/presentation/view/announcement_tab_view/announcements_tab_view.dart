@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/core/widgets/shared/adaptive_layout.dart';
-import 'package:sams_app/features/announcements/presentation/view/widget/announcements_mobile_layout.dart';
-import 'package:sams_app/features/announcements/presentation/view/widget/announcements_web_layout.dart';
+import 'package:sams_app/features/announcements/presentation/view/announcement_tab_view/widget/mobile/announcements_mobile_layout.dart';
+import 'package:sams_app/features/announcements/presentation/view/announcement_tab_view/widget/web/announcements_web_layout.dart';
 
 class AnnouncementsTabView extends StatelessWidget {
   final String courseId;
