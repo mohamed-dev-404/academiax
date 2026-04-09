@@ -8,6 +8,7 @@ import 'package:sams_app/core/widgets/base/app_button.dart';
 import 'package:sams_app/core/widgets/base/app_text_field.dart';
 import 'package:sams_app/core/widgets/shared/titled_input_field.dart';
 import 'package:sams_app/features/quizzes/data/mock_data.dart';
+import 'package:sams_app/features/quizzes/presentation/view/create_quiz/helper/date_time_picker_helper.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/shared/classwork_selector_field.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/model/create_quiz_form_args.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/shared/duration_input_field.dart';
@@ -26,74 +27,6 @@ import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/
 /// submit handler.
 class CreateQuizMobileLayout extends StatelessWidget {
   const CreateQuizMobileLayout({super.key});
-
-  // ──────────────────── Date & Time Picker ────────────────────
-  Future<void> _pickStartDateTime(BuildContext context) async {
-    final cubit = context.read<CreateQuizCubit>();
-
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(), // Prohibits past dates
-      lastDate: DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: AppColors.primary,
-              onPrimary: Colors.white,
-              onSurface: AppColors.primaryDark,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedDate == null || !context.mounted) return;
-    cubit.updateDate(pickedDate);
-
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: AppColors.primary,
-              onPrimary: Colors.white,
-              onSurface: AppColors.primaryDark,
-            ),
-
-            timePickerTheme: TimePickerThemeData(
-              dayPeriodColor: WidgetStateColor.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
-                  return AppColors.primary;
-                }
-                return Colors.transparent;
-              }),
-
-              dayPeriodTextColor: WidgetStateColor.resolveWith((states) {
-                if (states.contains(WidgetState.selected)) {
-                  return Colors.white;
-                }
-                return AppColors.primaryDark;
-              }),
-              dayPeriodBorderSide: const BorderSide(
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedTime == null || !context.mounted) return;
-    cubit.updateTime(pickedTime);
-  }
-
-  // ──────────────────── Build ────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +117,10 @@ class CreateQuizMobileLayout extends StatelessWidget {
                             label: 'Start Time',
                             child: DateTimePickerField(
                               controller: cubit.startTimeDisplayController,
-                              onTap: () => _pickStartDateTime(context),
+                              onTap: () =>
+                                  DateTimePickerHelper.pickStartDateTime(
+                                    context,
+                                  ),
                             ),
                           );
                         },
