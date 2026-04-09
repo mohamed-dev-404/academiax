@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sams_app/core/models/main_card_model.dart';
 import 'package:sams_app/core/utils/assets/app_images.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
+import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/core/widgets/web/web_main_card.dart';
 
@@ -39,7 +41,16 @@ class AnnouncementsWebLayout extends StatelessWidget {
                   title: 'Makeup quiz',
                   description: 'Chapter 1: Database Fundamentals and theories',
                   image: AppImages.imagesAnnouncementCard,
-                  onTap: () {},
+                  onTap: () {
+                    context.pushNamed(
+                        RoutesName.announcementDetails,
+                        pathParameters: {
+                          'courseId':
+                              '123', // لازم تبعتي الـ courseId كمان عشان الراوتر يعرف يوصل للمسار
+                          'announcementId': '123',
+                        },
+                      );
+                  },
                 ),
               );
             },
