@@ -11,10 +11,14 @@ class AnnouncementsTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveLayout(
       mobileLayout: (BuildContext context) {
-        return const AnnouncementsMobileLayout();
+        return  AnnouncementsMobileLayout(
+          courseId: courseId,
+        );
       },
       webLayout: (BuildContext context) {
-        return const AnnouncementsWebLayout();
+        return  AnnouncementsWebLayout(
+          courseId: courseId,
+        );
       },
     );
   }
