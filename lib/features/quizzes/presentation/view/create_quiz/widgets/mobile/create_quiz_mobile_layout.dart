@@ -54,119 +54,113 @@ class CreateQuizMobileLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<CreateQuizCubit>();
 
-    return BlocBuilder<CreateQuizCubit, CreateQuizState>(
-      // You can define buildWhen if you want, but listening is handled in CreateQuizView
-      builder: (context, state) {
-        return Scaffold(
-          // appBar: MobileCustomAppBar(
-          //   title: cubit.isEditMode ? 'Edit Quiz' : 'Create Quiz',
-          // ),
-          bottomNavigationBar: BlocBuilder<CreateQuizCubit, CreateQuizState>(
-            builder: (context, state) =>
-                _buildBottomButton(context, state is CreateQuizLoading),
-          ),
-          body: Form(
-            key: cubit.formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _SectionHeader(isEditMode: cubit.isEditMode),
-                  Transform.translate(
-                    offset: const Offset(0, -25),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withAlpha(15),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          ),
-                        ],
+    return Scaffold(
+      // appBar: MobileCustomAppBar(
+      //   title: cubit.isEditMode ? 'Edit Quiz' : 'Create Quiz',
+      // ),
+      bottomNavigationBar: BlocBuilder<CreateQuizCubit, CreateQuizState>(
+        builder: (context, state) =>
+            _buildBottomButton(context, state is CreateQuizLoading),
+      ),
+      body: Form(
+        key: cubit.formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _SectionHeader(isEditMode: cubit.isEditMode),
+              Transform.translate(
+                offset: const Offset(0, -25),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(15),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
                       ),
-                      child: Column(
-                        children: [
-                          if (!cubit.isEditMode) ...[
-                            // Wrap with BlocBuilder to fix the rebuild issue
-                            BlocBuilder<CreateQuizCubit, CreateQuizState>(
-                              buildWhen: (prev, curr) =>
-                                  curr is CreateQuizFormUpdated,
-                              builder: (context, state) {
-                                return TitledInputField(
-                                  label: 'Assigned Classwork',
-                                  child: ClassworkSelectorField(
-                                    selectedClasswork: cubit.selectedClasswork,
-                                    classworkItems: mockClassworkItems,
-                                    onSelected: cubit.onClassworkSelected,
-                                  ),
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                          ],
-
-                          // ─── Title ───
-                          TitledInputField(
-                            label: 'Title',
-                            child: AppTextField(
-                              hintText: 'Enter quiz title',
-                              controller: cubit.titleController,
-                              textFieldType: TextFieldType.normal,
-                              textInputAction: TextInputAction.next,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-
-                          // ─── Description ───
-                          TitledInputField(
-                            label: 'Description',
-                            child: AppTextField(
-                              hintText: 'Enter a brief description',
-                              controller: cubit.descriptionController,
-                              textFieldType: TextFieldType.normal,
-                              minLines: 3,
-                              textInputAction: TextInputAction.newline,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-
-                          // ─── Start Time ───
-                          BlocBuilder<CreateQuizCubit, CreateQuizState>(
-                            buildWhen: (prev, curr) =>
-                                curr is CreateQuizFormUpdated,
-                            builder: (context, state) {
-                              return TitledInputField(
-                                label: 'Start Time',
-                                child: DateTimePickerField(
-                                  controller: cubit.startTimeDisplayController,
-                                  onTap: () => _pickStartDateTime(context),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 20),
-
-                          // ─── Duration ───
-                          TitledInputField(
-                            label: 'Duration',
-                            child: _DurationInputField(
-                              controller: cubit.durationController,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
-                ],
+                  child: Column(
+                    children: [
+                      if (!cubit.isEditMode) ...[
+                        // Wrap with BlocBuilder to fix the rebuild issue
+                        BlocBuilder<CreateQuizCubit, CreateQuizState>(
+                          buildWhen: (prev, curr) =>
+                              curr is CreateQuizUIUpdated,
+                          builder: (context, state) {
+                            return TitledInputField(
+                              label: 'Assigned Classwork',
+                              child: ClassworkSelectorField(
+                                selectedClasswork: cubit.selectedClasswork,
+                                classworkItems: mockClassworkItems,
+                                onSelected: cubit.onClassworkSelected,
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+
+                      // ─── Title ───
+                      TitledInputField(
+                        label: 'Title',
+                        child: AppTextField(
+                          hintText: 'Enter quiz title',
+                          controller: cubit.titleController,
+                          textFieldType: TextFieldType.normal,
+                          textInputAction: TextInputAction.next,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // ─── Description ───
+                      TitledInputField(
+                        label: 'Description',
+                        child: AppTextField(
+                          hintText: 'Enter a brief description',
+                          controller: cubit.descriptionController,
+                          textFieldType: TextFieldType.normal,
+                          minLines: 3,
+                          textInputAction: TextInputAction.newline,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // ─── Start Time ───
+                      BlocBuilder<CreateQuizCubit, CreateQuizState>(
+                        buildWhen: (prev, curr) => curr is CreateQuizUIUpdated,
+                        builder: (context, state) {
+                          return TitledInputField(
+                            label: 'Start Time',
+                            child: DateTimePickerField(
+                              controller: cubit.startTimeDisplayController,
+                              onTap: () => _pickStartDateTime(context),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+
+                      // ─── Duration ───
+                      TitledInputField(
+                        label: 'Duration',
+                        child: _DurationInputField(
+                          controller: cubit.durationController,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
