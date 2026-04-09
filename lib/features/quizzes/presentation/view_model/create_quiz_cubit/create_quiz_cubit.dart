@@ -56,14 +56,14 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
 
       startTimeDisplayController.text = _formatDateTime(initialData!.startTime);
     }
-    emit(CreateQuizFormUpdated());
+    emit(CreateQuizUIUpdated());
   }
 
   // ──────────────────── Input Actions ────────────────────
 
   void onClassworkSelected(ClassworkItemModel item) {
     selectedClasswork = item;
-    emit(CreateQuizFormUpdated());
+    emit(CreateQuizUIUpdated());
   }
 
   void updateDate(DateTime date) {
@@ -86,7 +86,7 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
         _selectedTime!.minute,
       );
       startTimeDisplayController.text = _formatDateTime(combined);
-      emit(CreateQuizFormUpdated());
+      emit(CreateQuizUIUpdated());
     }
   }
 
@@ -97,7 +97,7 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
 
   Future<void> onSubmit() async {
     // 1. Validation
-    if (selectedClasswork == null) {
+    if (isEditMode == false && selectedClasswork == null) {
       emit(const CreateQuizFailure('Please select a classwork first.'));
       return;
     }

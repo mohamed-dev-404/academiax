@@ -1,30 +1,21 @@
 part of 'create_quiz_cubit.dart';
 
-sealed class CreateQuizState extends Equatable {
+sealed class CreateQuizState {
   const CreateQuizState();
-
-  @override
-  List<Object?> get props => [];
 }
 
 final class CreateQuizInitial extends CreateQuizState {}
 
-final class CreateQuizFormUpdated extends CreateQuizState {}
+final class CreateQuizUIUpdated extends CreateQuizState {}
 
 final class CreateQuizLoading extends CreateQuizState {}
 
 final class CreateQuizSuccess extends CreateQuizState {
   final String message;
   const CreateQuizSuccess(this.message);
-
-  @override
-  List<Object?> get props => [message];
 }
 
 final class CreateQuizFailure extends CreateQuizState {
   final String message;
   const CreateQuizFailure(this.message);
-
-  @override
-  List<Object?> get props => [message];
 }
