@@ -3,6 +3,8 @@ import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/quiz_model.dart';
+import 'package:sams_app/features/quizzes/presentation/view/quiz_details/logic/instructor_action_handler.dart';
+import 'package:sams_app/features/quizzes/presentation/view/quiz_details/logic/quiz_action_type.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_details/widgets/shared/common/quiz_details_state_badge.dart';
 
 class QuizDetailsHeader extends StatelessWidget {
@@ -35,11 +37,19 @@ class QuizDetailsHeader extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              QuizDetailsStateBadge(quizModel: quiz,),
+              QuizDetailsStateBadge(
+                quizModel: quiz,
+              ),
 
               CurrentRole.role == UserRole.instructor
                   ? IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        InstructorActionHandler.execute(
+                          context: context,
+                          action: QuizActionType.editQuiz,
+                          quiz: quiz,
+                        );
+                      },
                       icon: const Icon(
                         Icons.edit_square,
                         color: AppColors.whiteLight,

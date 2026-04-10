@@ -1,12 +1,12 @@
 import 'package:sams_app/core/utils/constants/api_keys.dart';
 
-class ClassworItemkModel {
+class ClassworkItemModel {
   final String id;
   final String name;
   final int points;
   final bool isVisible;
 
-  const ClassworItemkModel({
+  const ClassworkItemModel({
     required this.id,
     required this.name,
     required this.points,
@@ -15,8 +15,8 @@ class ClassworItemkModel {
 
   //! --- Serialization ---
 
-  factory ClassworItemkModel.fromJson(Map<String, dynamic> json) {
-    return ClassworItemkModel(
+  factory ClassworkItemModel.fromJson(Map<String, dynamic> json) {
+    return ClassworkItemModel(
       id: json[ApiKeys.id] ?? '',
       name: json[ApiKeys.name] ?? '',
       points: json[ApiKeys.points] ?? 0,

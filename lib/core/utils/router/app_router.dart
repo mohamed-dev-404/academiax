@@ -33,11 +33,13 @@ import 'package:sams_app/features/profile/presentation/views/profile/profile_vie
 // Quiz
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/create_quiz_view.dart';
+import 'package:sams_app/features/quizzes/presentation/view/create_quiz/model/create_quiz_form_args.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/grade_submission_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/manage_questions_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_details/quiz_details_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/submissions_list/submissions_list_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view/take_quiz/take_quiz_view.dart';
+import 'package:sams_app/features/quizzes/presentation/view_model/create_quiz_cubit/create_quiz_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/grading_cubit/grading_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/manage_quiz_cubit/manage_quiz_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/quiz_details_cubit/quiz_details_cubit.dart';
@@ -209,14 +211,17 @@ class AppRouter {
         name: RoutesName.createQuiz,
         path: RoutesName.createQuiz,
         builder: (context, state) {
-          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
-            RoutesName.createQuiz,
-            state.extra,
-          );
+          final extra =
+              RouterPayloadCache.get<Map<String, dynamic>>(
+                    RoutesName.createQuiz,
+                    state.extra,
+                  )
+                  as CreateQuizFormArgs?;
           if (extra == null) return _fallbackHome();
 
           return BlocProvider(
-            create: (_) => ManageQuizCubit(getIt<QuizRepository>()),
+            create: (_) =>
+                CreateQuizCubit(getIt<QuizRepository>())..init(extra),
             child: const CreateQuizView(),
           );
         },

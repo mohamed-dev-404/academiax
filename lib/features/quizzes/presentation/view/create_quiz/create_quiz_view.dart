@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sams_app/core/helper/app_snack_bar.dart';
 import 'package:sams_app/core/widgets/shared/adaptive_layout.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/mobile/create_quiz_mobile_layout.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/web/create_quiz_web_layout.dart';
-import 'package:sams_app/features/quizzes/presentation/view_model/manage_quiz_cubit/manage_quiz_cubit.dart';
+import 'package:sams_app/features/quizzes/presentation/view_model/create_quiz_cubit/create_quiz_cubit.dart';
 
+import 'package:sams_app/features/quizzes/presentation/view/create_quiz/model/create_quiz_form_args.dart';
+
+/// Adaptive shell for the Create Quiz flow.
+///
+/// NOTE: The router creates [CreateQuizView] directly via both `createQuiz`
+/// and `quizForm` routes using [CreateQuizFormArgs].
 class CreateQuizView extends StatelessWidget {
   const CreateQuizView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ManageQuizCubit, ManageQuizState>(
+    return BlocConsumer<CreateQuizCubit, CreateQuizState>(
       listener: (context, state) {
-        // TODO: Implement listener logic for ManageQuizFailure and ManageQuizSuccess later
+        if (state is CreateQuizSuccess) {
+          AppSnackBar.success(context, state.message);
+          Navigator.pop(context);
+        } else if (state is CreateQuizFailure) {
+          AppSnackBar.error(context, state.message);
+        }
       },
       builder: (context, state) {
         return AdaptiveLayout(
-          mobileLayout: (context) => const CreateQuizMobileLayout(),
+          mobileLayout: (context) => CreateQuizMobileLayout(),
           webLayout: (context) => const CreateQuizWebLayout(),
         );
       },

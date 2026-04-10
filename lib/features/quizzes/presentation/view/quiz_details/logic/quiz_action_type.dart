@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 enum QuizActionType {
+  /// Opens QuizFormScreen in Edit mode with the quiz pre-populated.
+  editQuiz,
   addQuestions,
   manageQuestions,
   viewQuestions,
@@ -11,6 +13,8 @@ class QuizActionUIHelper {
   // Returns the title based on the action type
   static String getTitle(QuizActionType type) {
     switch (type) {
+      case QuizActionType.editQuiz:
+        return 'Edit Quiz';
       case QuizActionType.addQuestions:
         return 'Add Questions';
       case QuizActionType.manageQuestions:
@@ -25,6 +29,8 @@ class QuizActionUIHelper {
   // Returns the subtitle based on the action type
   static String getSubtitle(QuizActionType type) {
     switch (type) {
+      case QuizActionType.editQuiz:
+        return 'Edit quiz title, description, start time or duration';
       case QuizActionType.addQuestions:
         return 'Create content to publish the quiz';
       case QuizActionType.manageQuestions:
@@ -39,6 +45,8 @@ class QuizActionUIHelper {
   // Returns the icon based on the action type
   static IconData getIcon(QuizActionType type) {
     switch (type) {
+      case QuizActionType.editQuiz:
+        return Icons.edit_rounded;
       case QuizActionType.addQuestions:
         return Icons.post_add_rounded;
       case QuizActionType.manageQuestions:
