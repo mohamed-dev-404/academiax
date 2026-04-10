@@ -58,9 +58,9 @@ class GradingCubit extends Cubit<GradingState> {
         questionType: q.questionType,
         timeLimit: q.timeLimit,
         points: q.points,
-        earnedPoints: score.toInt(),
+        earnedPoints: score, // update score locally
         isCorrect: score > 0,
-        isGraded: true,
+        isGraded: true, // update question status locally
         writtenAnswer: q.writtenAnswer,
         options: q.options,
         selectedOptionId: q.selectedOptionId,
