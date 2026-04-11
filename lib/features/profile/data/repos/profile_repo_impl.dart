@@ -120,6 +120,23 @@ class ProfileRepoImpl extends ProfileRepo {
     return UserModel.fromMap(response[ApiKeys.data]);
   }
 
+  //* PATCH → updates user name
+  @override
+  Future<Either<String, UserModel>> updateName(String newName) async {
+    try {
+      final response = await api.patch(
+        EndPoints.updateProfile,
+        data: {ApiKeys.name: newName},
+      );
+
+      return Right(UserModel.fromMap(response[ApiKeys.data]));
+    } on ApiException catch (e) {
+      return Left(e.errorModel.errorMessage);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
   //! POST → logout user and invalidate session
   @override
   Future<Either<String, String>> logout() async {

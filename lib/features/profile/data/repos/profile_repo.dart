@@ -7,8 +7,8 @@ abstract class ProfileRepo {
   //* Returns current user data or failure message
   Future<Either<String, UserModel>> getUserProfile();
   
-  //* Update user name/////
-  
+  //* Update user name
+  Future<Either<String, UserModel>> updateName(String name);
 
   //? Process image and upload — multi-step operation
   Future<Either<String, UserModel>> uploadProfilePicture(XFile imageFile);
