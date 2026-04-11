@@ -93,19 +93,26 @@ class AnnouncementsMobileLayout extends StatelessWidget {
                           title: announcements[index].title,
                           description: announcements[index].content,
                           image: AppImages.imagesAnnouncementCard,
-                          onTap: () {
+                          onTap: () async {
                             context
                                 .read<AnnouncementsFetchCubit>()
                                 .fetchAnnouncementDetails(
                                   announcementId: announcements[index].id,
                                 );
-                            context.pushNamed(
+                            await context.pushNamed(
                               RoutesName.announcementDetails,
                               pathParameters: {
                                 'courseId': courseId,
                                 'announcementId': announcements[index].id,
                               },
                             );
+                            if (context.mounted) {
+                              context
+                                  .read<AnnouncementsFetchCubit>()
+                                  .fetchAnnouncements(
+                                    courseId: courseId,
+                                  );
+                            }
                           },
                         ),
                       ),

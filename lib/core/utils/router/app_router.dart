@@ -210,13 +210,20 @@ class AppRouter {
                   // Announcement ID can be extracted here for future logic/API calls
                   final announcementId =
                       state.pathParameters['announcementId'] ?? '';
-                  return BlocProvider(
-                    create: (context) =>
-                        getIt<AnnouncementsFetchCubit>()
+                  // final courseId = state.pathParameters['courseId'] ?? '';
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => getIt<AnnouncementsFetchCubit>()
                           ..fetchAnnouncementDetails(
                             announcementId: announcementId,
                           ),
-                    child: const AnnouncementDetailsView(),
+                      ),
+                      BlocProvider(
+                        create: (context) => getIt<AnnouncementsActionsCubit>(),
+                      ),
+                    ],
+                    child:  const AnnouncementDetailsView(),
                   );
                 },
               ),
