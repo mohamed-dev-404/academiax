@@ -79,3 +79,18 @@ final class LogoutFailure extends ProfileActionState {
   final String errMessage;
   LogoutFailure(this.errMessage);
 }
+
+//? Emitted while updating name.
+final class UpdateNameLoading extends ProfileActionState {}
+
+//* Emitted when name update is successful.
+final class UpdateNameSuccess extends ProfileActionState {
+  final UserModel userModel;
+  UpdateNameSuccess(this.userModel);
+}
+
+//! Emitted when name update fails.
+final class UpdateNameFailure extends ProfileActionState {
+  final String errMessage;
+  UpdateNameFailure(this.errMessage);
+}
