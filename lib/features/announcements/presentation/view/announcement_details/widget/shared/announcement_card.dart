@@ -11,6 +11,7 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/an
 
 class AnnouncementCard extends StatelessWidget {
   const AnnouncementCard({super.key});
+  // final String courseId;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class AnnouncementCard extends StatelessWidget {
                             .read<AnnouncementsFetchCubit>();
                         final actionsCubit = context
                             .read<AnnouncementsActionsCubit>();
-
+                        final String? storedCourseId = fetchCubit.currentCourseId;
                         final result = await showDialog<String>(
                           context: context,
                           builder: (context) => MultiBlocProvider(
@@ -92,7 +93,11 @@ class AnnouncementCard extends StatelessWidget {
                           if (result == 'updated') {
                             fetchCubit.fetchAnnouncementDetails(
                               announcementId: announcementDetails.id,
+                              showLoading: false,
                             );
+                            if (storedCourseId != null) {
+                              fetchCubit.fetchAnnouncements(courseId: storedCourseId);
+                            }
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -102,8 +107,13 @@ class AnnouncementCard extends StatelessWidget {
 
                               ),
                             );
+                            // fetchCubit.fetchAnnouncements(courseId: courseId);
                           } else if (result == 'deleted') {
-
+                            // fetchCubit.fetchAnnouncements(courseId: courseId);
+                            // تحديث القائمة قبل الـ pop عشان الويب يحس بالتغيير
+                            if (storedCourseId != null) {
+                              fetchCubit.fetchAnnouncements(courseId: storedCourseId);
+                            }
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

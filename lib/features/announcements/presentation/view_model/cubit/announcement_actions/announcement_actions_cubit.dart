@@ -6,6 +6,7 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/an
 
 class AnnouncementsActionsCubit extends Cubit<AnnouncementsActionsState> {
   final AnnouncementsRepo announcementsRepo;
+  
 
   AnnouncementsActionsCubit(this.announcementsRepo) : super(AnnouncementsActionsInitial());
 

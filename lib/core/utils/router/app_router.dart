@@ -210,7 +210,7 @@ class AppRouter {
                   // Announcement ID can be extracted here for future logic/API calls
                   final announcementId =
                       state.pathParameters['announcementId'] ?? '';
-                  // final courseId = state.pathParameters['courseId'] ?? '';
+                  final courseId = state.pathParameters['courseId'] ?? '';
                   return MultiBlocProvider(
                     providers: [
                       BlocProvider(

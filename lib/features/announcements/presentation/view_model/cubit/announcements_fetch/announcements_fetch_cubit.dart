@@ -9,6 +9,7 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/an
 class AnnouncementsFetchCubit extends Cubit<AnnouncementsFetchState>
     with CubitMessageMixin, SafeEmitMixin {
   final AnnouncementsRepo announcementsRepo;
+  String? currentCourseId; // هنخزن الـ ID هنا
 
   AnnouncementsFetchCubit(this.announcementsRepo) : super(AnnouncementsFetchInitial());
 
@@ -19,7 +20,7 @@ class AnnouncementsFetchCubit extends Cubit<AnnouncementsFetchState>
   Future<void> fetchAnnouncements({required String courseId}) async {
     // Phase 1: Try to retrieve data from local storage for instant feedback
     final cachedData = announcementsRepo.getCachedAnnouncements();
-
+    currentCourseId = courseId; // احفظيه فوراً
     if (cachedData.isNotEmpty) {
       emit(AnnouncementsFetchSuccess(cachedData));
     } else {
@@ -45,8 +46,10 @@ class AnnouncementsFetchCubit extends Cubit<AnnouncementsFetchState>
   }
 
   /// Fetches comprehensive details for a specific announcement including its content and comments.
-  Future<void> fetchAnnouncementDetails({required String announcementId}) async {
-    emit(AnnouncementDetailsFetchLoading());
+  Future<void> fetchAnnouncementDetails({required String announcementId,bool showLoading = true}) async {
+    if (showLoading) {
+      emit(AnnouncementDetailsFetchLoading());
+    }
 
     final result = await announcementsRepo.fetchAnnouncementDetails(
       announcementId: announcementId,

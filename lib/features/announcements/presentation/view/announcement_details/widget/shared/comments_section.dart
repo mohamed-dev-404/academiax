@@ -108,6 +108,11 @@ class CommentsSection extends StatelessWidget {
   void _showEditDialog(BuildContext context, comment) {
   final controller = TextEditingController(text: comment.content);
   final commentActionsCubit = context.read<CommentActionsCubit>();
+    final fetchCubit = context.read<AnnouncementsFetchCubit>();
+    String? announcementId;
+    if (fetchCubit.state is AnnouncementFetchDetailsSuccess) {
+      announcementId = (fetchCubit.state as AnnouncementFetchDetailsSuccess).announcementDetails.id;
+    }
   
   showDialog(
     context: context,
@@ -118,6 +123,13 @@ class CommentsSection extends StatelessWidget {
           if (state is UpdateCommentSuccess) {
             Navigator.pop(dialogContext); 
             // ممكن هنا تعملي Refresh للبيانات لو حابة
+            // عمل الـ Refresh في صمت
+              if (announcementId != null) {
+                fetchCubit.fetchAnnouncementDetails(
+                  announcementId: announcementId,
+                  showLoading: false, // بدون لودينج
+                );
+              }
           }
           if (state is UpdateCommentFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -169,6 +181,11 @@ class CommentsSection extends StatelessWidget {
 
   void _showDeleteConfirm(BuildContext context, String commentId) {
     final commentActionsCubit = context.read<CommentActionsCubit>();
+    final fetchCubit = context.read<AnnouncementsFetchCubit>();
+    String? announcementId;
+    if (fetchCubit.state is AnnouncementFetchDetailsSuccess) {
+      announcementId = (fetchCubit.state as AnnouncementFetchDetailsSuccess).announcementDetails.id;
+    }
   showDialog(
     context: context,
     builder: (dialogContext) => BlocProvider.value(
@@ -177,6 +194,12 @@ class CommentsSection extends StatelessWidget {
         listener: (context, state) {
           if (state is DeleteCommentSuccess) {
             Navigator.pop(dialogContext); 
+            if (announcementId != null) {
+                fetchCubit.fetchAnnouncementDetails(
+                  announcementId: announcementId,
+                  showLoading: false,
+                );
+              }
           }
           if (state is DeleteCommentFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

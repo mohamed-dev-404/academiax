@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
+import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcements_fetch/announcements_fetch_cubit.dart';
 import 'package:sams_app/features/announcements/presentation/view_model/cubit/comment_actions/comment_actions_cubit.dart';
 import 'package:sams_app/features/announcements/presentation/view_model/cubit/comment_actions/comment_actions_state.dart';
 
@@ -27,6 +28,10 @@ class _AddCommentBarState extends State<AddCommentBar> {
         if (state is AddCommentSuccess) {
           _commentController.clear();
           // ممكن هنا تعملي Refresh للستة لو مش عاملة Optimistic UI
+          context.read<AnnouncementsFetchCubit>().fetchAnnouncementDetails(
+      announcementId: widget.announcementId,
+      showLoading: false, 
+    );
         }
         else if (state is AddCommentFailure) {
           ScaffoldMessenger.of(context).showSnackBar(

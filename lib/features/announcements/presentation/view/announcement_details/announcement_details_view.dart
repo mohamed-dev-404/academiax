@@ -11,6 +11,7 @@ class AnnouncementDetailsView extends StatelessWidget {
     super.key, required this.announcementId,
   });
   final String announcementId;
+  
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

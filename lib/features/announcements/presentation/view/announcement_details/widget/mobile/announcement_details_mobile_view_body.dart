@@ -7,8 +7,9 @@ import 'package:sams_app/features/announcements/presentation/view/announcement_d
 import 'package:sams_app/features/announcements/presentation/view/announcement_details/widget/shared/comments_section.dart';
 
 class AnnouncementDetailsMobileViewBody extends StatelessWidget {
-  const AnnouncementDetailsMobileViewBody({super.key, required this.announcementId});
+  const AnnouncementDetailsMobileViewBody({super.key, required this.announcementId,});
   final String announcementId;
+  // final String courseId;
   @override
   Widget build(BuildContext context) {
     return    Column(
@@ -16,7 +17,7 @@ class AnnouncementDetailsMobileViewBody extends StatelessWidget {
         const MobileHeaderSection(
       
         ),
-        const Expanded(
+         const Expanded(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(

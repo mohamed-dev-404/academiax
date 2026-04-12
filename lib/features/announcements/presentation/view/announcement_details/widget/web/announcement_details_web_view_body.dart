@@ -8,7 +8,6 @@ import 'package:sams_app/features/announcements/presentation/view/announcement_d
 class AnnouncementDetailsWebViewBody extends StatelessWidget {
   const AnnouncementDetailsWebViewBody({super.key, required this.announcementId});
   final String announcementId;
-  
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -25,7 +24,7 @@ class AnnouncementDetailsWebViewBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // ── Left column: Announcement Card ──
-                     const Expanded(
+                      const Expanded(
                       flex: 5,
                       child: SingleChildScrollView(
                         padding: EdgeInsets.only(bottom: 32, right: 16),
