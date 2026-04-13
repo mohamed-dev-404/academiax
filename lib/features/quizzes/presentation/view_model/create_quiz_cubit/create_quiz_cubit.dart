@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,20 +10,20 @@ import 'package:sams_app/features/quizzes/presentation/view/create_quiz/model/cr
 part 'create_quiz_state.dart';
 
 class CreateQuizCubit extends Cubit<CreateQuizState> {
-  final QuizRepository _repository;
+  final QuizRepository _repo;
 
-  CreateQuizCubit(this._repository) : super(CreateQuizInitial()) {
+  CreateQuizCubit(this._repo) : super(CreateQuizInitial()) {
     _initControllers();
   }
 
-  // ──────────────────── Form Elements ────────────────────
+  // * ──────────────────── Form Elements ────────────────────
   final formKey = GlobalKey<FormState>();
   late final TextEditingController titleController;
   late final TextEditingController descriptionController;
   late final TextEditingController durationController;
   late final TextEditingController startTimeDisplayController;
 
-  // ──────────────────── Data Variables ────────────────────
+  // * ──────────────────── Data Variables ────────────────────
   ClassworkItemModel? selectedClasswork;
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
@@ -39,7 +39,7 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
     startTimeDisplayController = TextEditingController();
   }
 
-  /// Initialises the form based on Create or Edit mode
+  /// * Initialises the form based on Create or Edit mode
   void init(CreateQuizFormArgs args) {
     isEditMode = args.isEditMode;
     courseId = args.courseId;
@@ -58,7 +58,7 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
     emit(CreateQuizUIUpdated());
   }
 
-  // ──────────────────── Input Actions ────────────────────
+  // * ──────────────────── Input Actions ────────────────────
 
   void onClassworkSelected(ClassworkItemModel item) {
     selectedClasswork = item;
@@ -89,11 +89,12 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
     }
   }
 
-  // ──────────────────── Logic ────────────────────
+  // * ──────────────────── helper methods ────────────────────
 
   String _formatDateTime(DateTime dt) =>
       DateFormat('MMM dd, yyyy - hh:mm a').format(dt);
 
+  // * ──────────────────── Submit ────────────────────
   Future<void> onSubmit() async {
     // 1. Validation
     if (isEditMode == false && selectedClasswork == null) {
@@ -142,6 +143,32 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
     } catch (e) {
       emit(CreateQuizFailure('Something went wrong: ${e.toString()}'));
     }
+  }
+
+  // * ──────────────────── Get Available Classworks ────────────────────
+  Future<void> getAvailableClassworks() async {
+    emit(GetAvailableClassworksLoading());
+
+    final result = await _repo.getAvailableClassworks(courseId);
+    result.fold(
+      (failureMessage) => emit(GetAvailableClassworksFailure(failureMessage)),
+      (classworks) => emit(GetAvailableClassworksSuccess(classworks)),
+    );
+  }
+
+  // * ──────────────────── Add new classwork ────────────────────
+  Future<void> addNewClasswork(String classworkName, num totalPoints) async {
+    emit(CreateClassworkLoading());
+
+    final result = await _repo.addNewClasswork(
+      courseId,
+      classworkName,
+      totalPoints,
+    );
+    result.fold(
+      (failureMessage) => emit(CreateClassworkFailure(failureMessage)),
+      (successMessage) => emit(CreateClassworkSuccess(successMessage)),
+    );
   }
 
   @override
