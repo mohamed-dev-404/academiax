@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 
@@ -21,6 +22,7 @@ class HeaderSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // * ──────────────────── Badge for mode ────────────────────
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
@@ -28,7 +30,7 @@ class HeaderSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              isEditMode ? 'MODIFICATION MODE' : 'NEW ASSIGNMENT',
+              isEditMode ? 'MODIFICATION MODE' : 'NEW QUIZ',
               style: AppStyles.mobileBodyXsmallRg.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -36,7 +38,10 @@ class HeaderSection extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+
+          const Gap(16),
+
+          // * ──────────────────── Title ────────────────────
           Text(
             isEditMode ? 'Edit Quiz Details' : 'Create New Quiz',
             style: AppStyles.mobileTitleMediumSb.copyWith(
@@ -44,8 +49,10 @@ class HeaderSection extends StatelessWidget {
               fontSize: 24,
             ),
           ),
-          const SizedBox(height: 8),
 
+          const Gap(8),
+
+          // * ──────────────────── Description ────────────────────
           Text(
             isEditMode
                 ? 'Make sure to double-check the timing and classwork before saving.'

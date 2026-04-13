@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sams_app/core/helper/app_snack_bar.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sams_app/core/helper/app_toast.dart';
 import 'package:sams_app/core/widgets/shared/adaptive_layout.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/mobile/create_quiz_mobile_layout.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/web/create_quiz_web_layout.dart';
@@ -10,8 +11,8 @@ import 'package:sams_app/features/quizzes/presentation/view/create_quiz/model/cr
 
 /// Adaptive shell for the Create Quiz flow.
 ///
-/// NOTE: The router creates [CreateQuizView] directly via both `createQuiz`
-/// and `quizForm` routes using [CreateQuizFormArgs].
+/// NOTE: The router creates [CreateQuizView] directly via `createQuiz`
+/// route using [CreateQuizFormArgs].
 class CreateQuizView extends StatelessWidget {
   const CreateQuizView({super.key});
 
@@ -20,15 +21,16 @@ class CreateQuizView extends StatelessWidget {
     return BlocConsumer<CreateQuizCubit, CreateQuizState>(
       listener: (context, state) {
         if (state is CreateQuizSuccess) {
-          AppSnackBar.success(context, state.message);
-          Navigator.pop(context);
+          AppToast.success(context, state.message);
+          // Navigator.pop(context);
+          context.pop(); // using go router instead of Navigator 2.0
         } else if (state is CreateQuizFailure) {
-          AppSnackBar.error(context, state.message);
+          AppToast.error(context, state.message);
         }
       },
       builder: (context, state) {
         return AdaptiveLayout(
-          mobileLayout: (context) => CreateQuizMobileLayout(),
+          mobileLayout: (context) => const CreateQuizMobileLayout(),
           webLayout: (context) => const CreateQuizWebLayout(),
         );
       },
