@@ -9,7 +9,6 @@ import 'package:sams_app/core/widgets/base/app_animated_loading_indicator.dart';
 import 'package:sams_app/core/widgets/base/app_button.dart';
 import 'package:sams_app/core/widgets/base/app_text_field.dart';
 import 'package:sams_app/core/widgets/shared/titled_input_field.dart';
-import 'package:sams_app/features/quizzes/data/mock_data.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/helper/date_time_picker_helper.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/shared/classwork_selector_field.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/shared/date_time_picker_field.dart';
@@ -28,97 +27,95 @@ class CreateQuizWebLayout extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Center(
-        child: Form(
-          key: cubit.formKey,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
+      body: Form(
+        key: cubit.formKey,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
 
-              child: Column(
-                children: [
-                  HeaderSection(isEditMode: cubit.isEditMode),
-                  const SizedBox(height: 32),
-                  width < 755
-                      ? Column(
-                          children: [
-                            _buildSettingsCard(context, cubit),
-                            const SizedBox(height: 24),
-                            _buildSettingsCard(context, cubit),
-                            const SizedBox(height: 24),
+            child: Column(
+              children: [
+                HeaderSection(isEditMode: cubit.isEditMode),
+                const SizedBox(height: 32),
+                width < 755
+                    ? Column(
+                        children: [
+                          _buildDetailsCard(cubit),
+                          const SizedBox(height: 24),
+                          _buildSettingsCard(context, cubit),
+                          const SizedBox(height: 24),
 
-                            BlocBuilder<CreateQuizCubit, CreateQuizState>(
-                              builder: (context, state) {
-                                final isLoading = state is CreateQuizLoading;
-                                return isLoading
-                                    ? const SizedBox(
-                                        width: 32,
-                                        height: 32,
-                                        child: AppAnimatedLoadingIndicator(),
-                                      )
-                                    : SizedBox(
-                                        width: 250,
-                                        child: AppButton(
-                                          model: AppButtonStyleModel(
-                                            label: cubit.isEditMode
-                                                ? 'Save Changes'
-                                                : 'Create Quiz',
-                                            onPressed: cubit.onSubmit,
-                                          ),
+                          BlocBuilder<CreateQuizCubit, CreateQuizState>(
+                            builder: (context, state) {
+                              final isLoading = state is CreateQuizLoading;
+                              return isLoading
+                                  ? const SizedBox(
+                                      width: 32,
+                                      height: 32,
+                                      child: AppAnimatedLoadingIndicator(),
+                                    )
+                                  : SizedBox(
+                                      width: 250,
+                                      child: AppButton(
+                                        model: AppButtonStyleModel(
+                                          label: cubit.isEditMode
+                                              ? 'Save Changes'
+                                              : 'Create Quiz',
+                                          onPressed: cubit.onSubmit,
                                         ),
-                                      );
-                              },
-                            ),
-                          ],
-                        )
-                      : Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Left Column (Details)
-                            Expanded(
-                              flex: 3,
-                              child: _buildDetailsCard(cubit),
-                            ),
-                            const SizedBox(width: 32),
-                            // Right Column (Settings)
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  _buildSettingsCard(context, cubit),
-                                  const SizedBox(height: 24),
+                                      ),
+                                    );
+                            },
+                          ),
+                        ],
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Left Column (Details)
+                          Expanded(
+                            flex: 3,
+                            child: _buildDetailsCard(cubit),
+                          ),
+                          const SizedBox(width: 32),
+                          // Right Column (Settings)
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              children: [
+                                _buildSettingsCard(context, cubit),
+                                const SizedBox(height: 24),
 
-                                  BlocBuilder<CreateQuizCubit, CreateQuizState>(
-                                    builder: (context, state) {
-                                      final isLoading =
-                                          state is CreateQuizLoading;
-                                      return isLoading
-                                          ? const SizedBox(
-                                              width: 32,
-                                              height: 32,
-                                              child:
-                                                  AppAnimatedLoadingIndicator(),
-                                            )
-                                          : SizedBox(
-                                              width: 250,
-                                              child: AppButton(
-                                                model: AppButtonStyleModel(
-                                                  label: cubit.isEditMode
-                                                      ? 'Save Changes'
-                                                      : 'Create Quiz',
-                                                  onPressed: cubit.onSubmit,
-                                                ),
+                                BlocBuilder<CreateQuizCubit, CreateQuizState>(
+                                  builder: (context, state) {
+                                    final isLoading =
+                                        state is CreateQuizLoading;
+                                    return isLoading
+                                        ? const SizedBox(
+                                            width: 32,
+                                            height: 32,
+                                            child:
+                                                AppAnimatedLoadingIndicator(),
+                                          )
+                                        : SizedBox(
+                                            width: 250,
+                                            child: AppButton(
+                                              model: AppButtonStyleModel(
+                                                label: cubit.isEditMode
+                                                    ? 'Save Changes'
+                                                    : 'Create Quiz',
+                                                onPressed: cubit.onSubmit,
                                               ),
-                                            );
-                                    },
-                                  ),
-                                ],
-                              ),
+                                            ),
+                                          );
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                ],
-              ),
+                          ),
+                        ],
+                      ),
+              ],
             ),
           ),
         ),
