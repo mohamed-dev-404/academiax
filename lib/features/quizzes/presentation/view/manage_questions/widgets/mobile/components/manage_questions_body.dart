@@ -7,7 +7,7 @@ import 'package:sams_app/features/quizzes/presentation/view/manage_questions/mod
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/model/manage_questions_args.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/model/quiz_mode.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/mobile/components/add_question_bottom_sheet.dart';
-import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/mobile/components/delete_question_dialog.dart';
+import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/shared/delete_question_dialog.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/mobile/components/manage_questions_bottom_bar.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/shared/empty_state_widget.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/shared/mode_configuration_header.dart';

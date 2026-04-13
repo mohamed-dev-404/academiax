@@ -5,7 +5,7 @@ import 'package:sams_app/features/quizzes/presentation/view/manage_questions/log
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/model/editable_question_model.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/model/manage_questions_args.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/model/quiz_mode.dart';
-import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/mobile/components/delete_question_dialog.dart';
+import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/shared/delete_question_dialog.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/web/components/web_action_sidebar.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/web/components/web_questions_canvas.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/manage_quiz_cubit/manage_quiz_cubit.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sams_app/features/quizzes/presentation/view/quiz_details/widgets/shared/common/delete_quiz_dialog.dart';
+import 'package:sams_app/features/quizzes/presentation/view/quiz_details/widgets/shared/instructor/delete_quiz_dialog.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/quiz_details_cubit/quiz_details_cubit.dart';
 import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
