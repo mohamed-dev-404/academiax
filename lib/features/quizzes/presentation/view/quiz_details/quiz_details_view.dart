@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sams_app/core/helper/app_snack_bar.dart';
 import 'package:sams_app/core/enums/enum_user_role.dart';
+import 'package:sams_app/core/helper/app_toast.dart';
 import 'package:sams_app/core/widgets/base/app_animated_loading_indicator.dart';
 import 'package:sams_app/core/widgets/shared/adaptive_layout.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_details/widgets/mobile/instructor/quiz_details_mobile_instructor_layout.dart';
@@ -31,10 +31,10 @@ class QuizDetailsView extends StatelessWidget {
     return BlocConsumer<QuizDetailsCubit, QuizDetailsState>(
       listener: (context, state) {
         if (state is QuizDetailsDeleteSuccess) {
-          AppSnackBar.success(context, state.message);
+          AppToast.success(context, state.message);
           context.pop(); // Go back to the course screen or previous screen
         } else if (state is QuizDetailsDeleteFailure) {
-          AppSnackBar.error(context, state.errorMessage);
+          AppToast.error(context, state.errorMessage);
         }
       },
       buildWhen: (previous, current) =>
