@@ -11,17 +11,15 @@ class MobileProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: AppColors.primaryLight,
       appBar: MobileCustomAppBar(
         titleStyle: AppStyles.mobileTitleLargeMd.copyWith(
-          color: AppColors.whiteLight,
+          color: AppColors.primaryDarkHover,
         ),
-        arrowBackColor: AppColors.whiteLight,
+        arrowBackColor: AppColors.primaryDarkHover,
         title: 'Profile',
       ),
-      body: const ProfileMainLayoutBody()
-      ) ;
+      body: const ProfileMainLayoutBody(),
+    );
   }
 }
-
- 
