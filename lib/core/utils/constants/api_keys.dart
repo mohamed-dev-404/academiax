@@ -76,6 +76,7 @@ abstract class ApiKeys {
   static const String contentReference = 'contentReference';
   static const String filesMetadata = 'filesMetadata';
   static const String itemKey = 'itemKey';
+  static const String context = 'context';
 }
 
 //! --- API VALUES (Fixed values that the server expects inside the fields) ---

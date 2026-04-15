@@ -200,11 +200,18 @@ class AppRouter {
                 parentNavigatorKey: navigatorKey,
                 builder: (context, state) {
                   final materialId = state.pathParameters['materialId'] ?? '';
-
-                  return BlocProvider(
-                    create: (context) =>
-                        getIt<MaterialFetchCubit>()
-                          ..fetchMaterialDetails(materialId: materialId),
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) =>
+                            getIt<MaterialFetchCubit>()
+                              ..fetchMaterialDetails(materialId: materialId),
+                      ),
+                      BlocProvider(
+                        create: (context) =>
+                            MaterialCrudCubit(getIt<MaterialRepo>()),
+                      ),
+                    ],
                     child: const MaterialDetailsView(),
                   );
                 },

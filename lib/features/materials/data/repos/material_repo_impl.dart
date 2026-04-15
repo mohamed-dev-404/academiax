@@ -177,7 +177,9 @@ class MaterialRepoImpl implements MaterialRepo {
     //* Request upload URLs from the server
     final response = await api.post(
       EndPoints.createMaterialUploadUrls(courseId),
-      data: {ApiKeys.filesMetadata: filesMetadata},
+      data: {
+        ApiKeys.context: 'materials',
+        ApiKeys.filesMetadata: filesMetadata},
     );
 
     final List data = response[ApiKeys.data];
