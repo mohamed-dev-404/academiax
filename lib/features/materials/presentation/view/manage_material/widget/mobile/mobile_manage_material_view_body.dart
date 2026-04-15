@@ -49,7 +49,10 @@ class _MobileManageMaterialViewBodyState
   Widget build(BuildContext context) {
     return BlocConsumer<MaterialCrudCubit, MaterialCrudState>(
       listenWhen: (previous, current) =>
-          current is UpdateMaterialSuccess || current is CreateMaterialSuccess,
+          current is UpdateMaterialSuccess ||
+          current is CreateMaterialSuccess ||
+          current is CreateMaterialFailure ||
+          current is UpdateMaterialFailure,
       listener: (context, state) {
         if (state is UpdateMaterialSuccess) {
           AppSnackBar.success(context, state.message);
@@ -58,6 +61,8 @@ class _MobileManageMaterialViewBodyState
           //todo: Consider if we need to manually update MaterialFetchCubit list here or rely on parent refresh
           AppSnackBar.success(context, state.message);
           context.pop(state.material);
+        } else if (state is CreateMaterialFailure) {
+          AppSnackBar.error(context, state.errMessage);
         }
       },
       builder: (context, state) {

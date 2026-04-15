@@ -31,7 +31,6 @@ class WebManageMaterialViewBody extends StatefulWidget {
 
 class _WebManageMaterialViewBodyState extends State<WebManageMaterialViewBody>
     with ManageMaterialMixin {
-      
   @override
   void initState() {
     super.initState();
@@ -50,7 +49,10 @@ class _WebManageMaterialViewBodyState extends State<WebManageMaterialViewBody>
   Widget build(BuildContext context) {
     return BlocConsumer<MaterialCrudCubit, MaterialCrudState>(
       listenWhen: (previous, current) =>
-          current is UpdateMaterialSuccess || current is CreateMaterialSuccess,
+          current is UpdateMaterialSuccess ||
+          current is CreateMaterialSuccess ||
+          current is CreateMaterialFailure ||
+          current is UpdateMaterialFailure,
       listener: (context, state) {
         if (state is UpdateMaterialSuccess) {
           AppSnackBar.success(context, state.message);
@@ -60,6 +62,8 @@ class _WebManageMaterialViewBodyState extends State<WebManageMaterialViewBody>
           AppSnackBar.success(context, state.message);
           context.pop(state.material);
         } else if (state is CreateMaterialFailure) {
+          AppSnackBar.error(context, state.errMessage);
+        } else if (state is UpdateMaterialFailure) {
           AppSnackBar.error(context, state.errMessage);
         }
       },

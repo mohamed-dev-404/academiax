@@ -44,6 +44,16 @@ class UpdateProgressOverlay extends StatelessWidget {
                 color: AppColors.whiteLight,
               ),
             ),
+            const SizedBox(height: 10),
+            const Text(
+              'Please stay on this screen until completion.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.whiteDark,
+                fontSize: 14,
+                height: 1.4,
+              ),
+            ),
           ],
         ),
       ),
