@@ -17,7 +17,7 @@ class AppImages {
   static const String imagesWebQuizDone = 'assets/images/web_quiz_done.svg';
   static const String imagesMobileAuthHeader = 'assets/images/mobile_auth_header.svg';
   static const String imagesWebAuthSider = 'assets/images/web_auth_sider.svg';
-  static const String imagesHijabImage = 'assets/images/hijab_image.svg';
+  static const String imagesWebMaterialDetailsSider = 'assets/images/web_material_details_sider.svg';
 
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
+import 'package:sams_app/core/utils/constants/app_constants.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -29,8 +30,7 @@ class _FilePreviewScreenState extends State<FilePreviewScreen> {
     super.initState();
 
     //* Integration: Wrapping the file URL with Google GView to handle office/pdf docs in-app.
-    final String googleDocUrl =
-        'https://docs.google.com/gview?embedded=true&url=${widget.url}';
+    final String googleDocUrl = '${AppConstants.googleDocUrl}${widget.url}';
 
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)

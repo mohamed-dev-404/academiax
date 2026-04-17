@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sams_app/core/errors/exceptions/api_exception.dart';
 import 'package:sams_app/core/errors/models/error_model.dart';
 import 'package:sams_app/core/utils/constants/api_keys.dart';
+import 'package:sams_app/core/utils/constants/app_constants.dart';
 
 //* Uploads a file directly to S3 using a presigned URL
 class S3UploadService {
@@ -17,11 +18,11 @@ class S3UploadService {
     XFile? xFile,
     required String? fileName,
     required String contentType,
-    Duration timeout = const Duration(minutes: 20),
+    Duration timeout = AppConstants.s3SendTimeout,
+    Duration receiveTimeout = AppConstants.s3ReceiveTimeout,
     CancelToken? cancelToken,
   }) async {
     try {
-     
       dynamic uploadData;
       int fileSize = 0;
 
@@ -39,7 +40,7 @@ class S3UploadService {
         throw Exception('You must provide either fileBytes or xFile');
       }
 
-     ///* Set headers
+      ///* Set headers
       final Map<String, dynamic> headers = {
         ApiKeys.contentTypeHeader: contentType,
         ApiKeys.contentLengthHeader: fileSize.toString(),
@@ -52,7 +53,7 @@ class S3UploadService {
         options: Options(
           headers: headers,
           sendTimeout: timeout,
-          receiveTimeout: const Duration(minutes: 20),
+          receiveTimeout: receiveTimeout,
           responseType: ResponseType.plain,
         ),
         onSendProgress: (count, total) {
@@ -105,7 +106,7 @@ class S3UploadService {
   // Map HTTP status codes to readable messages
   String _mapS3StatusToMessage(int? statusCode) {
     return switch (statusCode) {
-      403 => 'Access denied. Please re-select the image.',
+      403 => 'Access denied. Please re-select the file.',
       413 => 'Image is too large. Please choose a smaller file.',
       _ => 'Service unavailable (Error: $statusCode).',
     };

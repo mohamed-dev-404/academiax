@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/utils/assets/app_icons.dart';
+import 'package:sams_app/core/utils/assets/app_images.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/materials/data/model/material_model.dart';
@@ -46,7 +47,7 @@ class MaterialDetailsSideCard extends StatelessWidget {
                     //* Visual Identity: The top illustration scales proportionally.
                     Center(
                       child: SvgPicture.asset(
-                        'assets/images/hijab_image.svg',
+                        AppImages.imagesWebMaterialDetailsSider,
                         width: width * 0.6,
                         fit: BoxFit.contain,
                       ),
