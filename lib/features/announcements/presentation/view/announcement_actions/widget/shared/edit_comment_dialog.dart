@@ -69,6 +69,7 @@ class _EditCommentDialogState extends State<EditCommentDialog> {
       },
       builder: (context, state) {
         return AlertDialog(
+          scrollable: true,
           backgroundColor: AppColors.whiteLight,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
           title: const Center(child: Text('Edit Comment')),

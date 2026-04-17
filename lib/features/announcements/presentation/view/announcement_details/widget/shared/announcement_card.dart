@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,13 +20,14 @@ class AnnouncementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AnnouncementsFetchCubit, AnnouncementsFetchState>(
       builder: (context, state) {
-        //  Handling loading state using a boolean
+        // Handling loading state
         final bool isLoading = state is AnnouncementDetailsFetchLoading;
-       
-        //  Handling failure state
+
+        // Handling failure state
         if (state is AnnouncementDetailsFetchFailure) {
           return Center(child: Text(state.errMessage));
         }
+
         final announcementDetails = (state is AnnouncementFetchDetailsSuccess)
             ? state.announcementDetails
             : null;
@@ -33,10 +35,11 @@ class AnnouncementCard extends StatelessWidget {
         if (announcementDetails == null && isLoading == false) {
           return const SizedBox();
         }
+
         return Skeletonizer(
           enabled: isLoading,
           child: Container(
-            padding: const EdgeInsets.all(28),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             decoration: BoxDecoration(
               color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(20),
@@ -48,64 +51,74 @@ class AnnouncementCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title row
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryDarkHover.withOpacity(0.10),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.campaign_outlined,
-                        color: AppColors.primaryDarkHover,
-                        size: 20,
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Text(
-                        isLoading
-                            ? 'Loading Announcement Title'
-                            : announcementDetails!.title,
-                        style: AppStyles.web30Regular.copyWith(
-                          color: AppColors.primaryDarkHover,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 22,
-                        ),
-                      ),
-                    ),
-                    //  Hide the Edit button during loading
-                    if (!isLoading)
-                      InkWell(
-                        borderRadius: BorderRadius.circular(8),
-                        onTap: () => _handleEditAndDeleteAction(
-                          context,
-                          announcementDetails!,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: SvgPicture.asset(
-                            AppIcons.iconsEditMaterial,
-                            width: 20,
-                            height: 20,
-                            colorFilter: ColorFilter.mode(
-                              AppColors.primaryDarkHover.withOpacity(0.7),
-                              BlendMode.srcIn,
+                // Title Row with LayoutBuilder to be card-width dependent
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Expanded(
+                        //   child: AutoSizeText(
+                        //     isLoading
+                        //         ? 'Loading Announcement Title'
+                        //         : announcementDetails!.title,
+                        //     minFontSize: 18,
+                        //     maxLines: 3,
+                        //     // overflow: TextOverflow.ellipsis,
+                        //     style: AppStyles.web14Regular.copyWith(
+                        //       color: AppColors.primaryDarkHover,
+                        //       fontWeight: FontWeight.w700,
+                        //     ),
+                        //   ),
+                        // ),
+                        Expanded(
+                          child: AutoSizeText(
+                            isLoading
+                                ? 'Loading Announcement Title'
+                                : announcementDetails!.title,
+                            style: AppStyles.webTitleMediumSb.copyWith(
+                              color: AppColors.primaryDarkHover,
+                              fontSize: (constraints.maxWidth * 0.05).clamp(
+                                18,
+                                36,
+                              ),
                             ),
+                            minFontSize: 12,
+                            wrapWords: false,
                           ),
                         ),
-                      ),
-                  ],
+                        if (!isLoading) ...[
+                          const SizedBox(width: 14),
+                          InkWell(
+                            borderRadius: BorderRadius.circular(8),
+                            onTap: () => _handleEditAndDeleteAction(
+                              context,
+                              announcementDetails!,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(6),
+                              child: SvgPicture.asset(
+                                AppIcons.iconsEditMaterial,
+                                width: 20,
+                                height: 20,
+                                colorFilter: ColorFilter.mode(
+                                  AppColors.primaryDarkHover.withOpacity(0.7),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 20),
                 const Divider(height: 1),
                 const SizedBox(height: 20),
 
-                // Content
+                // Content Section
                 Text(
                   isLoading
                       ? 'This is a dummy content for the announcement that spans multiple lines to show the skeleton effect properly.'
@@ -130,11 +143,9 @@ class AnnouncementCard extends StatelessWidget {
     BuildContext context,
     AnnouncementDetailsModel announcementDetails,
   ) async {
-    // Obtain Cubits before opening the dialog to maintain reference
     final fetchCubit = context.read<AnnouncementsFetchCubit>();
     final actionsCubit = context.read<AnnouncementsActionsCubit>();
 
-    // Open the Action Dialog and wait for the result ('updated' or 'deleted')
     final result = await showDialog<String>(
       context: context,
       builder: (dialogContext) => MultiBlocProvider(
@@ -150,10 +161,8 @@ class AnnouncementCard extends StatelessWidget {
       ),
     );
 
-    // Guard clause: ensure context is still valid and we have a result
     if (!context.mounted || result == null) return;
 
-    // Get CourseID for list synchronization after update/delete
     final courseId = GoRouterState.of(context).pathParameters['courseId'];
 
     if (result == 'updated') {
@@ -163,17 +172,14 @@ class AnnouncementCard extends StatelessWidget {
     }
   }
 
-  /// Private helper to handle post-update UI logic
   void _onUpdateSuccess(
     BuildContext context,
     AnnouncementsFetchCubit cubit,
     String id,
     String? courseId,
   ) {
-    // Refresh the details silently without showing loading indicator again
     cubit.fetchAnnouncementDetails(announcementId: id, showLoading: false);
 
-    // Show confirmation
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Announcement updated successfully'),
@@ -181,18 +187,15 @@ class AnnouncementCard extends StatelessWidget {
       ),
     );
 
-    // Refresh all related lists if CourseID exists
     if (courseId != null) {
       AnnouncementsFetchCubit.refreshAllLists(courseId);
     }
   }
 
-  /// Private helper to handle post-deletion UI logic
   void _onDeleteSuccess(BuildContext context, String? courseId) {
     if (courseId != null) {
       AnnouncementsFetchCubit.refreshAllLists(courseId);
     }
-    // Navigate back to the previous screen since the item no longer exists
     Navigator.pop(context);
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -203,3 +206,4 @@ class AnnouncementCard extends StatelessWidget {
     );
   }
 }
+

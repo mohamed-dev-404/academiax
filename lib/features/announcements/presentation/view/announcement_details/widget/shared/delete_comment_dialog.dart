@@ -21,7 +21,7 @@ class DeleteCommentDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Determine the current Announcement ID from the fetchCubit's state
-    // This allows us to refresh the specific announcement list after deletion    
+    // This allows us to refresh the specific announcement list after deletion
     String? announcementId;
     if (fetchCubit.state is AnnouncementFetchDetailsSuccess) {
       announcementId = (fetchCubit.state as AnnouncementFetchDetailsSuccess)
@@ -54,6 +54,7 @@ class DeleteCommentDialog extends StatelessWidget {
       },
       builder: (context, state) {
         return AlertDialog(
+          scrollable: true,
           backgroundColor: AppColors.whiteLight,
           insetPadding: EdgeInsets.symmetric(
             horizontal: isMobile ? 20 : screenWidth * 0.25,

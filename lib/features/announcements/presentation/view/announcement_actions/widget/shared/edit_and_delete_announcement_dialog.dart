@@ -27,25 +27,18 @@ class EditAndDeleteAnnouncementDialog extends StatefulWidget {
 
 class _EditAndDeleteAnnouncementDialogState
     extends State<EditAndDeleteAnnouncementDialog> {
-  // Controllers to manage and retrieve text input
   late final TextEditingController _titleController;
   late final TextEditingController _contentController;
-
-  // Key for form validation
   final _formKey = GlobalKey<FormState>();
 
-  // Storing original values to detect if any changes were actually made
   late final String _originalTitle;
   late final String _originalContent;
 
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with the existing announcement data
     _titleController = TextEditingController(text: widget.initialTitle);
     _contentController = TextEditingController(text: widget.initialContent);
-
-    // Keep a reference to the initial data for comparison
     _originalTitle = widget.initialTitle;
     _originalContent = widget.initialContent;
   }
@@ -59,51 +52,48 @@ class _EditAndDeleteAnnouncementDialogState
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: BlocListener<AnnouncementsActionsCubit, AnnouncementsActionsState>(
-        listener: (context, state) {
-          // Close dialog and return a result string so the parent screen knows to refresh
-          if (state is UpdateAnnouncementSuccess) {
-            Navigator.pop(context, 'updated');
-          } else if (state is DeleteAnnouncementSuccess) {
-            Navigator.pop(context, 'deleted');
-          }
-          // Handle specific failure states for Update and Delete
-          else if (state is UpdateAnnouncementFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errMessage),
-                backgroundColor: AppColors.red,
-              ),
-            );
-          } else if (state is DeleteAnnouncementFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errMessage),
-                backgroundColor: AppColors.red,
-              ),
-            );
-          }
-        },
-        child: Container(
+    return BlocListener<AnnouncementsActionsCubit, AnnouncementsActionsState>(
+      listener: (context, state) {
+        if (state is UpdateAnnouncementSuccess) {
+          Navigator.pop(context, 'updated');
+        } else if (state is DeleteAnnouncementSuccess) {
+          Navigator.pop(context, 'deleted');
+        } else if (state is UpdateAnnouncementFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errMessage),
+              backgroundColor: AppColors.red,
+            ),
+          );
+        } else if (state is DeleteAnnouncementFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errMessage),
+              backgroundColor: AppColors.red,
+            ),
+          );
+        }
+      },
+      child: AlertDialog(
+        scrollable: true,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          'Edit Announcement',
+          textAlign: TextAlign.center,
+          style: AppStyles.webTitleMediumSb.copyWith(
+            color: AppColors.primaryDarkHover,
+            fontSize: 18,
+          ),
+        ),
+        content: Container(
           width: 550,
-          padding: const EdgeInsets.all(28),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Edit Announcement',
-                  style: AppStyles.webTitleMediumSb.copyWith(
-                    color: AppColors.primaryDarkHover,
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Shared UI section containing the Title and Content text fields
                 AnnouncementFormSection(
                   titleController: _titleController,
                   contentController: _contentController,
@@ -112,7 +102,7 @@ class _EditAndDeleteAnnouncementDialogState
                 const SizedBox(height: 32),
                 Row(
                   children: [
-                    // Delete Button Logic
+                    // Delete Button
                     Expanded(
                       child: AppButton(
                         model: AppButtonStyleModel(
@@ -129,13 +119,12 @@ class _EditAndDeleteAnnouncementDialogState
                       ),
                     ),
                     const SizedBox(width: 16),
-                    // Update Button Logic
+                    // Update Button
                     Expanded(
                       child: AppButton(
                         model: AppButtonStyleModel(
                           label: 'Update',
                           onPressed: () {
-                            // Step 1: Check if the user actually changed anything
                             bool isChanged =
                                 _titleController.text != _originalTitle ||
                                 _contentController.text != _originalContent;
@@ -147,10 +136,8 @@ class _EditAndDeleteAnnouncementDialogState
                                   backgroundColor: AppColors.red,
                                 ),
                               );
-                              // Navigator.pop(context);
                               return;
                             }
-                            // Step 2: Validate form fields (e.g., empty check)
                             if (_formKey.currentState!.validate()) {
                               context
                                   .read<AnnouncementsActionsCubit>()
