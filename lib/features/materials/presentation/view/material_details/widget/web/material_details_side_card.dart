@@ -72,7 +72,7 @@ class MaterialDetailsSideCard extends StatelessWidget {
                         if (CurrentRole.role == UserRole.instructor)
                           IconButton(
                             onPressed: () =>
-                                MaterialDetailsHandler.onEditMaterial(
+                                MaterialDetailsHandler.onEditMaterialWeb(
                                   context,
                                   material,
                                 ),
