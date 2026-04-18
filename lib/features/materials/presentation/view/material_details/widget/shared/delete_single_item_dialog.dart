@@ -7,6 +7,7 @@ import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/core/widgets/base/app_animated_loading_indicator.dart';
 import 'package:sams_app/core/widgets/base/custom_app_button.dart';
+import 'package:sams_app/features/materials/presentation/view/material_details/logic/material_details_handler.dart';
 import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_cubit.dart';
 import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_state.dart';
 
@@ -112,12 +113,12 @@ class DeleteSingleItemDialog extends StatelessWidget {
                     textColor: AppColors.whiteLight,
                     backgroundColor:
                         StatusColors.red, // Semantic red for critical actions.
-                    onPressed: () {
-                      context.read<MaterialCrudCubit>().deleteSingleItem(
-                        materialId: materialId,
-                        itemKey: itemKey,
-                      );
-                    },
+                    onPressed: () =>
+                        MaterialDetailsHandler.confirmDeleteSingleItem(
+                          context,
+                          materialId: materialId,
+                          itemKey: itemKey,
+                        ),
                   ),
                 ),
               ],

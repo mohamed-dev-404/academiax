@@ -9,6 +9,8 @@ import 'package:sams_app/features/materials/presentation/view/manage_material/wi
 import 'package:sams_app/features/materials/presentation/view/manage_material/widget/shared/uploading_overlay.dart';
 import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_cubit.dart';
 import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_state.dart';
+import 'package:sams_app/features/materials/presentation/view_model/cubits/material_fetch/material_fetch_cubit.dart';
+import 'package:sams_app/features/materials/presentation/view_model/cubits/material_fetch/material_fetch_state.dart';
 
 /// A specialized dialog for adding new files/videos to an existing material topic.
 /// It coordinates the upload process and subsequent data refresh to ensure UI consistency.
@@ -90,24 +92,7 @@ class _AddNewMaterialItemsDialogState extends State<AddNewMaterialItemsDialog> {
                         height: 40,
                         textColor: AppColors.whiteLight,
                         backgroundColor: AppColors.primary,
-                        onPressed: () {
-                          //? Extracting the picked files via the GlobalKey before triggering the Cubit.
-                          final allFiles =
-                              _sectionKey.currentState?.allPickedFiles ?? [];
-
-                          if (allFiles.isNotEmpty) {
-                            context.read<MaterialCrudCubit>().addNewItemsOnly(
-                              materialId: widget.materialId,
-                              courseId: widget.courseId,
-                              newFiles: allFiles,
-                            );
-                          } else {
-                            AppToast.warning(
-                              context,
-                              'Please select at least one file.',
-                            );
-                          }
-                        },
+                        onPressed: _handleConfirm,
                       ),
                     ),
                   ],
@@ -118,15 +103,39 @@ class _AddNewMaterialItemsDialogState extends State<AddNewMaterialItemsDialog> {
         ),
 
         //* Blocking UI: Shows the uploading overlay during both transmission and post-upload fetching.
-        BlocBuilder<MaterialCrudCubit, MaterialCrudState>(
-          builder: (context, crudState) {
-            if (crudState is AddMaterialItemsLoading) {
-              return const UploadingOverlay();
-            }
-            return const SizedBox.shrink();
+        BlocBuilder<MaterialFetchCubit, MaterialFetchState>(
+          builder: (context, state) {
+            return BlocBuilder<MaterialCrudCubit, MaterialCrudState>(
+              builder: (context, crudState) {
+                if (crudState is AddMaterialItemsLoading ||
+                    state is MaterialFetchLoading) {
+                  return const UploadingOverlay();
+                }
+                return const SizedBox.shrink();
+              },
+            );
           },
         ),
       ],
     );
+  }
+
+  /// Handles the confirmation of adding new files to the material topic.
+  void _handleConfirm() {
+    //? Extracting the picked files via the GlobalKey before triggering the Cubit.
+    final allFiles = _sectionKey.currentState?.allPickedFiles ?? [];
+
+    if (allFiles.isNotEmpty) {
+      context.read<MaterialCrudCubit>().addNewItemsOnly(
+        materialId: widget.materialId,
+        courseId: widget.courseId,
+        newFiles: allFiles,
+      );
+    } else {
+      AppToast.warning(
+        context,
+        'Please select at least one file.',
+      );
+    }
   }
 }

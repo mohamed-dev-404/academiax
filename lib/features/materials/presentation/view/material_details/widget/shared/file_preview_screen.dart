@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/constants/app_constants.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
+import 'package:sams_app/features/materials/presentation/view/material_details/logic/material_details_handler.dart'; //_ Import Handler
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -28,7 +29,11 @@ class _FilePreviewScreenState extends State<FilePreviewScreen> {
   @override
   void initState() {
     super.initState();
+    _initializeWebView(); //_ Extracted for cleanliness
+  }
 
+  //_ Logic extraction for WebView setup.
+  void _initializeWebView() {
     //* Integration: Wrapping the file URL with Google GView to handle office/pdf docs in-app.
     final String googleDocUrl = '${AppConstants.googleDocUrl}${widget.url}';
 
@@ -43,20 +48,6 @@ class _FilePreviewScreenState extends State<FilePreviewScreen> {
         ),
       )
       ..loadRequest(Uri.parse(googleDocUrl));
-  }
-
-  /// Utility to handle external interactions like downloading or opening in specialized apps.
-  Future<void> _launchExternal(LaunchMode mode) async {
-    final Uri uri = Uri.parse(widget.url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: mode);
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch the file')),
-        );
-      }
-    }
   }
 
   @override
@@ -74,7 +65,11 @@ class _FilePreviewScreenState extends State<FilePreviewScreen> {
           IconButton(
             tooltip: 'Open in external app',
             icon: const Icon(Icons.open_in_new_rounded, color: Colors.white),
-            onPressed: () => _launchExternal(LaunchMode.externalApplication),
+            onPressed: () => MaterialDetailsHandler.launchExternalUrl(
+              context,
+              widget.url,
+              mode: LaunchMode.externalApplication,
+            ),
           ),
           //* Action: Trigger platform-level download.
           IconButton(
@@ -83,7 +78,11 @@ class _FilePreviewScreenState extends State<FilePreviewScreen> {
               Icons.download_for_offline_rounded,
               color: Colors.white,
             ),
-            onPressed: () => _launchExternal(LaunchMode.platformDefault),
+            onPressed: () => MaterialDetailsHandler.launchExternalUrl(
+              context,
+              widget.url,
+              mode: LaunchMode.platformDefault,
+            ),
           ),
         ],
       ),
