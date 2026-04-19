@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/core/utils/constants/api_keys.dart';
@@ -7,6 +8,7 @@ import 'package:sams_app/features/quizzes/presentation/view/manage_questions/mod
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/model/manage_questions_args.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/shared/empty_state_widget.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/widgets/shared/question_card.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/shared_back_button.dart';
 
 class WebQuestionsCanvas extends StatelessWidget {
   final ManageQuestionsArgs args;
@@ -68,12 +70,23 @@ class WebQuestionsCanvas extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Quiz Questions',
-                  style: AppStyles.mobileBodyLargeSb.copyWith(
-                    color: AppColors.primaryDark,
-                  ),
+                Row(
+                  children: [
+                    const SharedBackButton(
+                      color: AppColors.primary,
+                    ),
+
+                    const Gap(12),
+
+                    Text(
+                      'Quiz Questions',
+                      style: AppStyles.mobileBodyLargeSb.copyWith(
+                        color: AppColors.primaryDark,
+                      ),
+                    ),
+                  ],
                 ),
+
                 if (questions.isNotEmpty)
                   Container(
                     padding: const EdgeInsets.symmetric(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_details/widgets/shared/instructor/delete_quiz_dialog.dart';
-import 'package:sams_app/features/quizzes/presentation/view/widgets/safe_pop_function.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/shared_back_button.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/quiz_details_cubit/quiz_details_cubit.dart';
 import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
@@ -45,23 +46,19 @@ class QuizDetailsHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          isMobile
-              ? const SizedBox.shrink()
-              : IconButton(
-                  onPressed: () {
-                    safePop(context: context);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: AppColors.whiteLight,
-                  ),
-                ),
-          const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              QuizDetailsStateBadge(
-                quizModel: quiz,
+              Row(
+                children: [
+                  const SharedBackButton(),
+
+                  const Gap(12),
+
+                  QuizDetailsStateBadge(
+                    quizModel: quiz,
+                  ),
+                ],
               ),
 
               CurrentRole.role == UserRole.instructor

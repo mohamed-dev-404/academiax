@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/student_submission_model.dart';
@@ -7,6 +8,7 @@ import 'package:sams_app/features/quizzes/presentation/view/grade_submission/wid
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/shared/written_answer.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/widgets/web/components/dot_indicator.dart';
 import 'package:sams_app/features/quizzes/presentation/view/grade_submission/utils/ui_state_mapper.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/shared_back_button.dart';
 
 /// Center panel for the web grading layout.
 ///
@@ -133,6 +135,10 @@ class QuestionDetailPanel extends StatelessWidget {
       ),
       child: Row(
         children: [
+          const SharedBackButton(color: AppColors.primary),
+
+          const Gap(12),
+
           Text(
             'Question ${selectedIndex + 1} of ${questions.length}',
             style: AppStyles.webAgBodyBold.copyWith(

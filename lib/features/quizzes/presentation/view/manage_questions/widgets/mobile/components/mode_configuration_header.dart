@@ -3,6 +3,7 @@ import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/model/quiz_mode.dart';
 import 'package:sams_app/features/quizzes/presentation/view/manage_questions/utils/manage_questions_ui_utils.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/shared_back_button.dart';
 
 /// Displays the screen title and subtitle based on the current [QuizMode].
 ///
@@ -40,7 +41,7 @@ class ModeConfigurationHeader extends StatelessWidget {
             // ─── Back Button + Mode Badge ───
             Row(
               children: [
-                _buildBackButton(context),
+                const SharedBackButton(),
                 const SizedBox(width: 12),
                 _buildModeBadge(),
               ],
@@ -94,24 +95,6 @@ class ModeConfigurationHeader extends StatelessWidget {
   }
 
   // ──────────── Subwidgets ────────────
-
-  Widget _buildBackButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pop(context),
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white.withAlpha(25),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: const Icon(
-          Icons.arrow_back_rounded,
-          color: Colors.white,
-          size: 20,
-        ),
-      ),
-    );
-  }
 
   Widget _buildModeBadge() {
     final badgeColor = ManageQuestionsUiUtils.getBadgeColor(mode);

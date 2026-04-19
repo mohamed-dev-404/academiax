@@ -27,7 +27,7 @@ class GradeSubmissionMobileLayout extends StatelessWidget {
 
           return Scaffold(
             body: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
               itemCount: questions.length,
               separatorBuilder: (_, _) => const SizedBox(height: 16),
               itemBuilder: (context, index) {

@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/quizzes/presentation/view/widgets/safe_pop_function.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/shared_back_button.dart';
 
 class HeaderSection extends StatelessWidget {
   final bool isEditMode;
@@ -25,38 +25,32 @@ class HeaderSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          isMobile
-              ? const SizedBox.shrink()
-              : Column(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        safePop(context: context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new,
-                        color: AppColors.whiteLight,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                ),
-
           // * ──────────────────── Badge for mode ────────────────────
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.whiteLight.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              isEditMode ? 'MODIFICATION MODE' : 'NEW QUIZ',
-              style: AppStyles.mobileBodyXsmallRg.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.1,
+          Row(
+            children: [
+              const SharedBackButton(),
+
+              const Gap(12),
+
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.whiteLight.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  isEditMode ? 'MODIFICATION MODE' : 'NEW QUIZ',
+                  style: AppStyles.mobileBodyXsmallRg.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.1,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
 
           const Gap(16),

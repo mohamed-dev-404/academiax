@@ -7,6 +7,7 @@ import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_app/core/widgets/base/app_animated_loading_indicator.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/shared_back_button.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/submissions_cubit/submissions_cubit.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/submission_model.dart';
 import 'package:sams_app/features/quizzes/presentation/view/submissions_list/widgets/shared/submission_list_tile.dart';
@@ -49,6 +50,10 @@ class SubmissionsListWebLayout extends StatelessWidget {
                               fit: BoxFit.scaleDown,
                               child: Row(
                                 children: [
+                                  const SharedBackButton(
+                                    color: AppColors.primary,
+                                  ),
+
                                   Lottie.asset(
                                     AppLottie.quizSubmissions,
                                     width: 250,
@@ -68,7 +73,8 @@ class SubmissionsListWebLayout extends StatelessWidget {
 
                             BlocBuilder<SubmissionsCubit, SubmissionsState>(
                               builder: (context, state) {
-                                if (state is SubmissionsLoading || state is SubmissionsInitial) {
+                                if (state is SubmissionsLoading ||
+                                    state is SubmissionsInitial) {
                                   return const Padding(
                                     padding: EdgeInsets.only(top: 50.0),
                                     child: Center(
