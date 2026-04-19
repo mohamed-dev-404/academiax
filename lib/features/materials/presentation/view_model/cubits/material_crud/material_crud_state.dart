@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/features/materials/data/model/material_model.dart';
 
+//* Define operation types to avoid string matching
+enum MaterialOperationType { uploading, deleting, saving, general }
+
 //* Base state for Material CRUD operations.
 //* All Material states extend this class.
 @immutable
@@ -38,8 +41,9 @@ final class CreateMaterialFailure extends MaterialActionState {
 
 //? Emitted while performing the multi-step update sequence.
 final class UpdateMaterialLoading extends MaterialActionState {
-  final String message; // e.g., "Deleting...", "Saving info...", "Uploading..."
-  UpdateMaterialLoading(this.message);
+  final MaterialOperationType operationType;
+  final String message;
+  UpdateMaterialLoading(this.operationType, this.message);
 }
 
 //* Emitted when all updates (Delete, Text, Upload) complete successfully.
@@ -59,8 +63,9 @@ final class UpdateMaterialFailure extends MaterialActionState {
 
 //? Emitted while adding new files to an existing material.
 final class AddMaterialItemsLoading extends MaterialActionState {
+  final MaterialOperationType operationType;
   final String message;
-  AddMaterialItemsLoading(this.message);
+  AddMaterialItemsLoading(this.operationType, this.message);
 }
 
 //* Emitted when items added successfully.

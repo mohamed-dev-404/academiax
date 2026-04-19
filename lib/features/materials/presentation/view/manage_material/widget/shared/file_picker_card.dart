@@ -51,47 +51,60 @@ class FilePickerCard extends StatelessWidget {
             children: [
               SvgPicture.asset(iconPath),
               const SizedBox(height: 16),
-              Text(
-                title,
-                style: AppStyles.mobileLabelMediumRg.copyWith(
-                  color: AppColors.blackDarker,
-                ),
-              ),
+              _buildTitle(),
               const SizedBox(height: 12),
-              Text(
-                subTitle,
-                style: AppStyles.mobileLabelMediumRg.copyWith(
-                  color: AppColors.primaryDarkHover,
-                ),
-              ),
+              _buildSubTitle(),
+
               //? Only render the file list section if there is content to show.
               if (existingFiles.isNotEmpty || pickedFiles.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Column(
-                    children: [
-                      //* Rendering Remote Assets (files already on the server).
-                      ...existingFiles.map(
-                        (item) => _FileTile(
-                          name: item.originalFileName ?? 'Untitled',
-                          onRemove: () => onRemoveExisting(item),
-                          isExisting: true,
-                        ),
-                      ),
-                      //* Rendering Local Picked Files (files selected but not yet uploaded).
-                      ...pickedFiles.map(
-                        (file) => _FileTile(
-                          name: file.name,
-                          onRemove: () => onRemovePicked(file),
-                          isExisting: false,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                _buildFilesList(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return Text(
+      title,
+      style: AppStyles.mobileLabelMediumRg.copyWith(
+        color: AppColors.blackDarker,
+      ),
+    );
+  }
+
+  Widget _buildSubTitle() {
+    return Text(
+      subTitle,
+      style: AppStyles.mobileLabelMediumRg.copyWith(
+        color: AppColors.primaryDarkHover,
+      ),
+    );
+  }
+
+  Widget _buildFilesList() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        children: [
+          //* Rendering Remote Assets (files already on the server).
+          ...existingFiles.map(
+            (item) => _FileTile(
+              name: item.originalFileName ?? 'Untitled',
+              onRemove: () => onRemoveExisting(item),
+              isExisting: true,
+            ),
+          ),
+          //* Rendering Local Picked Files (files selected but not yet uploaded).
+          ...pickedFiles.map(
+            (file) => _FileTile(
+              name: file.name,
+              onRemove: () => onRemovePicked(file),
+              isExisting: false,
+            ),
+          ),
+        ],
       ),
     );
   }

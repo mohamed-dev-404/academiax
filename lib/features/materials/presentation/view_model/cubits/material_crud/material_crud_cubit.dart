@@ -66,7 +66,12 @@ class MaterialCrudCubit extends Cubit<MaterialCrudState>
     MaterialModel currentMaterial = initialMaterial!;
 
     //* PHASE 1: Update Material Metadata (Title & Description)
-    emit(UpdateMaterialLoading('Saving material info...'));
+    emit(
+      UpdateMaterialLoading(
+        MaterialOperationType.saving,
+        'Saving material info...',
+      ),
+    );
     final textUpdateResult = await materialsRepo.updateMaterial(
       materialId: materialId,
       request: UpdateMaterialRequest(title: title, description: description),
@@ -80,7 +85,12 @@ class MaterialCrudCubit extends Cubit<MaterialCrudState>
 
     //* PHASE 2: Handle Item Deletions
     if (keysToDelete.isNotEmpty) {
-      emit(UpdateMaterialLoading('Deleting selected files...'));
+      emit(
+        UpdateMaterialLoading(
+          MaterialOperationType.deleting,
+          'Deleting selected files...',
+        ),
+      );
       for (var key in keysToDelete) {
         final result = await materialsRepo.deleteMaterialItem(
           materialId: materialId,
@@ -96,7 +106,12 @@ class MaterialCrudCubit extends Cubit<MaterialCrudState>
 
     //* PHASE 3: Handle New File Uploads
     if (newFiles.isNotEmpty) {
-      emit(UpdateMaterialLoading('Uploading new files...'));
+      emit(
+        UpdateMaterialLoading(
+          MaterialOperationType.uploading,
+          'Uploading new files...',
+        ),
+      );
 
       final uploadResult = await materialsRepo.addItemsToMaterial(
         materialId: materialId,
@@ -156,7 +171,12 @@ class MaterialCrudCubit extends Cubit<MaterialCrudState>
   }) async {
     if (newFiles.isEmpty) return;
 
-    emit(AddMaterialItemsLoading('Uploading new files...'));
+    emit(
+      AddMaterialItemsLoading(
+        MaterialOperationType.uploading,
+        'Uploading new files...',
+      ),
+    );
 
     final uploadResult = await materialsRepo.addItemsToMaterial(
       materialId: materialId,
@@ -179,14 +199,19 @@ class MaterialCrudCubit extends Cubit<MaterialCrudState>
       },
     );
   }
- 
+
   //* Updates only Title and Description without touching files
   Future<void> updateMaterialMetadata({
     required String materialId,
     required String title,
     required String description,
   }) async {
-    emit(UpdateMaterialLoading('Saving material info...'));
+    emit(
+      UpdateMaterialLoading(
+        MaterialOperationType.saving,
+        'Saving material info...',
+      ),
+    );
 
     final result = await materialsRepo.updateMaterial(
       materialId: materialId,

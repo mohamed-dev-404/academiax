@@ -33,22 +33,17 @@ class CourseMaterialSectionState extends State<CourseMaterialSection> {
 
   /// Filters out unique keys for remote items that the user has decided to keep.
   List<String> get remainingExistingIds => [
-    ..._existingVideos.map((e) => e.key ?? ''),
-    ..._existingDocuments.map((e) => e.key ?? ''),
-  ].where((k) => k.isNotEmpty).toList();
+        ..._existingVideos.map((e) => e.key ?? ''),
+        ..._existingDocuments.map((e) => e.key ?? ''),
+      ].where((k) => k.isNotEmpty).toList();
 
   @override
   void initState() {
     super.initState();
     //? Distribute initial items into their respective categories based on file type.
     if (widget.initialItems != null) {
-      for (var item in widget.initialItems!) {
-        if (item.isVideoItem) {
-          _existingVideos.add(item);
-        } else {
-          _existingDocuments.add(item);
-        }
-      }
+      _existingVideos = widget.initialItems!.where((item) => item.isVideoItem).toList();
+      _existingDocuments = widget.initialItems!.where((item) => !item.isVideoItem).toList();
     }
   }
 
@@ -98,36 +93,42 @@ class CourseMaterialSectionState extends State<CourseMaterialSection> {
           const SizedBox(height: 20),
 
           //* Video Category Management
-          FilePickerCard(
-            iconPath: AppIcons.iconsVideo,
-            title: 'Material Videos',
-            subTitle: 'Upload MP4, MKV or AVI',
-            existingFiles: _existingVideos,
-            pickedFiles: _pickedVideos,
-            onTap: () => handleFileSelection(isVideo: true),
-            onRemovePicked: (file) =>
-                setState(() => _pickedVideos.remove(file)),
-            onRemoveExisting: (item) =>
-                setState(() => _existingVideos.remove(item)),
-          ),
+          _buildVideoCard(),
 
           const SizedBox(height: 16),
 
           //* Document Category Management
-          FilePickerCard(
-            iconPath: AppIcons.iconsPdf,
-            title: 'Material Documents',
-            subTitle: 'Upload PDF, PPTX or DOCX',
-            existingFiles: _existingDocuments,
-            pickedFiles: _pickedDocuments,
-            onTap: () => handleFileSelection(isVideo: false),
-            onRemovePicked: (file) =>
-                setState(() => _pickedDocuments.remove(file)),
-            onRemoveExisting: (item) =>
-                setState(() => _existingDocuments.remove(item)),
-          ),
+          _buildDocumentCard(),
         ],
       ),
+    );
+  }
+
+  /// Helper to build the Video picking card.
+  Widget _buildVideoCard() {
+    return FilePickerCard(
+      iconPath: AppIcons.iconsVideo,
+      title: 'Material Videos',
+      subTitle: 'Upload MP4, MKV or AVI',
+      existingFiles: _existingVideos,
+      pickedFiles: _pickedVideos,
+      onTap: () => handleFileSelection(isVideo: true),
+      onRemovePicked: (file) => setState(() => _pickedVideos.remove(file)),
+      onRemoveExisting: (item) => setState(() => _existingVideos.remove(item)),
+    );
+  }
+
+  /// Helper to build the Document picking card.
+  Widget _buildDocumentCard() {
+    return FilePickerCard(
+      iconPath: AppIcons.iconsPdf,
+      title: 'Material Documents',
+      subTitle: 'Upload PDF, PPTX or DOCX',
+      existingFiles: _existingDocuments,
+      pickedFiles: _pickedDocuments,
+      onTap: () => handleFileSelection(isVideo: false),
+      onRemovePicked: (file) => setState(() => _pickedDocuments.remove(file)),
+      onRemoveExisting: (item) => setState(() => _existingDocuments.remove(item)),
     );
   }
 }
