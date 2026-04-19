@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/quizzes/presentation/view/take_quiz/widgets/shared/back_to_quiz_tab_helper.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/safe_pop_function.dart';
 
 class HeaderSection extends StatelessWidget {
   final bool isEditMode;
@@ -31,7 +31,7 @@ class HeaderSection extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        backToQuizTab(context: context);
+                        safePop(context: context);
                       },
                       icon: const Icon(
                         Icons.arrow_back_ios_new,

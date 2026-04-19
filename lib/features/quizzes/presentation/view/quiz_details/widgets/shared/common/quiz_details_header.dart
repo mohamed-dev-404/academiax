@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_details/widgets/shared/instructor/delete_quiz_dialog.dart';
-import 'package:sams_app/features/quizzes/presentation/view/take_quiz/widgets/shared/back_to_quiz_tab_helper.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/safe_pop_function.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/quiz_details_cubit/quiz_details_cubit.dart';
 import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
@@ -49,7 +49,7 @@ class QuizDetailsHeader extends StatelessWidget {
               ? const SizedBox.shrink()
               : IconButton(
                   onPressed: () {
-                    backToQuizTab(context: context);
+                    safePop(context: context);
                   },
                   icon: const Icon(
                     Icons.arrow_back_ios_new,

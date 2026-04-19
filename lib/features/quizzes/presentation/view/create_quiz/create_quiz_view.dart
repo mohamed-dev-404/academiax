@@ -7,7 +7,7 @@ import 'package:sams_app/features/quizzes/presentation/view/create_quiz/widgets/
 import 'package:sams_app/features/quizzes/presentation/view_model/create_quiz_cubit/create_quiz_cubit.dart';
 
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/model/create_quiz_form_args.dart';
-import 'package:sams_app/features/quizzes/presentation/view/take_quiz/widgets/shared/back_to_quiz_tab_helper.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/safe_pop_function.dart';
 
 /// Adaptive shell for the Create Quiz flow.
 ///
@@ -22,7 +22,7 @@ class CreateQuizView extends StatelessWidget {
       listener: (context, state) {
         if (state is CreateQuizSuccess) {
           AppToast.success(context, state.message);
-          backToQuizTab(context: context);
+          safePop(context: context);
         } else if (state is CreateQuizFailure) {
           AppToast.error(context, state.message);
         }

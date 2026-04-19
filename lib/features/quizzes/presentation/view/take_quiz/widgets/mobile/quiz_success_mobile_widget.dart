@@ -4,7 +4,7 @@ import 'package:sams_app/core/utils/assets/app_lottie.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/core/widgets/base/custom_app_button.dart';
-import 'package:sams_app/features/quizzes/presentation/view/take_quiz/widgets/shared/back_to_quiz_tab_helper.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/safe_pop_function.dart';
 
 class QuizSuccessMobileWidget extends StatelessWidget {
   const QuizSuccessMobileWidget({super.key});
@@ -75,7 +75,7 @@ class QuizSuccessMobileWidget extends StatelessWidget {
                   CustomAppButton(
                     label: 'Finish',
                     backgroundColor: AppColors.primary,
-                    onPressed: () => backToQuizTab(context: context),
+                    onPressed: () => safePop(context: context),
                     borderRadius: 16,
                     height: 56,
                     textStyle: AppStyles.mobileBodyLargeSb.copyWith(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/quizzes/presentation/view/take_quiz/widgets/shared/back_to_quiz_tab_helper.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/safe_pop_function.dart';
 
 import 'dart:ui';
 import 'package:lottie/lottie.dart';
@@ -104,7 +104,7 @@ class QuizFailureMobileWidget extends StatelessWidget {
                       child: CustomAppButton(
                         label: 'Back',
                         backgroundColor: AppColors.primary,
-                        onPressed: () => backToQuizTab(context: context),
+                        onPressed: () => safePop(context: context),
                         borderRadius: 18,
                         height: 60,
                         textStyle: AppStyles.mobileBodyLargeSb.copyWith(

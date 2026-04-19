@@ -4,7 +4,7 @@ import 'package:sams_app/core/utils/assets/app_lottie.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/core/widgets/base/custom_app_button.dart';
-import 'package:sams_app/features/quizzes/presentation/view/take_quiz/widgets/shared/back_to_quiz_tab_helper.dart';
+import 'package:sams_app/features/quizzes/presentation/view/widgets/safe_pop_function.dart';
 
 class QuizSuccessWebWidget extends StatelessWidget {
   const QuizSuccessWebWidget({super.key});
@@ -75,7 +75,7 @@ class QuizSuccessWebWidget extends StatelessWidget {
                   const SizedBox(height: 40),
                   CustomAppButton(
                     label: 'Finish',
-                    onPressed: () => backToQuizTab(context: context),
+                    onPressed: () => safePop(context: context),
                     backgroundColor: AppColors.primary,
                     borderRadius: 20,
                     height: 64,
@@ -91,5 +91,4 @@ class QuizSuccessWebWidget extends StatelessWidget {
       ],
     );
   }
-
 }
