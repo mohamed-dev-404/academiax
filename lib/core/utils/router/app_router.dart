@@ -10,7 +10,7 @@ import 'package:sams_app/core/utils/services/service_locator.dart';
 import 'package:sams_app/core/widgets/shared/general_error_page.dart';
 import 'package:sams_app/features/Grades/presentation/view/grades_tab_view.dart';
 import 'package:sams_app/features/announcements/presentation/view/announcements_tab_view.dart';
-import 'package:sams_app/features/assignments/presentation/view/assignments_tab_view.dart';
+import 'package:sams_app/features/assignments/presentation/view/assiment_tap_view/assignments_tab_view.dart';
 // Repos & Cubits
 import 'package:sams_app/features/auth/data/repos/auth_repo.dart';
 import 'package:sams_app/features/auth/presentation/view_models/login_cubit/login_cubit.dart';
