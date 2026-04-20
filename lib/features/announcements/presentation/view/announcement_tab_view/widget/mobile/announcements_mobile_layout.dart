@@ -103,7 +103,16 @@ class AnnouncementsMobileLayout extends StatelessWidget {
                                 )
                               : null,
                           onActionTap: () {
-                            _showDeleteDialog(context, announcements[index].id);
+                           if (CurrentRole.role == UserRole.instructor) {
+                             _showDeleteDialog(context, announcements[index].id);
+                           }
+                           context.pushNamed(
+                             RoutesName.announcementDetails,
+                             pathParameters: {
+                               'courseId': courseId,
+                               'announcementId': announcements[index].id,
+                             },
+                           );
                           },
                           title: announcements[index].title,
                           description: announcements[index].content,
