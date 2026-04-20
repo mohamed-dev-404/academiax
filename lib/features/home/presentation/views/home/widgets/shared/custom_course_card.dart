@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/models/course_header_card_model.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
-import 'package:sams_app/core/utils/constants/api_keys.dart';
 import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/features/home/data/models/course_model.dart';
 import 'package:sams_app/features/home/presentation/views/home/widgets/shared/course_card_content.dart';
@@ -30,29 +29,14 @@ class CustomCourseCard extends StatelessWidget {
 
     return InkWell(
       //! nav to course details
-      onTap: () {
-        final courseId = course.id; //? ID from API
-
-        if (isMobile) {
-          context.push(
-            '${RoutesName.courses}/$courseId/${RoutesName.materials}',
-            extra: CourseHeaderCardModel(
-              title: course.name,
-              instructor: course.instructor,
-            ),
-          );
-        } else {
-          final path = Uri(
-            path: '${RoutesName.courses}/$courseId/${RoutesName.materials}',
-            queryParameters: {
-              ApiKeys.name: course.name,
-              ApiKeys.instructor: course.instructor,
-            },
-          ).toString();
-
-          context.go(path);
-        }
-      },
+      onTap: () => context.push(
+        RoutesName.courseDetails,
+        extra: CourseHeaderCardModel(
+          courseId: course.id.toString(),
+          title: course.name,
+          instructor: course.instructor,
+        ),
+      ),
       child: AspectRatio(
         aspectRatio: aspectRatio,
         child: Container(

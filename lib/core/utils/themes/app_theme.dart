@@ -37,7 +37,7 @@ class AppTheme {
       foregroundColor: AppColors.primaryDarkHover,
       centerTitle: true,
       elevation: 0,
-      iconTheme: IconThemeData(color: AppColors.primaryDark, size: 28.w),
+      iconTheme: const IconThemeData(color: AppColors.primaryDark, size: 28),
       titleTextStyle: AppStyles.mobileTitleLargeMd.copyWith(
         color: AppColors.primaryDark,
       ),

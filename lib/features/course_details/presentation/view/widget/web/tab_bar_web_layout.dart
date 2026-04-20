@@ -1,75 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sams_app/core/models/course_header_card_model.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
-import 'package:sams_app/core/utils/constants/api_keys.dart';
-import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/widgets/web/web_course_header_card.dart';
+import 'package:sams_app/features/course_details/presentation/view/widget/web/app_logo.dart';
 import 'package:sams_app/features/course_details/presentation/view/widget/web/custom_web_tab_bar.dart';
+import 'package:sams_app/features/course_details/presentation/view/widget/web/web_tab_body_view.dart';
 import 'package:sams_app/features/course_details/presentation/view_models/course_navigation/course_navigation_cubit.dart';
 
-//! tab_bar_web_layout.dart
+/// Web course details shell.
+///
+/// Scroll behaviour mirrors the mobile layout:
+///   • Tab bar stays in the AppBar — always visible.
+///   • Header card is the first sliver in NestedScrollView — scrolls away.
+///   • Tab body fills everything below via IndexedStack.
+///
+/// No GoRouter navigation on tab switch — driven by [CourseNavigationCubit].
 class TabBarWebLayout extends StatelessWidget {
-  const TabBarWebLayout({
-    super.key,
-    required this.child,
-    required this.courseId,
-    required this.headerModel,
-  });
+  const TabBarWebLayout({super.key, required this.tabs});
 
-  final Widget child;
-  final String courseId;
-  final CourseHeaderCardModel headerModel;
+  final List<Widget> tabs;
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<CourseNavigationCubit>();
-    final currentPath = GoRouterState.of(context).uri.path;
 
-    // Calculate which tab is active based on the URL
-    final currentIndex = cubit.visibleTabs.indexWhere(
-      (tab) => currentPath.contains(tab.path),
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.primary,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(20),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: CustomWebTabBar(
-              tabs: cubit.visibleTabs.map((e) => e.title).toList(),
-              currentIndex: currentIndex == -1 ? 0 : currentIndex,
-              onTap: (index) {
-                final targetPath = cubit.visibleTabs[index].path;
-                // Use Uri to safely encode spaces and special characters
-                final path = Uri(
-                  path: '${RoutesName.courses}/$courseId/$targetPath',
-                  queryParameters: {
-                    ApiKeys.name: headerModel.title,
-                    ApiKeys.instructor: headerModel.instructor,
-                  },
-                ).toString();
-
-                context.go(path);
-              },
+    return BlocBuilder<CourseNavigationCubit, int>(
+      builder: (context, currentIndex) {
+        return Scaffold(
+          // ! ── Sticky tab bar in AppBar ──────────────────────────────
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: AppColors.primary,
+            automaticallyImplyLeading: false,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(50),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: AppLogo(),
+                      ),
+                      const SizedBox(width: 16),
+                      CustomWebTabBar(
+                        tabs: cubit.visibleTabTitles,
+                        currentIndex: currentIndex,
+                        onTap: cubit.changeTab,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
-            child: WebCourseHeaderCard(cardModel: headerModel),
+
+          // ! ── Scrollable body ───────────────────────────────────────
+          body: NestedScrollView(
+            physics: const BouncingScrollPhysics(),
+            // * Header region — course header card scrolls away.
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(40, 40, 40, 20),
+                  child: WebCourseHeaderCard(cardModel: cubit.courseModel),
+                ),
+              ),
+            ],
+
+            // * Body region — tab content.
+            body: WebTabBodyView(
+              child: IndexedStack(
+                index: currentIndex,
+                children: tabs,
+              ),
+            ),
           ),
-          const SizedBox(height: 20),
-          Expanded(child: child), // Tab content changes here
-        ],
-      ),
+        );
+      },
     );
   }
 }

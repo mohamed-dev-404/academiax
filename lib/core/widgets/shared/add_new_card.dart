@@ -12,11 +12,13 @@ class AddNewCard extends StatelessWidget {
     this.isMobile = false,
     required this.title,
     required this.onTap,
+    this.hight,
   });
 
   final Function() onTap;
   final String title;
   final bool isMobile;
+  final double? hight;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class AddNewCard extends StatelessWidget {
               radius: Radius.circular(isMobile ? 15 : 20),
               child: Container(
                 width: double.infinity,
-                height: cardHeight,
+                height: hight ?? cardHeight,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   color: AppColors.primaryLightHover,

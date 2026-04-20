@@ -1,14 +1,14 @@
-  //! --- JSON KEYS (The names that Dio sends and receives) ---
+//! --- JSON KEYS (The names that Dio sends and receives) ---
 
 abstract class ApiKeys {
   ApiKeys._();
 
   //? --- Common Response & General Keys ---
   static const String data = 'data';
-  static const String message = 'message';  
+  static const String message = 'message';
   static const String id = '_id';
   static const String status = 'status';
-  static const String validationErrors = 'validationErrors'; 
+  static const String validationErrors = 'validationErrors';
   static const String name = 'name';
 
   //? User Model Keys
@@ -68,7 +68,49 @@ abstract class ApiKeys {
   static const String student = 'student';
   static const String confirmPassword = 'confirmPassword';
 
+  //? Quiz Model Keys
+  static const String text = 'text';
+  static const String questionType = 'questionType';
+  static const String timeLimit = 'timeLimit';
+  static const String options = 'options';
+  static const String isCorrect = 'isCorrect';
 
+  //? Quiz Model Keys
+  static const String title = 'title';
+  static const String description = 'description';
+  static const String startTime = 'startTime';
+  static const String endTime = 'endTime';
+  static const String totalTime = 'totalTime';
+  static const String totalScore = 'totalScore';
+  static const String numberOfQuestions = 'numberOfQuestions';
+  static const String isPublished = 'isPublished';
+
+  //? Submit Quiz Keys
+  static const String answers = 'answers';
+  static const String questionId = 'questionId';
+  static const String selectedOptionId = 'selectedOptionId';
+  static const String writtenAnswer = 'writtenAnswer';
+
+  //? all Submission Keys
+  static const String quizId = 'quizId';
+  static const String studentName = 'studentName';
+  static const String score = 'score';
+  static const String submittedAt = 'submittedAt';
+  static const String isGraded = 'isGraded';
+  static const String totalPoints = 'totalPoints';
+
+  //? Submission Details Keys
+  static const String earnedPoints = 'earnedPoints';
+
+  //? classwork item model Keys
+  static const String isVisible = 'isVisible';
+
+  //? create quiz request body model Keys
+  static const String duration = 'duration';
+  static const String classworkId = 'classworkId';
+
+  //? create question request body model Keys
+  static const String questions = 'questions';
 }
 
 //! --- API VALUES (Fixed values that the server expects inside the fields) ---
@@ -93,4 +135,11 @@ abstract class ApiValues {
   //? verify oyp actions
   static const String resetPassword = 'RESET_PASSWORD';
   static const String activateAccount = 'ACTIVATE_ACCOUNT';
+
+  //! Quiz
+
+  //? Question types
+  static const String written = 'WRITTEN';
+  static const String mcq = 'MCQ';
+  static const String trueFalse = 'TRUE_FALSE';
 }

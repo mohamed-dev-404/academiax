@@ -10,11 +10,11 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: model.width ?? double.infinity,
-      height: model.height ?? 50,
+      height: model.height ?? 56,
       child: ElevatedButton(
         onPressed: model.onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: model.backgroundColor ?? AppColors.secondaryHover,
+          backgroundColor: model.backgroundColor ?? AppColors.secondary,
         ),
         child: FittedBox(
           fit: BoxFit.scaleDown,
@@ -23,7 +23,7 @@ class AppButton extends StatelessWidget {
             style: AppStyles.mobileButtonMediumSb.copyWith(
               color: model.onPressed == null
                   ? AppColors.whiteDarker
-                  : (model.textColor ?? AppColors.primaryLight),
+                  : (model.textColor ?? AppColors.whiteLight),
             ),
           ),
         ),

@@ -92,6 +92,20 @@ abstract class AppValidators {
     if (isNullOrEmpty(value)) {
       return 'This field is required';
     } else if (!AppRegex.isNumeric(value!)) {
+      return 'Only integers are allowed in this field';
+    } else {
+      final num number = num.parse(value);
+      if (min != null && number < min) return 'Number must be at least $min';
+      if (max != null && number > max) return 'Number must be at most $max';
+    }
+    return null;
+  }
+
+  /// Validates a decimal input (int or double)
+  static String? validateDecimal(String? value, {num? min, num? max}) {
+    if (isNullOrEmpty(value)) {
+      return 'This field is required';
+    } else if (!AppRegex.isDecimal(value!)) {
       return 'Only numbers are allowed in this field';
     } else {
       final num number = num.parse(value);

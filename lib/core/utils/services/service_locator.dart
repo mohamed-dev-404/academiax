@@ -14,6 +14,8 @@ import 'package:sams_app/features/profile/data/repos/profile_repo.dart';
 import 'package:sams_app/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:sams_app/features/profile/data/services/image_processor.dart';
 import 'package:sams_app/features/profile/presentation/view_model/cubit/profile_cubit.dart';
+import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
+import 'package:sams_app/features/quizzes/data/repos/quiz_repository_impl.dart';
 
 final GetIt getIt = GetIt.instance;
 void setupServiceLocator() {
@@ -65,5 +67,12 @@ void setupServiceLocator() {
   //* register ProfileCubit
   getIt.registerFactory<ProfileCubit>(
     () => ProfileCubit(getIt<ProfileRepo>()),
+  );
+
+  //! Quizzes Feature
+
+  //* register QuizRepo
+  getIt.registerLazySingleton<QuizRepository>(
+    () => QuizRepositoryImpl(api: getIt<ApiConsumer>()),
   );
 }

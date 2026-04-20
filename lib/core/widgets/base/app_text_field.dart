@@ -13,6 +13,7 @@ class AppTextField extends StatelessWidget {
   final TextEditingController? controller;
   final TextFieldType textFieldType;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
 
   // Callbacks and interaction
   final ValueChanged<String>? onChanged;
@@ -33,6 +34,7 @@ class AppTextField extends StatelessWidget {
     required this.textFieldType,
     this.controller,
     this.prefixIcon,
+    this.suffixIcon,
     this.onChanged,
     this.onFieldSubmitted,
     this.focusNode,
@@ -74,12 +76,15 @@ class AppTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefixIcon,
-        hintStyle:   (SizeConfig.isMobile(context)
-                        ? AppStyles.mobileBodyXsmallRg
-                        : AppStyles.mobileLabelMediumRg)
-                    .copyWith(
-                      color: AppColors.whiteDarkHover,
-                    ),
+        suffixIcon: suffixIcon,
+
+        hintStyle:
+            (SizeConfig.isMobile(context)
+                    ? AppStyles.mobileBodyXsmallRg
+                    : AppStyles.mobileLabelMediumRg)
+                .copyWith(
+                  color: AppColors.whiteDarkHover,
+                ),
 
         // Ensures the hint text stays at the top when the field is tall
         alignLabelWithHint: true,
@@ -99,6 +104,8 @@ class AppTextField extends StatelessWidget {
             return AppValidators.validateAcademicEmail(value);
           case TextFieldType.numerical:
             return AppValidators.validateNumber(value);
+          case TextFieldType.decimal:
+            return AppValidators.validateDecimal(value);
           case TextFieldType.alphabetical:
             return AppValidators.validateName(value);
           case TextFieldType.normal:
@@ -119,6 +126,8 @@ class AppTextField extends StatelessWidget {
     switch (textFieldType) {
       case TextFieldType.numerical:
         return TextInputType.number;
+      case TextFieldType.decimal:
+        return const TextInputType.numberWithOptions(decimal: true);
       case TextFieldType.academicEmail:
         return TextInputType.emailAddress;
       default:

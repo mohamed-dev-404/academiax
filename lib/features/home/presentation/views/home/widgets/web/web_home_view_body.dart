@@ -15,11 +15,12 @@ class WebHomeViewBody extends StatelessWidget {
         // Displays the header
         const SliverToBoxAdapter(child: WebHomeHeader()),
         // Displays the course header
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+        const SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
           sliver: SliverToBoxAdapter(
             child: WebCourseHeaderCard(
               cardModel: CourseHeaderCardModel(
+                courseId: '',
                 description:
                     'Stay informed about important campus news, academic updates, and events.',
                 title: 'Courses',
@@ -38,7 +39,7 @@ class WebHomeViewBody extends StatelessWidget {
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         // Displays the grid of courses
         const CoursesSliverGrid(),
-       // spacing 
+        // spacing
         const SliverToBoxAdapter(child: SizedBox(height: 50)),
       ],
     );

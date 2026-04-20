@@ -19,11 +19,12 @@ class MobileHomeViewBody extends StatelessWidget {
         slivers: [
           // Displays the role-based 'NewCourseCard'
           const SliverPadding(padding: EdgeInsets.only(top: 20)),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: EdgeInsets.symmetric(vertical: 8),
               child: MobileCoursesHeaderCard(
                 cardModel: CourseHeaderCardModel(
+                  courseId: '',
                   description: 'Explore Your Courses',
                   title: 'Courses',
                 ),

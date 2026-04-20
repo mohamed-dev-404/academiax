@@ -43,6 +43,11 @@ abstract class AppRegex {
   static bool isNumeric(String input) {
     return RegExp(r'^\d+$').hasMatch(input);
   }
+
+  // Decimal Numbers (int or double)
+  static bool isDecimal(String input) {
+    return RegExp(r'^\d+(\.\d+)?$').hasMatch(input);
+  }
 }
 
 ///  Examples:
