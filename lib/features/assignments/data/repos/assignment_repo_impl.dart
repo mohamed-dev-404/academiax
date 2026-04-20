@@ -15,7 +15,7 @@ class AssignmentRepoImpl implements AssignmentRepo {
     required String courseId,
   }) async {
     try {
-      final response = await api.get(EndPoints.getAssignments(courseId));
+      final response = await api.get(EndPoints.getCourseAssignments(courseId));
 
       List<AssignmentModel> assignments =
           (response[ApiKeys.data] as List?)

@@ -4,6 +4,9 @@ import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/network/api_consumer.dart';
 import 'package:sams_app/core/network/dio_consumer.dart';
 import 'package:sams_app/core/utils/services/s3_upload_service.dart';
+import 'package:sams_app/features/assignments/data/repos/assignment_repo.dart';
+import 'package:sams_app/features/assignments/data/repos/assignment_repo_impl.dart';
+import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignment_fetch/assignment_fetch_cubit.dart';
 import 'package:sams_app/features/auth/data/repos/auth_repo.dart';
 import 'package:sams_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:sams_app/features/home/data/data_sources/home_local_data_sourse.dart';
@@ -66,4 +69,20 @@ void setupServiceLocator() {
   getIt.registerFactory<ProfileCubit>(
     () => ProfileCubit(getIt<ProfileRepo>()),
   );
+
+
+  //! Assignment Feature
+
+   //* register AssignmentRepo
+  getIt.registerLazySingleton<AssignmentRepo>(
+    () => AssignmentRepoImpl(
+      api: getIt<ApiConsumer>(),
+    ),
+  );
+
+   //* register AssignmentFetchCubit
+   getIt.registerFactory<AssignmentFetchCubit>(
+    () => AssignmentFetchCubit(getIt<AssignmentRepo>()),
+  );
+
 }
