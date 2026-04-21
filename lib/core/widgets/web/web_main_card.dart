@@ -25,7 +25,7 @@ class _WebMainCardState extends State<WebMainCard> {
       cursor: SystemMouseCursors.click,
       child: AnimatedScale(
         scale: _isHovered ? 1.03 : _scale, // Hover scale or Tap scale
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 150),
         curve: Curves.easeInOut,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 301, maxHeight: 240),
@@ -33,9 +33,6 @@ class _WebMainCardState extends State<WebMainCard> {
             aspectRatio: 301 / 240,
             child: Container(
               decoration: BoxDecoration(
-                border: _isHovered
-                    ? Border.all(color: AppColors.secondary, width: 1.5)
-                    : null,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: _isHovered
                     ? [

@@ -1,7 +1,30 @@
 class RoutesName {
   RoutesName._();
 
-  //? Auth routes
+  //? home routes
+  static const String courses = '/courses';
+  static const String createCourse = '/createCourse';
+
+//? profile routes
+  static const String profile = '/profile';
+
+//? course details routes
+  static const String materials = 'materials';
+  static const String assignments = 'assignments';
+  static const String announcements = 'announcements';
+  static const String grades = 'grades';
+  static const String quizzes = 'quizzes';
+  static const String liveSessions = 'liveSessions';
+  static const String courseCode = 'courseCode';
+  static const String membersList = 'membersList';
+
+  //? announcement sub-routes
+  static const String announcementDetails = '/announcementDetails';
+  static const String addAnnouncement = '/addAnnouncement';
+
+
+  //?auth routes
+  //login
   static const String login = '/login';
   static const String signUp = '/signUp';
   static const String activateAccount = '/auth/activateAccount';
@@ -9,10 +32,6 @@ class RoutesName {
   static const String verifyOtp = '/auth/verify-otp';
   static const String resetPassword = '/auth/reset-password';
 
-  //? Home & Profile routes
-  static const String courses = '/courses';
-  static const String createCourse = '/createCourse';
-  static const String profile = '/profile';
 
   //? Course details (tabs are widgets — NOT routes)
   static const String courseDetails = '/courseDetails';

@@ -5,7 +5,8 @@ import 'package:sams_app/core/models/course_header_card_model.dart';
 import 'package:sams_app/core/utils/services/service_locator.dart';
 import 'package:sams_app/core/widgets/shared/adaptive_layout.dart';
 import 'package:sams_app/features/Grades/presentation/view/grades_tab_view.dart';
-import 'package:sams_app/features/announcements/presentation/view/announcements_tab_view.dart';
+import 'package:sams_app/features/announcements/presentation/view/announcement_tab_view/announcements_tab_view.dart';
+import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcements_fetch/announcements_fetch_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignments_tab_view.dart';
 import 'package:sams_app/features/course_code/presentation/view/course_code_tab_view.dart';
 import 'package:sams_app/features/course_details/presentation/view/widget/mobile/tab_bar_mobile_layout.dart';
@@ -13,6 +14,8 @@ import 'package:sams_app/features/course_details/presentation/view/widget/web/ta
 import 'package:sams_app/features/course_details/presentation/view_models/course_navigation/course_navigation_cubit.dart';
 import 'package:sams_app/features/live_sessions/presentation/view/live_sessions_tab_view.dart';
 import 'package:sams_app/features/materials/presentation/view/material_tab_view/materials_tab_view.dart';
+import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_cubit.dart';
+import 'package:sams_app/features/materials/presentation/view_model/cubits/material_fetch/material_fetch_cubit.dart';
 import 'package:sams_app/features/members_list/presentation/view/members_list_tab_view.dart';
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_tab/quizzes_tab_view.dart';
@@ -48,18 +51,45 @@ class CourseDetailsView extends StatelessWidget {
   /// from context to access courseModel / courseId if needed.
   List<Widget> _buildTabs(String courseId, CourseNavigationCubit cubit) {
     final allTabs = <String, Widget>{
-      'Materials': MaterialsTabView(courseId: courseId),
+      //* Materials
+      'Materials': MultiBlocProvider(
+        providers: [
+          //* 1. Fetch Cubit: Responsible for loading the list of materials.
+          //* Triggering the initial fetch immediately upon creation.
+          BlocProvider(
+            create: (context) =>
+                getIt<MaterialFetchCubit>()..fetchMaterials(courseId: courseId),
+          ),
+          //* 2. CRUD Cubit: Responsible for operations like adding or deleting materials.
+          BlocProvider(
+            create: (context) => getIt<MaterialCrudCubit>(),
+          ),
+        ],
+        child: MaterialsTabView(courseId: courseId),
+      ),
+
       'Assignments': AssignmentsTabView(courseId: courseId),
-      'Announcements': AnnouncementsTabView(courseId: courseId),
+       
+       //* Announcements 
+      'Announcements': BlocProvider(
+        create: (context) => getIt<AnnouncementsFetchCubit>()..fetchAnnouncements(courseId: courseId),
+        child: AnnouncementsTabView(courseId: courseId),
+      ),
+
       'Grades': GradesTabView(courseId: courseId),
+       
+       //* Quizzes 
       'Quizzes': BlocProvider(
         create: (_) =>
             GetAllQuizesCubit(getIt<QuizRepository>())
               ..getCourseQuizzes(courseId: courseId),
         child: QuizzesTabView(courseId: courseId),
       ),
+
       'Live Sessions': LiveSessionsTabView(courseId: courseId),
+
       'Course Code': CourseCodeTabView(courseId: courseId),
+
       'Members List': MembersListTabView(courseId: courseId),
     };
 

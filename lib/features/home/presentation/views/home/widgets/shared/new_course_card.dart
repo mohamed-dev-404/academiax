@@ -62,7 +62,7 @@ class NewCourseCard extends StatelessWidget {
     //! Role-based navigation: Instructors go to a new page, Students open a dialog
     final homeCubit = context.read<HomeCubit>();
     if (role == UserRole.instructor) {
-      context.pushNamed(RoutesName.createCourse, extra: homeCubit);
+      context.push(RoutesName.createCourse, extra: homeCubit);
     } else {
       showDialog(
         context: context,

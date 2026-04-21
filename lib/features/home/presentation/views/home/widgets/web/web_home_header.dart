@@ -52,7 +52,7 @@ class WebHomeHeader extends StatelessWidget {
               const SizedBox(width: 12),
               GestureDetector(
                 onTap: () {
-                  context.pushNamed(RoutesName.profile);
+                  context.push(RoutesName.profile);
                 },
                 child: (profilePicPath == null || profilePicPath.isEmpty)
                     ? SvgPicture.asset(

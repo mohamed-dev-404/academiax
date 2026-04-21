@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/models/course_header_card_model.dart';
-import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/utils/router/router_payload_cache.dart';
+import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/utils/services/service_locator.dart';
 import 'package:sams_app/core/widgets/shared/general_error_page.dart';
-
+import 'package:sams_app/features/announcements/presentation/view/announcement_actions/widget/mobile/add_announcement_mobile_view.dart';
+import 'package:sams_app/features/announcements/presentation/view/announcement_details/announcement_details_view.dart';
+import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcement_actions/announcement_actions_cubit.dart';
+import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcements_fetch/announcements_fetch_cubit.dart';
 // Auth
 import 'package:sams_app/features/auth/data/repos/auth_repo.dart';
 import 'package:sams_app/features/auth/presentation/view_models/login_cubit/login_cubit.dart';
@@ -19,7 +22,6 @@ import 'package:sams_app/features/auth/presentation/views/password_reset/reset_p
 import 'package:sams_app/features/auth/presentation/views/password_reset/verify_otp_view.dart';
 import 'package:sams_app/features/auth/presentation/views/sign_up/activate_account_view.dart';
 import 'package:sams_app/features/auth/presentation/views/sign_up/sign_up_view.dart';
-
 // Home & Profile
 import 'package:sams_app/features/course_details/presentation/view/course_details_view.dart';
 import 'package:sams_app/features/home/data/repos/home_repo.dart';
@@ -35,7 +37,6 @@ import 'package:sams_app/features/materials/presentation/view_model/cubits/mater
 import 'package:sams_app/features/profile/data/repos/profile_repo.dart';
 import 'package:sams_app/features/profile/presentation/view_model/cubit/profile_cubit.dart';
 import 'package:sams_app/features/profile/presentation/views/profile/profile_view.dart';
-
 // Quiz
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
 import 'package:sams_app/features/quizzes/presentation/view/create_quiz/create_quiz_view.dart';
@@ -369,6 +370,61 @@ class AppRouter {
               initialMaterial: initialMaterial,
             ),
             child: ManageMaterialView(courseId: courseId),
+          );
+        },
+      ),
+
+      // ─────────────────────────────────────────────────────────────────────
+      // ANNOUNCEMENT STANDALONE ROUTES
+      // ─────────────────────────────────────────────────────────────────────
+      GoRoute(
+        name: RoutesName.announcementDetails,
+        path: RoutesName.announcementDetails,
+        builder: (context, state) {
+           final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.announcementDetails,
+            state.extra,
+          );
+
+          if (extra == null) return _fallbackHome();
+
+          final announcementId = extra['announcementId'] as String? ?? '';
+         
+
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) =>
+                    getIt<AnnouncementsFetchCubit>()..fetchAnnouncementDetails(
+                      announcementId: announcementId,
+                    ),
+              ),
+              BlocProvider(
+                create: (context) => getIt<AnnouncementsActionsCubit>(),
+              ),
+            ],
+            child: AnnouncementDetailsView(announcementId: announcementId),
+          );
+        },
+      ),
+
+      GoRoute(
+        name: RoutesName.addAnnouncement,
+        path: RoutesName.addAnnouncement,
+        builder: (context, state) {
+           final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.addAnnouncement,
+            state.extra,
+          );
+
+          if (extra == null) return _fallbackHome();
+
+          final courseId = extra['courseId'] as String? ?? '';
+          
+
+          return BlocProvider(
+            create: (context) => getIt<AnnouncementsActionsCubit>(),
+            child: AddAnnouncementMobileView(courseId: courseId),
           );
         },
       ),

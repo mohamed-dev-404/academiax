@@ -1,4 +1,5 @@
 //! --- JSON KEYS (The names that Dio sends and receives) ---
+//! --- JSON KEYS (The names that Dio sends and receives) ---
 
 abstract class ApiKeys {
   ApiKeys._();
@@ -116,7 +117,11 @@ abstract class ApiKeys {
   static const String contentReference = 'contentReference';
   static const String filesMetadata = 'filesMetadata';
   static const String itemKey = 'itemKey';
-  static const String context = 'context';
+  static const String context = 'context';  //? --- Announcement Keys
+  static const String content = 'content';
+  static const String comments = 'comments';
+  static const String commentedAt = 'commentedAt';
+  static const String author = 'author';
 }
 
 //! --- API VALUES (Fixed values that the server expects inside the fields) ---

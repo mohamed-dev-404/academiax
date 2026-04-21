@@ -70,4 +70,29 @@ class EndPoints {
   static String deleteMaterialItem(String materialId) => 'instructor/materials/$materialId/items';
   static String addMaterialItems(String materialId) => 'instructor/materials/$materialId/items';
   static String updateMaterialData(String materialId) => 'instructor/materials/$materialId';
+
+
+
+  //? --- Announcements --- ;
+  static String getCourseAnnouncements(String courseId) => 'courses/$courseId/announcements';
+  static String getAnnouncementDetails(String announcementId) => 'announcements/$announcementId';
+
+  //* Instructor Announcement Operations
+  
+  /// Endpoint to create a new announcement for a specific course.
+  /// Needs [courseId] to be passed in the URL.
+  static String createAnnouncement(String courseId) => 'instructor/courses/$courseId/announcements';
+  /// Endpoint to update an existing announcement.
+  /// Needs [announcementId] to be passed in the URL.
+  static String updateAnnouncement(String announcementId) => 'instructor/announcements/$announcementId';
+  /// Endpoint to delete an existing announcement.
+  /// Needs [announcementId] to be passed in the URL.
+  static String deleteAnnouncement(String announcementId) => 'instructor/announcements/$announcementId';
+
+  //* --- Comments Operations --- ;
+
+  /// Endpoint to add a comment to a specific announcement.
+  static String addComment(String announcementId) => 'announcements/$announcementId/comments';
+  /// Endpoint to update or delete a specific comment.
+  static String commentById(String commentId) => 'comments/$commentId';
 }
