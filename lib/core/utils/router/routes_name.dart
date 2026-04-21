@@ -54,4 +54,8 @@ class RoutesName {
   //? Material routes
   static const String manageMaterial = '/manageMaterial';
   static const String materialDetails = '/materialDetails';
+
+   //? Assignment details (tabs are widgets — NOT routes)
+  static const String assignmentDetails = '/assignmentDetails';
+  static const String createAssignment = '/createAssignment';
 }

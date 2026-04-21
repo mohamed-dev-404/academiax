@@ -7,10 +7,6 @@ import 'package:sams_app/core/utils/router/router_payload_cache.dart';
 import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/utils/services/service_locator.dart';
 import 'package:sams_app/core/widgets/shared/general_error_page.dart';
-import 'package:sams_app/features/announcements/presentation/view/announcement_actions/widget/mobile/add_announcement_mobile_view.dart';
-import 'package:sams_app/features/announcements/presentation/view/announcement_details/announcement_details_view.dart';
-import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcement_actions/announcement_actions_cubit.dart';
-import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcements_fetch/announcements_fetch_cubit.dart';
 // Auth
 import 'package:sams_app/features/auth/data/repos/auth_repo.dart';
 import 'package:sams_app/features/auth/presentation/view_models/login_cubit/login_cubit.dart';
@@ -28,12 +24,6 @@ import 'package:sams_app/features/home/data/repos/home_repo.dart';
 import 'package:sams_app/features/home/presentation/view_models/cubit/home_cubit.dart';
 import 'package:sams_app/features/home/presentation/views/create_course/create_course_view.dart';
 import 'package:sams_app/features/home/presentation/views/home/home_view.dart';
-import 'package:sams_app/features/materials/data/model/material_model.dart';
-import 'package:sams_app/features/materials/data/repos/material_repo.dart';
-import 'package:sams_app/features/materials/presentation/view/manage_material/manage_material_view.dart';
-import 'package:sams_app/features/materials/presentation/view/material_details/material_details_view.dart';
-import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_cubit.dart';
-import 'package:sams_app/features/materials/presentation/view_model/cubits/material_fetch/material_fetch_cubit.dart';
 import 'package:sams_app/features/profile/data/repos/profile_repo.dart';
 import 'package:sams_app/features/profile/presentation/view_model/cubit/profile_cubit.dart';
 import 'package:sams_app/features/profile/presentation/views/profile/profile_view.dart';
@@ -54,7 +44,25 @@ import 'package:sams_app/features/quizzes/presentation/view_model/quiz_details_c
 import 'package:sams_app/features/quizzes/presentation/view_model/submissions_cubit/submissions_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/take_quiz_cubit/take_quiz_cubit.dart';
 
-//material
+// material
+import 'package:sams_app/features/materials/data/model/material_model.dart';
+import 'package:sams_app/features/materials/data/repos/material_repo.dart';
+import 'package:sams_app/features/materials/presentation/view/manage_material/manage_material_view.dart';
+import 'package:sams_app/features/materials/presentation/view/material_details/material_details_view.dart';
+import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_cubit.dart';
+import 'package:sams_app/features/materials/presentation/view_model/cubits/material_fetch/material_fetch_cubit.dart';
+
+// Assignments
+import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/assignment_details_view.dart';
+import 'package:sams_app/features/assignments/presentation/view/create_assignment_view/create_assignment_view.dart';
+
+// Announcements
+import 'package:sams_app/features/announcements/presentation/view/announcement_actions/widget/mobile/add_announcement_mobile_view.dart';
+import 'package:sams_app/features/announcements/presentation/view/announcement_details/announcement_details_view.dart';
+import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcement_actions/announcement_actions_cubit.dart';
+import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcements_fetch/announcements_fetch_cubit.dart';
+
+
 
 /// A robust cache system for GoRouter `extra` payloads.
 ///
@@ -375,13 +383,48 @@ class AppRouter {
       ),
 
       // ─────────────────────────────────────────────────────────────────────
+      // ASSIGNMENTS
+      // ─────────────────────────────────────────────────────────────────────
+      GoRoute(
+        name: RoutesName.createAssignment,
+        path: RoutesName.createAssignment,
+        builder: (context, state) {
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.createAssignment,
+            state.extra,
+          );
+          if (extra == null) return _fallbackHome();
+
+          return const CreateAssignmentView();
+        },
+      ),
+
+      GoRoute(
+        name: RoutesName.assignmentDetails,
+        path: RoutesName.assignmentDetails,
+        builder: (context, state) {
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.assignmentDetails,
+            state.extra,
+          );
+          if (extra == null) return _fallbackHome();
+
+          return AssignmentDetailsView(
+            assignmentId: extra['assignmentId'],
+            courseId: extra['courseId'],
+          );
+        },
+      ),
+
+
+      // ─────────────────────────────────────────────────────────────────────
       // ANNOUNCEMENT STANDALONE ROUTES
       // ─────────────────────────────────────────────────────────────────────
       GoRoute(
         name: RoutesName.announcementDetails,
         path: RoutesName.announcementDetails,
         builder: (context, state) {
-           final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
             RoutesName.announcementDetails,
             state.extra,
           );
@@ -389,7 +432,6 @@ class AppRouter {
           if (extra == null) return _fallbackHome();
 
           final announcementId = extra['announcementId'] as String? ?? '';
-         
 
           return MultiBlocProvider(
             providers: [
@@ -412,7 +454,7 @@ class AppRouter {
         name: RoutesName.addAnnouncement,
         path: RoutesName.addAnnouncement,
         builder: (context, state) {
-           final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
             RoutesName.addAnnouncement,
             state.extra,
           );
@@ -420,7 +462,6 @@ class AppRouter {
           if (extra == null) return _fallbackHome();
 
           final courseId = extra['courseId'] as String? ?? '';
-          
 
           return BlocProvider(
             create: (context) => getIt<AnnouncementsActionsCubit>(),
