@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sams_app/core/enums/text_field_type.dart';
 import 'package:sams_app/core/helper/app_snack_bar.dart';
+import 'package:sams_app/core/models/input_field_model.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/home/presentation/view_models/cubit/home_cubit.dart';
 import 'package:sams_app/features/home/presentation/view_models/cubit/home_state.dart';
@@ -75,12 +77,39 @@ class _WebCreateCourseViewBodyState extends State<WebCreateCourseViewBody>
                     children: [
                       //* Basic Information Section
                       Expanded(
-                        child: BasicInformationSection(
-                          totalController: totalGradeController,
-                          finalController: finalExamController,
-                          courseNameController: courseNameController,
-                          courseCodeController: courseCodeController,
+                        child: CustomBasicInformationSection(
+                          sectionTitle: 'Basic Information',
+                          fields: [
+                            InputFieldData(
+                              label: 'Course Name',
+                              hint: 'e.g. Web Development',
+                              controller: courseNameController,
+                            ),
+                            InputFieldData(
+                              label: 'Course Code',
+                              hint: 'e.g. CS101',
+                              controller: courseCodeController,
+                            ),
+                            InputFieldData(
+                              label: 'Total Grade',
+                              hint: 'e.g. 100',
+                              controller: totalGradeController,
+                              type: TextFieldType.numerical,
+                            ),
+                            InputFieldData(
+                              label: 'Final Exam',
+                              hint: 'e.g. 60',
+                              controller: finalExamController,
+                              type: TextFieldType.numerical,
+                            ),
+                          ],
                         ),
+                        //  BasicInformationSection(
+                        //   totalController: totalGradeController,
+                        //   finalController: finalExamController,
+                        //   courseNameController: courseNameController,
+                        //   courseCodeController: courseCodeController,
+                        // ),
                       ),
                       const SizedBox(width: 20),
                       Expanded(

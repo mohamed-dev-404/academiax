@@ -31,6 +31,7 @@ dependencies:
   audioplayers: ^6.6.0
   auto_size_text: ^3.0.0
   cached_network_image: ^3.4.1
+  chewie: ^1.13.0
   connectivity_plus: ^7.0.0
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
@@ -38,6 +39,7 @@ dependencies:
   dio: ^5.9.0
   dotted_border: ^2.1.0
   equatable: ^2.0.8
+  file_picker: ^10.3.10
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -66,7 +68,11 @@ dependencies:
   shared_preferences: ^2.5.4
   skeletonizer: ^2.1.2
   smooth_page_indicator: ^2.0.1
+  url_launcher: ^6.3.2
   uuid: ^4.5.3
+  video_player: ^2.11.1
+  webview_flutter: ^4.13.1
+  webview_flutter_plus: ^0.4.20
 
 dev_dependencies:
   flutter_lints: ^6.0.0

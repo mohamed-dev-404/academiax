@@ -13,7 +13,7 @@ class EndPoints {
   static String resendOTP = 'auth/resend-code';
   static const String logout = 'auth/logout';
 
-  //? --- Home  --- ;
+  //? --- Home/Courses  --- ;
   //* Instructor endpoints
   static const String createCourse = 'instructor/courses';
   static const String getMyCreatedCourses = 'instructor/courses/me';
@@ -60,4 +60,14 @@ class EndPoints {
   //* --- Classworks CRUD --- ;
   static String getAvailableClassworks(String courseId) => 'instructor/courses/$courseId/classworks';
   static String addNewClasswork(String courseId) => 'instructor/courses/$courseId/classworks';
+
+  //? --- Materials --- ;
+  static String getMaterials(String courseId) => 'courses/$courseId/materials';
+  static String materialDetails(String materialId) => 'materials/$materialId';
+  static String createMaterialUploadUrls(String courseId) => 'courses/$courseId/context/presigned-urls';
+  static String addMaterial(String courseId) => 'instructor/courses/$courseId/materials';
+  static String deleteMaterial(String materialId) => 'instructor/materials/$materialId';
+  static String deleteMaterialItem(String materialId) => 'instructor/materials/$materialId/items';
+  static String addMaterialItems(String materialId) => 'instructor/materials/$materialId/items';
+  static String updateMaterialData(String materialId) => 'instructor/materials/$materialId';
 }

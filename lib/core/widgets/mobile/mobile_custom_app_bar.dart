@@ -11,11 +11,12 @@ class MobileCustomAppBar extends StatelessWidget
     super.key,
     required this.title,
      this.titleStyle,
-     this.arrowBackColor,
+     this.arrowBackColor, this.onTap,
   });
   final String title;
   final TextStyle? titleStyle;
   final Color? arrowBackColor;
+  final VoidCallback? onTap;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -29,7 +30,7 @@ class MobileCustomAppBar extends StatelessWidget
           color: AppColors.primaryDarkHover,
         ),),
       leading: IconButton(
-        onPressed: () => context.pop(),
+        onPressed: onTap ?? () => context.pop(),
         icon: GeneralArrowBack(color: arrowBackColor ?? AppColors.primaryDarkHover),
       ),
     );

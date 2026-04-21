@@ -12,7 +12,7 @@ import 'package:sams_app/features/course_details/presentation/view/widget/mobile
 import 'package:sams_app/features/course_details/presentation/view/widget/web/tab_bar_web_layout.dart';
 import 'package:sams_app/features/course_details/presentation/view_models/course_navigation/course_navigation_cubit.dart';
 import 'package:sams_app/features/live_sessions/presentation/view/live_sessions_tab_view.dart';
-import 'package:sams_app/features/materials/presentation/view/materials_tab_view.dart';
+import 'package:sams_app/features/materials/presentation/view/material_tab_view/materials_tab_view.dart';
 import 'package:sams_app/features/members_list/presentation/view/members_list_tab_view.dart';
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_tab/quizzes_tab_view.dart';

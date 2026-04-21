@@ -10,6 +10,8 @@ abstract class ApiKeys {
   static const String status = 'status';
   static const String validationErrors = 'validationErrors';
   static const String name = 'name';
+  static const String title = 'title';
+  static const String description = 'description';
 
   //? User Model Keys
   static const String academicEmail = 'academicEmail';
@@ -76,8 +78,6 @@ abstract class ApiKeys {
   static const String isCorrect = 'isCorrect';
 
   //? Quiz Model Keys
-  static const String title = 'title';
-  static const String description = 'description';
   static const String startTime = 'startTime';
   static const String endTime = 'endTime';
   static const String totalTime = 'totalTime';
@@ -110,7 +110,13 @@ abstract class ApiKeys {
   static const String classworkId = 'classworkId';
 
   //? create question request body model Keys
-  static const String questions = 'questions';
+  static const String questions = 'questions';  //? --- Material Keys ---
+  static const String materialItems = 'materialItems';
+  static const String displayUrl = 'displayUrl';
+  static const String contentReference = 'contentReference';
+  static const String filesMetadata = 'filesMetadata';
+  static const String itemKey = 'itemKey';
+  static const String context = 'context';
 }
 
 //! --- API VALUES (Fixed values that the server expects inside the fields) ---

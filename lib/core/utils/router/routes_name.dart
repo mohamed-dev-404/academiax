@@ -31,4 +31,8 @@ class RoutesName {
   static const String takeQuiz = '/takeQuiz';
   static const String submissionsList = '/submissionsList';
   static const String gradeSubmission = '/gradeSubmission';
+
+  //? Material routes
+  static const String manageMaterial = '/manageMaterial';
+  static const String materialDetails = '/materialDetails';
 }

@@ -1,49 +1,67 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sams_app/core/errors/exceptions/api_exception.dart';
 import 'package:sams_app/core/errors/models/error_model.dart';
 import 'package:sams_app/core/utils/constants/api_keys.dart';
+import 'package:sams_app/core/utils/constants/app_constants.dart';
 
 //* Uploads a file directly to S3 using a presigned URL
 class S3UploadService {
   final Dio _dio = Dio();
 
-  //? PUT request to S3 — streams file bytes with content-type header
-  //? Web platform skips Content-Length header due to browser restrictions
   Future<void> uploadFile({
     required String url,
-    required Uint8List fileBytes,
-    required String fileName,
+    Uint8List? fileBytes,
+    XFile? xFile,
+    required String? fileName,
     required String contentType,
-    Duration timeout = const Duration(seconds: 120),
+    Duration timeout = AppConstants.s3SendTimeout,
+    Duration receiveTimeout = AppConstants.s3ReceiveTimeout,
     CancelToken? cancelToken,
   }) async {
     try {
+      dynamic uploadData;
+      int fileSize = 0;
+
+      if (xFile != null) {
+        fileSize = await xFile.length();
+        if (kIsWeb) {
+          uploadData = await xFile.readAsBytes();
+        } else {
+          uploadData = File(xFile.path).openRead();
+        }
+      } else if (fileBytes != null) {
+        fileSize = fileBytes.length;
+        uploadData = kIsWeb ? fileBytes : Stream.fromIterable([fileBytes]);
+      } else {
+        throw Exception('You must provide either fileBytes or xFile');
+      }
+
+      ///* Set headers
       final Map<String, dynamic> headers = {
         ApiKeys.contentTypeHeader: contentType,
+        ApiKeys.contentLengthHeader: fileSize.toString(),
       };
-
-      // Content-Length not supported on web
-      if (!kIsWeb) {
-        headers[ApiKeys.contentLengthHeader] = fileBytes.length.toString();
-      }
 
       await _dio.put(
         url,
-        data: kIsWeb ? fileBytes : Stream.fromIterable([fileBytes]),
+        data: uploadData,
+        cancelToken: cancelToken,
         options: Options(
           headers: headers,
           sendTimeout: timeout,
-          receiveTimeout: const Duration(seconds: 60),
-          responseType: kIsWeb ? ResponseType.plain : ResponseType.json,
+          receiveTimeout: receiveTimeout,
+          responseType: ResponseType.plain,
         ),
         onSendProgress: (count, total) {
-          if (total > 0) {
-            if (kDebugMode) {
-              print(
-                '🚀 Uploading to S3: ${(count / total * 100).toStringAsFixed(2)}%',
-              );
-            }
+          final actualTotal = total > 0 ? total : fileSize;
+          if (kDebugMode) {
+            print(
+              '🚀 S3 Upload: ${(count / actualTotal * 100).toStringAsFixed(2)}%',
+            );
           }
         },
       );
@@ -88,7 +106,7 @@ class S3UploadService {
   // Map HTTP status codes to readable messages
   String _mapS3StatusToMessage(int? statusCode) {
     return switch (statusCode) {
-      403 => 'Access denied. Please re-select the image.',
+      403 => 'Access denied. Please re-select the file.',
       413 => 'Image is too large. Please choose a smaller file.',
       _ => 'Service unavailable (Error: $statusCode).',
     };

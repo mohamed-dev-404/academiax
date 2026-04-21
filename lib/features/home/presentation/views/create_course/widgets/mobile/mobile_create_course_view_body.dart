@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sams_app/core/enums/text_field_type.dart';
 import 'package:sams_app/core/helper/app_snack_bar.dart';
+import 'package:sams_app/core/models/input_field_model.dart';
 import 'package:sams_app/features/home/presentation/view_models/cubit/home_cubit.dart';
 import 'package:sams_app/features/home/presentation/view_models/cubit/home_state.dart';
 import 'package:sams_app/features/home/presentation/logic/mixin_create_course.dart';
@@ -52,19 +54,46 @@ class _MobileCreateCourseViewBodyState extends State<MobileCreateCourseViewBody>
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Form(
             key: formKey,
-           // autovalidateMode: AutovalidateMode.onUserInteraction,
+            // autovalidateMode: AutovalidateMode.onUserInteraction,
             child: CustomScrollView(
               //? CustomScrollView is used to ensure the form remains accessible even when the keyboard is visible or fields are dynamically added.
               slivers: [
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
                 SliverToBoxAdapter(
                   //? Displays the basic information section
-                  child: BasicInformationSection(
-                    totalController: totalGradeController,
-                    finalController: finalExamController,
-                    courseNameController: courseNameController,
-                    courseCodeController: courseCodeController,
+                  child: CustomBasicInformationSection(
+                    sectionTitle: 'Basic Information',
+                    fields: [
+                      InputFieldData(
+                        label: 'Course Name',
+                        hint: 'e.g. Web Development',
+                        controller: courseNameController,
+                      ),
+                      InputFieldData(
+                        label: 'Course Code',
+                        hint: 'e.g. CS101',
+                        controller: courseCodeController,
+                      ),
+                      InputFieldData(
+                        label: 'Total Grade',
+                        hint: 'e.g. 100',
+                        controller: totalGradeController,
+                        type: TextFieldType.numerical,
+                      ),
+                      InputFieldData(
+                        label: 'Final Exam',
+                        hint: 'e.g. 60',
+                        controller: finalExamController,
+                        type: TextFieldType.numerical,
+                      ),
+                    ],
                   ),
+                  // BasicInformationSection(
+                  //   totalController: totalGradeController,
+                  //   finalController: finalExamController,
+                  //   courseNameController: courseNameController,
+                  //   courseCodeController: courseCodeController,
+                  // ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
                 SliverToBoxAdapter(

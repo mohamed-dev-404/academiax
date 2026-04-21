@@ -30,4 +30,7 @@ class AppIcons {
   static const String iconsTextFieldError = 'assets/icons/text_field_error_icon.svg';
   static const String iconsHomeProfileHeader ='assets/icons/home_profile_header.svg';
   static const String iconsHomeNotificationHeader ='assets/icons/home_notification_header.svg';
+  static const String iconsPdf ='assets/icons/pdf_icon.svg';
+  static const String iconsVideo ='assets/icons/video_icon.svg';
+
 }

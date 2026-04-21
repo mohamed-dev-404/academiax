@@ -26,6 +26,12 @@ import 'package:sams_app/features/home/data/repos/home_repo.dart';
 import 'package:sams_app/features/home/presentation/view_models/cubit/home_cubit.dart';
 import 'package:sams_app/features/home/presentation/views/create_course/create_course_view.dart';
 import 'package:sams_app/features/home/presentation/views/home/home_view.dart';
+import 'package:sams_app/features/materials/data/model/material_model.dart';
+import 'package:sams_app/features/materials/data/repos/material_repo.dart';
+import 'package:sams_app/features/materials/presentation/view/manage_material/manage_material_view.dart';
+import 'package:sams_app/features/materials/presentation/view/material_details/material_details_view.dart';
+import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_cubit.dart';
+import 'package:sams_app/features/materials/presentation/view_model/cubits/material_fetch/material_fetch_cubit.dart';
 import 'package:sams_app/features/profile/data/repos/profile_repo.dart';
 import 'package:sams_app/features/profile/presentation/view_model/cubit/profile_cubit.dart';
 import 'package:sams_app/features/profile/presentation/views/profile/profile_view.dart';
@@ -46,6 +52,8 @@ import 'package:sams_app/features/quizzes/presentation/view_model/manage_quiz_cu
 import 'package:sams_app/features/quizzes/presentation/view_model/quiz_details_cubit/quiz_details_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/submissions_cubit/submissions_cubit.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/take_quiz_cubit/take_quiz_cubit.dart';
+
+//material
 
 /// A robust cache system for GoRouter `extra` payloads.
 ///
@@ -239,8 +247,7 @@ class AppRouter {
           if (args == null) return _fallbackHome();
 
           return BlocProvider(
-            create: (_) =>
-                ManageQuizCubit(getIt<QuizRepository>())..init(args),
+            create: (_) => ManageQuizCubit(getIt<QuizRepository>())..init(args),
             child: ManageQuestionsView(args: args),
           );
         },
@@ -302,6 +309,66 @@ class AppRouter {
                 GradingCubit(getIt<QuizRepository>())
                   ..loadSubmissionDetails(submissionId),
             child: const GradeSubmissionView(),
+          );
+        },
+      ),
+
+      // ─────────────────────────────────────────────────────────────────────
+      // MATERIAL STANDALONE ROUTES
+      // ─────────────────────────────────────────────────────────────────────
+      GoRoute(
+        name: RoutesName.materialDetails,
+        path: RoutesName.materialDetails,
+        builder: (context, state) {
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.materialDetails,
+            state.extra,
+          );
+
+          if (extra == null) return _fallbackHome();
+
+          final materialId = extra['materialId'] as String? ?? '';
+          final courseId = extra['courseId'] as String? ?? '';
+
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) =>
+                    getIt<MaterialFetchCubit>()
+                      ..fetchMaterialDetails(materialId: materialId),
+              ),
+              BlocProvider(
+                create: (_) => MaterialCrudCubit(getIt<MaterialRepo>()),
+              ),
+            ],
+            child: MaterialDetailsView(
+              materialId: materialId,
+              courseId: courseId,
+            ),
+          );
+        },
+      ),
+
+      GoRoute(
+        name: RoutesName.manageMaterial,
+        path: RoutesName.manageMaterial,
+        builder: (context, state) {
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.manageMaterial,
+            state.extra,
+          );
+
+          if (extra == null) return _fallbackHome();
+
+          final courseId = extra['courseId'] as String? ?? '';
+          final initialMaterial = extra['initialMaterial'] as MaterialModel?;
+
+          return BlocProvider(
+            create: (_) => MaterialCrudCubit(
+              getIt<MaterialRepo>(),
+              initialMaterial: initialMaterial,
+            ),
+            child: ManageMaterialView(courseId: courseId),
           );
         },
       ),
