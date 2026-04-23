@@ -9,4 +9,10 @@ abstract class AssignmentRepo {
   Future<Either<String, AssignmentModel>> fetchAssignmentDetails({
     required String assignmentId,
   });
+
+  Future<Either<String, Unit>> deleteAssignment({
+    required String assignmentId,
+  });
+
+
 }

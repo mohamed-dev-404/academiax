@@ -47,5 +47,19 @@ class AssignmentRepoImpl implements AssignmentRepo {
     }
   }
 
+  @override
+  Future<Either<String, Unit>> deleteAssignment({
+    required String assignmentId,
+  }) async {
+    try {
+      await api.delete(EndPoints.deleteAssignment(assignmentId));
+      return right(unit);
+    } on ApiException catch (e) {
+      return left(e.errorModel.errorMessage);
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
+
   
 }
