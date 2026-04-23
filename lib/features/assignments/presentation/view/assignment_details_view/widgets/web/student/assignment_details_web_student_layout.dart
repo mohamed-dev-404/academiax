@@ -127,16 +127,17 @@ class AssignmentDetailsWebStudentLayout extends StatelessWidget {
         AssignmentStudentActionCard(
           assignment: assignment,
           onUploadPressed: () {
-            context.push(
-              RoutesName.createAssignment,
-              extra: {
-                'assignmentId': assignment.id,
-                'assignmentTitle': assignment.title,
-              },
-            );
+            // context.push(
+            //   RoutesName.createAssignment,
+            //   extra: {
+            //     'assignmentId': assignment.id,
+            //     'assignmentTitle': assignment.title,
+            //   },
+            // );
           },
         ),
       ],
     );
   }
+  
 }

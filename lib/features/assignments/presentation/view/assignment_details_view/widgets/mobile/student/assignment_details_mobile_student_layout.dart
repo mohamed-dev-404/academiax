@@ -2,7 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:sams_app/features/assignments/data/model/assignment_model.dart';
 import 'package:sams_app/features/assignments/data/model/helper/assignment_status_enum.dart';
-import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/mobile/student/work_submission_card.dart';
+import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/student/work_submission_card.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_details_header.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_attached_files_list.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_stats_row.dart';
