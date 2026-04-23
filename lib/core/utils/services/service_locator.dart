@@ -12,6 +12,7 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/an
 import 'package:sams_app/features/announcements/presentation/view_model/cubit/comment_actions/comment_actions_cubit.dart';
 import 'package:sams_app/features/assignments/data/repos/assignment_repo.dart';
 import 'package:sams_app/features/assignments/data/repos/assignment_repo_impl.dart';
+import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignment_details/assignment_details_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignment_fetch/assignment_fetch_cubit.dart';
 import 'package:sams_app/features/auth/data/repos/auth_repo.dart';
 import 'package:sams_app/features/auth/data/repos/auth_repo_impl.dart';
@@ -162,6 +163,11 @@ void setupServiceLocator() {
    //* register AssignmentFetchCubit
    getIt.registerFactory<AssignmentFetchCubit>(
     () => AssignmentFetchCubit(getIt<AssignmentRepo>()),
+  );
+
+  //* register AssignmentDetailsCubit
+  getIt.registerFactory<AssignmentDetailsCubit>(
+    () => AssignmentDetailsCubit(getIt<AssignmentRepo>()),
   );
 
 }
