@@ -1,15 +1,15 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/features/assignments/data/model/assignment_model.dart';
 import 'package:sams_app/features/assignments/data/model/helper/assignment_status_enum.dart';
+import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/mobile/student/work_submission_card.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_details_header.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_attached_files_list.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_stats_row.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/student/app_instructions_section.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/student/assignment_student_action_card.dart';
 
-class AssignmentDetailsMobileStudentLayout extends StatelessWidget {
+class AssignmentDetailsMobileStudentLayout extends StatefulWidget {
   final AssignmentModel assignment;
   final String courseId;
 
@@ -20,19 +20,26 @@ class AssignmentDetailsMobileStudentLayout extends StatelessWidget {
   });
 
   @override
+  State<AssignmentDetailsMobileStudentLayout> createState() =>
+      _AssignmentDetailsMobileStudentLayoutState();
+}
+
+class _AssignmentDetailsMobileStudentLayoutState
+    extends State<AssignmentDetailsMobileStudentLayout> {
+  List<PlatformFile> myPickedFiles = [];
+  @override
   Widget build(BuildContext context) {
-    
-    final bool isExpired = assignment.dueDate.isBefore(DateTime.now());
-    final bool isSubmitted = assignment.status == AssignmentStatus.handedIn;
+    final bool isExpired = widget.assignment.dueDate.isBefore(DateTime.now());
+    final bool isSubmitted =
+        widget.assignment.status == AssignmentStatus.handedIn;
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-        
             AssignmentDetailsHeader(
-              assignment: assignment,
-              courseId: courseId,
+              assignment: widget.assignment,
+              courseId: widget.courseId,
             ),
             const SizedBox(height: 8),
 
@@ -40,34 +47,31 @@ class AssignmentDetailsMobileStudentLayout extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  
                   if (!isExpired && !isSubmitted) ...[
-                   // DeadlineTimer(endTime: assignment.dueDate),
+                    // DeadlineTimer(endTime: assignment.dueDate),
                     const SizedBox(height: 24),
                   ],
 
-                  AssignmentStatsRow(assignment: assignment),
+                  AssignmentStatsRow(assignment: widget.assignment),
                   const SizedBox(height: 24),
 
-                   AssignmentItemsList(assignment: assignment),
+                  AssignmentItemsList(assignment: widget.assignment),
                   const SizedBox(height: 24),
 
                   AssignmentStudentActionCard(
-                    assignment: assignment,
+                    assignment: widget.assignment,
                     onUploadPressed: () {
-                      context.push(
-                        RoutesName.createAssignment,
-                        extra: {
-                          'assignmentId': assignment.id,
-                          'assignmentTitle': assignment.title,
-                        },
+                      _showWorkSubmissionSheet(
+                        context,
+                        widget.assignment,
+                        myPickedFiles,
                       );
                     },
                   ),
 
                   const SizedBox(height: 24),
 
-                  if (assignment.status != AssignmentStatus.missed) ...[
+                  if (widget.assignment.status != AssignmentStatus.missed) ...[
                     const AssignmentInstructionsSection(
                       title: 'Submission Guidelines',
                       instructions: [
@@ -86,6 +90,46 @@ class AssignmentDetailsMobileStudentLayout extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showWorkSubmissionSheet(
+    BuildContext context,
+    AssignmentModel assignment,
+    List<PlatformFile> myPickedFiles,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, 
+      backgroundColor:
+          Colors.transparent,
+      builder: (context) {
+        return SizedBox(
+          height:
+              MediaQuery.of(context).size.height * 0.5, 
+          child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setModalState) {
+              return WorkSubmissionCard(
+                status: assignment.status,
+                /// Pass selected files to child
+                pickedFiles: myPickedFiles,
+                /// Receive selected files from child
+                onFilesPicked: (newFiles) {
+                  // Add new files to list
+                  setState(() => myPickedFiles.addAll(newFiles));
+                  setModalState(() {});
+                },
+                /// Remove file
+                onRemoveFile: (index) {
+                  setState(() => myPickedFiles.removeAt(index));
+                  setModalState(() {});
+                },
+                onActionPressed: () {},
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
