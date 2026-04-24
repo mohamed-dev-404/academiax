@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/assignments/data/model/assignment_model.dart';
+import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/logic/assignment_details_handler.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_item_card.dart';
 
 /// [AssignmentContentGrid]
@@ -42,6 +43,7 @@ class AssignmentContentGrid extends StatelessWidget {
 
   Widget _buildResponsiveGrid(BuildContext context, List<dynamic> items) {
     return GridView.builder(
+     
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -55,16 +57,17 @@ class AssignmentContentGrid extends StatelessWidget {
         final item = items[index];
 
         return AssignmentItemCard(
+      
           fileName: item.originalFileName ?? 'Attachment ${index + 1}',
           description: '',
           icon: item.icon,
           iconColor: item.color,
-          onTap: () {
-            debugPrint('Opening attachment: ${item.displayUrl}');
-          },
-          onDelete: () {
-            debugPrint('Delete requested');
-          },
+         onTap: () => AssignmentDetailsHandler.openMaterialItem(context, item),
+          onDelete: () => AssignmentDetailsHandler.onDeleteItem(
+            context,
+            assignmentId: assignment.id,
+            item: item,
+          ),
         );
       },
     );

@@ -1,14 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/utils/assets/app_icons.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/materials/presentation/view/material_details/widget/shared/shine_overlay.dart';
 
-
 class AssignmentItemCard extends StatefulWidget {
-  final String fileName; 
+  final String fileName;
   final String? description;
   final IconData? icon;
   final Color? iconColor;
@@ -18,7 +18,7 @@ class AssignmentItemCard extends StatefulWidget {
   const AssignmentItemCard({
     super.key,
     required this.fileName,
-     this.description,
+    this.description,
     this.icon,
     this.iconColor,
     this.onTap,
@@ -63,7 +63,6 @@ class _AssignmentItemCardState extends State<AssignmentItemCard>
 
   @override
   Widget build(BuildContext context) {
-
     final Color finalIconColor = widget.iconColor ?? AppColors.primary;
 
     return MouseRegion(
@@ -105,7 +104,9 @@ class _AssignmentItemCardState extends State<AssignmentItemCard>
             _buildIcon(iconColor),
             const SizedBox(width: 12),
             _buildAssignmentDetails(),
-            _buildDeleteButton(),
+            (CurrentRole.role == UserRole.instructor)
+                ? _buildDeleteButton()
+                : const SizedBox.shrink(),
           ],
         ),
       ),
@@ -199,8 +200,7 @@ class _AssignmentItemCardState extends State<AssignmentItemCard>
       child: widget.icon != null
           ? Icon(widget.icon, size: 36, color: color)
           : SvgPicture.asset(
-              AppIcons
-                  .iconsPdfMaterials, 
+              AppIcons.iconsPdfMaterials,
               width: 40,
               height: 40,
               colorFilter: ColorFilter.mode(color, BlendMode.srcIn),

@@ -25,60 +25,77 @@ class AssignmentDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-     if (ModalRoute.of(context)?.isCurrent ?? false) {
-      context.read<AssignmentDetailsCubit>().fetchAssignmentDetails(assignmentId: assignmentId);
-    }
+    //  if (ModalRoute.of(context)?.isCurrent ?? false) {
+    //   context.read<AssignmentDetailsCubit>().fetchAssignmentDetails(assignmentId: assignmentId);
+    // }
     
 
-    return BlocConsumer<AssignmentDetailsCubit, AssignmentDetailsState>(
+    return BlocListener< AssignmentDetailsCubit, AssignmentDetailsState>(
       listener: (context, state) {
-        if (state is AssignmentActionSuccess) {
+        if (state is DeleteAssignmentSuccess) {
           AppToast.success(context, state.message);
           context.pop();
         }
-        if (state is AssignmentActionFailure) {
+        if (state is DeleteAssignmentFailure) {
+          AppToast.error(context, state.errMessage);
+        }
+        if (state is DeleteAssignmentItemSuccess) {
+          AppToast.success(context, state.message);
+          context.read<AssignmentDetailsCubit>().updateAssignmentStateLocally(
+            state.assignment,
+
+          );
+          context.pop();
+        }
+        if (state is DeleteAssignmentItemFailure) {
           AppToast.error(context, state.errMessage);
         }
       },
-      buildWhen: (previous, current) =>
-          current is AssignmentDetailsLoading ||
-          current is AssignmentDetailsSuccess ||
-          current is AssignmentDetailsFailure,
-      builder: (context, state) {
-        if (state is AssignmentDetailsLoading) {
-          return const Center(child: AppAnimatedLoadingIndicator());
-        }
-        if (state is AssignmentDetailsFailure) {
-          return Center(child: Text(state.errMessage));
-        }
-        if (state is AssignmentDetailsSuccess) {
-          final assignment = state.assignment;
-          return AdaptiveLayout(
-            // --- Mobile Layouts ---
-            mobileLayout: (context) => CurrentRole.role == UserRole.instructor
-                ? AssignmentDetailsMobileInstructorLayout(
-                    assignment: assignment,
-                    courseId: courseId,
-                  )
-                : AssignmentDetailsMobileStudentLayout(
-                    assignment: assignment,
-                    courseId: courseId,
-                  ),
-
-            // --- Web Layouts (Desktop/Tablet) ---
-            webLayout: (context) => CurrentRole.role == UserRole.instructor
-                ? AssignmentDetailsWebInstructorLayout(
-                    assignment: assignment,
-                    courseId: courseId,
-                  )
-                : AssignmentDetailsWebStudentLayout(
-                    assignment: assignment,
-                    courseId: courseId,
-                  ),
-          );
-        }
-        return Container();
-      },
+      child: BlocBuilder<AssignmentDetailsCubit, AssignmentDetailsState >(
+        
+        buildWhen: (previous, current) =>
+            current is AssignmentDetailsLoading ||
+            current is AssignmentDetailsSuccess ||
+            current is AssignmentDetailsFailure||
+            current is  DeleteAssignmentItemSuccess,
+        builder: (context, state) {
+          if (state is AssignmentDetailsLoading) {
+            return const Scaffold(body: Center(child: AppAnimatedLoadingIndicator()));
+          }
+          if (state is AssignmentDetailsFailure) {
+            return Center(child: Text(state.errMessage));
+          }
+          if (state is AssignmentDetailsSuccess|| state is  DeleteAssignmentItemSuccess) {
+            final assignment = (state as dynamic).assignment;
+      
+            return AdaptiveLayout(
+              // --- Mobile Layouts ---
+              mobileLayout: (context) => CurrentRole.role == UserRole.instructor
+                  ? AssignmentDetailsMobileInstructorLayout(
+                      assignment: assignment,
+                      courseId: courseId,
+                    )
+                  : AssignmentDetailsMobileStudentLayout(
+                      assignment: assignment,
+                      courseId: courseId,
+                    ),
+      
+              // --- Web Layouts (Desktop/Tablet) ---
+              webLayout: (context) => CurrentRole.role == UserRole.instructor
+                  ? AssignmentDetailsWebInstructorLayout(
+      
+                      assignment: assignment,
+                      courseId: courseId,
+                    )
+                  : AssignmentDetailsWebStudentLayout(
+                      assignment: assignment,
+                      courseId: courseId,
+                    ),
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 }
