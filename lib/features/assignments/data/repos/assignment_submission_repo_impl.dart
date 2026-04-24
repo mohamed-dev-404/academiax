@@ -15,23 +15,21 @@ class AssignmentSubmissionRepoImpl implements AssignmentSubmissionRepo {
 
   //? 1- Get all submissions
   @override
-  Future<Either<String, List<AllSubmissionsModel>>> getAllSubmissions({
+  Future<Either<String, AllSubmissionsModel>> getAllSubmissions({
     required String assignmentId,
     int page = 1,
     int size = 20,
   }) async {
     try {
-      final response = await api.get(
-        '${EndPoints.getSubmissions(assignmentId)}?size=$size&page=$page',
-      );
+       final response = await api.get(
+      '${EndPoints.getSubmissions(assignmentId)}?size=$size&page=$page',
+    );
 
-      List<AllSubmissionsModel> submissions =
-          (response[ApiKeys.data] as List?)
-              ?.map((e) => AllSubmissionsModel.fromJson(e))
-              .toList() ??
-          [];
+    final data = response[ApiKeys.data];
 
-      return right(submissions);
+    final result = AllSubmissionsModel.fromJson(data);
+
+      return right(result);
     } on ApiException catch (e) {
       return left(e.errorModel.errorMessage);
     } catch (e) {

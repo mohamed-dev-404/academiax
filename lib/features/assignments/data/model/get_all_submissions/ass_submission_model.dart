@@ -1,7 +1,8 @@
+import 'package:intl/intl.dart';
 import 'package:sams_app/core/utils/constants/api_keys.dart';
 import 'package:sams_app/features/assignments/data/model/get_all_submissions/student_info_model.dart';
 
-class SubmissionModel {
+class AssSubmissionModel {
   final String id;
   final StudentInfoModel studentInfo;
   final String submittedAt;
@@ -10,7 +11,7 @@ class SubmissionModel {
   final int points;
   final int earnedPoints;
 
-  SubmissionModel({
+  AssSubmissionModel({
     required this.id,
     required this.studentInfo,
     required this.submittedAt,
@@ -20,8 +21,8 @@ class SubmissionModel {
     required this.earnedPoints,
   });
 
-  factory SubmissionModel.fromJson(Map<String, dynamic> json) {
-    return SubmissionModel(
+  factory AssSubmissionModel.fromJson(Map<String, dynamic> json) {
+    return AssSubmissionModel(
       id: json[ApiKeys.id],
       studentInfo: StudentInfoModel.fromJson(json[ApiKeys.studentInfo]),
       submittedAt: json[ApiKeys.submittedAt],
@@ -30,5 +31,15 @@ class SubmissionModel {
       points: json[ApiKeys.points],
       earnedPoints: json[ApiKeys.earnedPoints],
     );
+  }
+  
+  String get formattedTime {
+    try {
+      final parsedDate =
+          DateFormat('M/d/yyyy, h:mm:ss a').parse(submittedAt);
+      return DateFormat('hh:mm a').format(parsedDate);
+    } catch (e) {
+      return submittedAt; // fallback لو حصل error
+    }
   }
 }

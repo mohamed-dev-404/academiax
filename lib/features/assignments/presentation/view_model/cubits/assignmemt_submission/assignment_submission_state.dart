@@ -15,7 +15,7 @@ final class AssignmentSubmissionInitial extends AssignmentSubmissionState {}
 final class SubmissionsLoading extends AssignmentSubmissionState {}
 
 final class SubmissionsSuccess extends AssignmentSubmissionState {
-  final List<AllSubmissionsModel> submissions;
+  final AllSubmissionsModel submissions;
 
   SubmissionsSuccess(this.submissions);
 }

@@ -1,11 +1,11 @@
 import 'package:sams_app/core/utils/constants/api_keys.dart';
+import 'package:sams_app/features/assignments/data/model/get_all_submissions/ass_submission_model.dart';
 import 'package:sams_app/features/assignments/data/model/get_all_submissions/pagination_model.dart';
 import 'package:sams_app/features/assignments/data/model/get_all_submissions/state_model.dart';
-import 'package:sams_app/features/quizzes/data/model/data_models/submission_model.dart';
 
 class AllSubmissionsModel {
   final StateModel stats;
-  final List<SubmissionModel> submissions;
+  final List<AssSubmissionModel> submissions;
   final PaginationModel pagination;
 
   AllSubmissionsModel({
@@ -16,9 +16,9 @@ class AllSubmissionsModel {
 
   factory AllSubmissionsModel.fromJson(Map<String, dynamic> json) {
     return AllSubmissionsModel(
-    stats: StateModel.fromJson(json[ApiKeys.stats]),
+      stats: StateModel.fromJson(json[ApiKeys.stats]),
       submissions: (json[ApiKeys.submissions] as List)
-          .map((e) => SubmissionModel.fromJson(e))
+          .map((e) => AssSubmissionModel.fromJson(e))
           .toList(),
       pagination: PaginationModel.fromJson(json[ApiKeys.pagination]),
     );

@@ -5,7 +5,7 @@ import 'package:sams_app/features/assignments/data/model/get_submission_details/
 import 'package:sams_app/features/assignments/data/model/grade_submission/grade_submission_request.dart';
 
 abstract class AssignmentSubmissionRepo {
-  Future<Either<String, List<AllSubmissionsModel>>> getAllSubmissions({
+  Future<Either<String, AllSubmissionsModel>> getAllSubmissions({
     required String assignmentId,
     int page = 1,
     int size = 20,
