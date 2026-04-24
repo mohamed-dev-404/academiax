@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:sams_app/features/assignments/data/model/assignment_model.dart';
 
 @immutable
-sealed class AssignmentDetailsState {}
+abstract class AssignmentDetailsState {}
 
 final class AssignmentDetailsInitial extends AssignmentDetailsState {}
 
-// --- Fetch Details Section ---
+// ==========================================================================
+//? --- 1. Fetch Details Section ---
+// ==========================================================================
+
 final class AssignmentDetailsLoading extends AssignmentDetailsState {}
 
 final class AssignmentDetailsSuccess extends AssignmentDetailsState {
@@ -19,24 +22,35 @@ final class AssignmentDetailsFailure extends AssignmentDetailsState {
   AssignmentDetailsFailure(this.errMessage);
 }
 
+// ==========================================================================
+//? --- 2. Action States Base (CRUD Operations) ---
+// ==========================================================================
 
 sealed class AssignmentActionState extends AssignmentDetailsState {}
 
+// --- Delete Single Item States ---
+final class DeleteAssignmentItemLoading extends AssignmentActionState {}
 
-final class AssignmentActionLoading extends AssignmentActionState {
+final class DeleteAssignmentItemSuccess extends AssignmentActionState {
+  final AssignmentModel assignment;
   final String message;
-  AssignmentActionLoading(this.message);
+  DeleteAssignmentItemSuccess({required this.assignment, required this.message});
 }
 
-final class AssignmentActionSuccess extends AssignmentActionState {
-  final AssignmentModel? assignment;
-  final String message;
-  AssignmentActionSuccess({this.assignment, required this.message});
-}
-
-
-final class AssignmentActionFailure extends AssignmentActionState {
+final class DeleteAssignmentItemFailure extends AssignmentActionState {
   final String errMessage;
-  AssignmentActionFailure(this.errMessage);
+  DeleteAssignmentItemFailure(this.errMessage);
 }
 
+// --- Delete Entire Assignment States ---
+final class DeleteAssignmentLoading extends AssignmentActionState {}
+
+final class DeleteAssignmentSuccess extends AssignmentActionState {
+  final String message;
+  DeleteAssignmentSuccess(this.message);
+}
+
+final class DeleteAssignmentFailure extends AssignmentActionState {
+  final String errMessage;
+  DeleteAssignmentFailure(this.errMessage);
+}
