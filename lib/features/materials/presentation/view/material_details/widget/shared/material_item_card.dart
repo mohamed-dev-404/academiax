@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/core/utils/assets/app_icons.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
@@ -123,7 +124,9 @@ class _MaterialItemCardState extends State<MaterialItemCard>
             _buildIcon(iconColor, iconPath),
             const SizedBox(width: 12),
             _buildFileDetails(),
-            _buildDeleteButton(),
+            (CurrentRole.role == UserRole.instructor)
+                ? _buildDeleteButton()
+                : const SizedBox.shrink(),
           ],
         ),
       ),
