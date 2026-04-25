@@ -160,7 +160,7 @@ class AssignmentRepoImpl implements AssignmentRepo {
     );
     //* Request upload URLs from the server
     final response = await api.post(
-      EndPoints.addAssignmentItems(courseId),
+      EndPoints.createAssignmentUploadUrls(courseId),
       data: {
         ApiKeys.context: 'assignments',
         ApiKeys.classworkId: classworkId,

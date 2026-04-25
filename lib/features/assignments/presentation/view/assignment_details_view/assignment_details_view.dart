@@ -39,7 +39,7 @@ class AssignmentDetailsView extends StatelessWidget {
         if (state is DeleteAssignmentFailure) {
           AppToast.error(context, state.errMessage);
         }
-        if (state is DeleteAssignmentItemSuccess) {
+        if (state is DeleteAssignmentItemSuccess ) {
           AppToast.success(context, state.message);
           context.read<AssignmentDetailsCubit>().updateAssignmentStateLocally(
             state.assignment,
@@ -48,6 +48,16 @@ class AssignmentDetailsView extends StatelessWidget {
           context.pop();
         }
         if (state is DeleteAssignmentItemFailure) {
+          AppToast.error(context, state.errMessage);
+        }
+        if (state is AddAssignmentItemsSuccess) {
+          AppToast.success(context, state.message);
+          context.read<AssignmentDetailsCubit>().updateAssignmentStateLocally(
+            state.assignment,
+          );
+          context.pop();
+        }
+        if (state is AddAssignmentItemsFailure) {
           AppToast.error(context, state.errMessage);
         }
       },

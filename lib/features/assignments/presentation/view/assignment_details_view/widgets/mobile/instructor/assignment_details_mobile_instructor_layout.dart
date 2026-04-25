@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/features/assignments/data/model/assignment_model.dart';
+import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/add_new_items_card.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_details_header.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_details_schedule_card.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/widgets/shared/common/assignment_attached_files_list.dart';
@@ -46,6 +47,9 @@ class AssignmentDetailsMobileInstructorLayout extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   AssignmentItemsList(assignment: assignment),
+                  const SizedBox(height: 24),
+                  
+                  AddNewItemsCard(assignment: assignment, courseId: courseId),
                   const SizedBox(height: 24),
 
                   AssignmentInstructorBanner(assignment: assignment),

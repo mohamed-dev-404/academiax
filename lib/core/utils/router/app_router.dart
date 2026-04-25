@@ -446,6 +446,7 @@ class AppRouter {
           return AssignmentSubmissionView(assignmentId: extra['assignmentId']);
         },
       ),
+
       GoRoute(
         name: RoutesName.studentProfile,
         path: RoutesName.studentProfile,
@@ -457,23 +458,6 @@ class AppRouter {
           if (extra == null) return _fallbackHome();
 
           return const AssignmentSubmissionDetailsView();
-        },
-      ),
-
-      GoRoute(
-        name: RoutesName.assignmentDetails,
-        path: RoutesName.assignmentDetails,
-        builder: (context, state) {
-          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
-            RoutesName.assignmentDetails,
-            state.extra,
-          );
-          if (extra == null) return _fallbackHome();
-
-          return AssignmentDetailsView(
-            assignmentId: extra['assignmentId'],
-            courseId: extra['courseId'],
-          );
         },
       ),
 

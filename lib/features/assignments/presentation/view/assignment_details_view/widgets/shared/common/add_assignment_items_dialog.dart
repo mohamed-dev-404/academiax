@@ -47,7 +47,7 @@ class _AddNewAssignmentItemsDialogState extends State<AddNewAssignmentItemsDialo
               ),
               const SizedBox(width: 8),
               Text(
-                'Add New Assignment Files',
+                'Add Assignment files',
                 style: isMobile
                     ? AppStyles.mobileTitleSmallSb
                     : AppStyles.mobileTitleMediumSb,
