@@ -71,7 +71,6 @@ class SubmissionsListMobileLayout extends StatelessWidget {
                     ),
                   );
                 }
-
                 int totalSubmitted = 0;
                 int totalMarked = 0;
                 int totalUnmarked = 0;

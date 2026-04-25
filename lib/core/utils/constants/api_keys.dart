@@ -130,6 +130,23 @@ abstract class ApiKeys {
   static const String assignmentItems = 'assignmentItems';
   static const String createdAt = 'createdAt';
   static const String submissionStatus = 'submissionStatus';
+
+
+  //? Assignment Submissions Keys
+  static const String stats = 'stats';
+  static const String submissions = 'submissions';
+  static const String approves='approved';
+  static const String rejected='rejected';
+
+  //? Stats Keys
+  static const String submitted = 'submitted';
+  static const String marked = 'marked';
+  static const String unmarked = 'unmarked';
+
+  //? Submission Keys
+  static const String studentInfo = 'studentInfo';
+  static const String submittedItems = 'submittedItems';
+  static const String neededReview = 'neededReview';
 }
 
 //! --- API VALUES (Fixed values that the server expects inside the fields) ---

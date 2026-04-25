@@ -37,16 +37,16 @@ class EndPoints {
   static String getCourseQuizzes(String courseId) => 'courses/$courseId/quizzes';
   static String getQuizDetails(String quizId) => 'quizzes/$quizId';
   static String getQuizQuestions(String quizId) => 'quizzes/$quizId/questions';
-  
+
   //* Student Flow
   static String submitQuiz(String quizId) => 'quizzes/$quizId/submit';
-  
+
   //* Instructor Flow - Quiz CRUD
   static String createQuiz(String courseId) => 'instructor/courses/$courseId/quizzes';
   static String updateQuiz(String quizId) => 'instructor/quizzes/$quizId';
   static String deleteQuiz(String quizId) => 'instructor/quizzes/$quizId';
   static String toggleQuizPublished(String quizId) => 'instructor/quizzes/$quizId/toggle-published';
-  
+
   //* Instructor Flow - Questions CRUD
   static String createQuestion(String quizId) => 'instructor/quizzes/$quizId/questions';
   static String updateQuestion(String questionId) => 'instructor/questions/$questionId';
@@ -64,43 +64,55 @@ class EndPoints {
   //? --- Materials --- ;
   static String getMaterials(String courseId) => 'courses/$courseId/materials';
   static String materialDetails(String materialId) => 'materials/$materialId';
-  static String createMaterialUploadUrls(String courseId) => 'courses/$courseId/context/presigned-urls';
-  static String addMaterial(String courseId) => 'instructor/courses/$courseId/materials';
-  static String deleteMaterial(String materialId) => 'instructor/materials/$materialId';
-  static String deleteMaterialItem(String materialId) => 'instructor/materials/$materialId/items';
-  static String addMaterialItems(String materialId) => 'instructor/materials/$materialId/items';
-  static String updateMaterialData(String materialId) => 'instructor/materials/$materialId';
-
-
+  static String createMaterialUploadUrls(String courseId) =>
+      'courses/$courseId/context/presigned-urls';
+  static String addMaterial(String courseId) =>'instructor/courses/$courseId/materials';
+  static String deleteMaterial(String materialId) =>
+      'instructor/materials/$materialId';
+  static String deleteMaterialItem(String materialId) =>
+      'instructor/materials/$materialId/items';
+  static String addMaterialItems(String materialId) =>
+      'instructor/materials/$materialId/items';
+  static String updateMaterialData(String materialId) =>
+      'instructor/materials/$materialId';
 
   //? --- Announcements --- ;
-  static String getCourseAnnouncements(String courseId) => 'courses/$courseId/announcements';
-  static String getAnnouncementDetails(String announcementId) => 'announcements/$announcementId';
+  static String getCourseAnnouncements(String courseId) =>
+      'courses/$courseId/announcements';
+  static String getAnnouncementDetails(String announcementId) =>
+      'announcements/$announcementId';
 
   //* Instructor Announcement Operations
-  
+
   /// Endpoint to create a new announcement for a specific course.
   /// Needs [courseId] to be passed in the URL.
-  static String createAnnouncement(String courseId) => 'instructor/courses/$courseId/announcements';
+  static String createAnnouncement(String courseId) =>
+      'instructor/courses/$courseId/announcements';
+
   /// Endpoint to update an existing announcement.
   /// Needs [announcementId] to be passed in the URL.
-  static String updateAnnouncement(String announcementId) => 'instructor/announcements/$announcementId';
+  static String updateAnnouncement(String announcementId) =>
+      'instructor/announcements/$announcementId';
+
   /// Endpoint to delete an existing announcement.
   /// Needs [announcementId] to be passed in the URL.
-  static String deleteAnnouncement(String announcementId) => 'instructor/announcements/$announcementId';
+  static String deleteAnnouncement(String announcementId) =>
+      'instructor/announcements/$announcementId';
 
   //* --- Comments Operations --- ;
 
   /// Endpoint to add a comment to a specific announcement.
-  static String addComment(String announcementId) => 'announcements/$announcementId/comments';
+  static String addComment(String announcementId) =>
+      'announcements/$announcementId/comments';
+
   /// Endpoint to update or delete a specific comment.
   static String commentById(String commentId) => 'comments/$commentId';
 
-
   //? --- Assignments --- ;
-  
+
   //* S3 Helpers
-  static String createAssignmentUploadUrls(String courseId) => 'courses/$courseId/context/presigned-urls';
+  static String createAssignmentUploadUrls(String courseId) =>
+      'courses/$courseId/context/presigned-urls';
 
   //* Management (Instructor)
   static String addAssignment(String courseId) => 'instructor/courses/$courseId/assignments';

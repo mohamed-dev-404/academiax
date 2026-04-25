@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
+import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/features/assignments/data/model/assignment_model.dart';
 import 'package:sams_app/features/assignments/data/model/helper/assignment_status_enum.dart';
@@ -46,11 +48,18 @@ class AssignmentActionsList extends StatelessWidget {
               subtitle: AssignmentActionUIHelper.getSubtitle(actionType),
               icon: AssignmentActionUIHelper.getIcon(actionType),
               onTap: () {
-                AssignmentNavigationHandler.execute(
-                  context: context,
-                  action: actionType,
-                  assignment: assignment,
-                  courseId: courseId,
+                // AssignmentNavigationHandler.execute(
+                //   context: context,
+                //   action: actionType,
+                //   assignment: assignment,
+                //   courseId: courseId,
+                // );
+                context.push(
+                  RoutesName.assignmentSubmission,
+                  extra: {
+                    'assignmentId': assignment.id,
+                    'courseId': courseId,
+                  },
                 );
               },
             ),
@@ -82,7 +91,6 @@ class AssignmentActionsList extends StatelessWidget {
     }
   }
 }
-
 
 class _OngoingSubmissionBanner extends StatelessWidget {
   const _OngoingSubmissionBanner();

@@ -17,6 +17,8 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/an
 import 'package:sams_app/features/assignments/data/repos/assignment_repo.dart';
 // Assignments
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/assignment_details_view.dart';
+import 'package:sams_app/features/assignments/presentation/view/assignment_submission/assignment_submission_view.dart';
+import 'package:sams_app/features/assignments/presentation/view/assignment_submission_details/assignment_submission_details_view.dart';
 import 'package:sams_app/features/assignments/presentation/view/create_assignment_view/create_assignment_view.dart';
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignment_details/assignment_details_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/create_assignment/create_assignment_cubit.dart';
@@ -426,6 +428,51 @@ class AppRouter {
               assignmentId: assignmentId,
               courseId: courseId,
             ),
+          );
+        },
+      ),
+
+
+       GoRoute(
+        name: RoutesName.assignmentSubmission,
+        path: RoutesName.assignmentSubmission,
+        builder: (context, state) {
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.assignmentSubmission,
+            state.extra,
+          );
+          if (extra == null) return _fallbackHome();
+
+          return AssignmentSubmissionView(assignmentId: extra['assignmentId']);
+        },
+      ),
+      GoRoute(
+        name: RoutesName.studentProfile,
+        path: RoutesName.studentProfile,
+        builder: (context, state) {
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.studentProfile,
+            state.extra,
+          );
+          if (extra == null) return _fallbackHome();
+
+          return const AssignmentSubmissionDetailsView();
+        },
+      ),
+
+      GoRoute(
+        name: RoutesName.assignmentDetails,
+        path: RoutesName.assignmentDetails,
+        builder: (context, state) {
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+            RoutesName.assignmentDetails,
+            state.extra,
+          );
+          if (extra == null) return _fallbackHome();
+
+          return AssignmentDetailsView(
+            assignmentId: extra['assignmentId'],
+            courseId: extra['courseId'],
           );
         },
       ),

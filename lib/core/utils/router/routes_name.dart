@@ -58,4 +58,6 @@ class RoutesName {
    //? Assignment details (tabs are widgets — NOT routes)
   static const String assignmentDetails = '/assignmentDetails';
   static const String createAssignment = '/createAssignment';
+  static const String assignmentSubmission = '/assignmentSubmission';
+  static const String studentProfile = '/studentProfile';
 }

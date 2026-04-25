@@ -12,6 +12,9 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/an
 import 'package:sams_app/features/announcements/presentation/view_model/cubit/comment_actions/comment_actions_cubit.dart';
 import 'package:sams_app/features/assignments/data/repos/assignment_repo.dart';
 import 'package:sams_app/features/assignments/data/repos/assignment_repo_impl.dart';
+import 'package:sams_app/features/assignments/data/repos/assignment_submission_reop.dart';
+import 'package:sams_app/features/assignments/data/repos/assignment_submission_repo_impl.dart';
+import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignmemt_submission/assignment_submission_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignment_details/assignment_details_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignment_fetch/assignment_fetch_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/create_assignment/create_assignment_cubit.dart';
@@ -176,5 +179,16 @@ void setupServiceLocator() {
       assignmentRepo: getIt<AssignmentRepo>(),
       quizRepo: getIt<QuizRepository>(),
     ),
+  );
+
+   getIt.registerLazySingleton<AssignmentSubmissionRepo>(
+    () => AssignmentSubmissionRepoImpl(
+      api: getIt<ApiConsumer>(),
+    ),
+  );
+
+  //* register AssignmentSubmissionFetchCubit
+  getIt.registerFactory<AssignmentSubmissionCubit>(
+    () => AssignmentSubmissionCubit(getIt<AssignmentSubmissionRepo>()),
   );
 }
