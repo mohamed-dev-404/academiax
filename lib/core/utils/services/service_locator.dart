@@ -163,6 +163,15 @@ void setupServiceLocator() {
     ),
   );
 
+
+  getIt.registerLazySingleton<AssignmentSubmissionRepo>(
+    () => AssignmentSubmissionRepoImpl(
+      api: getIt<ApiConsumer>(),
+      s3Service: getIt<S3UploadService>(),
+    ),
+  );
+
+
   //* register AssignmentFetchCubit
   getIt.registerFactory<AssignmentFetchCubit>(
     () => AssignmentFetchCubit(getIt<AssignmentRepo>()),
@@ -170,7 +179,9 @@ void setupServiceLocator() {
 
   //* register AssignmentDetailsCubit
   getIt.registerFactory<AssignmentDetailsCubit>(
-    () => AssignmentDetailsCubit(getIt<AssignmentRepo>()),
+    () => AssignmentDetailsCubit(
+      getIt<AssignmentRepo>(), getIt<AssignmentSubmissionRepo>(),
+    ),
   );
 
   //* register CreateAssignmentCubit
@@ -178,12 +189,6 @@ void setupServiceLocator() {
     () => CreateAssignmentCubit(
       assignmentRepo: getIt<AssignmentRepo>(),
       quizRepo: getIt<QuizRepository>(),
-    ),
-  );
-
-   getIt.registerLazySingleton<AssignmentSubmissionRepo>(
-    () => AssignmentSubmissionRepoImpl(
-      api: getIt<ApiConsumer>(),
     ),
   );
 

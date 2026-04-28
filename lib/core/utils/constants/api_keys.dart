@@ -147,6 +147,7 @@ abstract class ApiKeys {
   static const String studentInfo = 'studentInfo';
   static const String submittedItems = 'submittedItems';
   static const String neededReview = 'neededReview';
+  static const String submissionId = 'submissionId';
 }
 
 //! --- API VALUES (Fixed values that the server expects inside the fields) ---

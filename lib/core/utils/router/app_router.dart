@@ -20,6 +20,7 @@ import 'package:sams_app/features/assignments/presentation/view/assignment_detai
 import 'package:sams_app/features/assignments/presentation/view/assignment_submission/assignment_submission_view.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_submission_details/assignment_submission_details_view.dart';
 import 'package:sams_app/features/assignments/presentation/view/create_assignment_view/create_assignment_view.dart';
+import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignmemt_submission/assignment_submission_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignment_details/assignment_details_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/create_assignment/create_assignment_cubit.dart';
 // Auth
@@ -419,12 +420,19 @@ class AppRouter {
           final assignmentId = extra['assignmentId'] as String? ?? '';
           final courseId = extra['courseId'] as String? ?? '';
 
-          return BlocProvider(
-            create: (context) =>
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) =>
                 getIt<AssignmentDetailsCubit>()..fetchAssignmentDetails(
                   assignmentId: assignmentId,
                 ),
-            child: AssignmentDetailsView(
+              ),
+              BlocProvider(
+                create: (context) => getIt<AssignmentSubmissionCubit>(),
+              ),
+            ]
+            , child: AssignmentDetailsView(
               assignmentId: assignmentId,
               courseId: courseId,
             ),
