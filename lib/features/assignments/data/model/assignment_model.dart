@@ -17,6 +17,8 @@ class AssignmentModel {
   final int? plagiarismThreshold;
   final String classworkId;
   final List<AssignmentItemModel> assignmentItems;
+  final String? submissionId;
+  final List<AssignmentItemModel> submittedItems;
 
   const AssignmentModel({
     required this.id,
@@ -30,6 +32,8 @@ class AssignmentModel {
     this.plagiarismThreshold,
     required this.classworkId,
     required this.assignmentItems,
+    this.submissionId,
+    required this.submittedItems,
   });
 
   // --- Display Getters ---
@@ -75,6 +79,9 @@ class AssignmentModel {
       assignmentItems: (json[ApiKeys.assignmentItems] as List? ?? [])
           .map((e) => AssignmentItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      submissionId: json[ApiKeys.submissionId] as String?, submittedItems: (json[ApiKeys.submittedItems] as List? ?? [])
+          .map((e) => AssignmentItemModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 
@@ -91,5 +98,7 @@ class AssignmentModel {
     ApiKeys.plagiarismThreshold: plagiarismThreshold,
     ApiKeys.classworkId: classworkId,
     ApiKeys.assignmentItems: assignmentItems.map((e) => e.toJson()).toList(),
+    ApiKeys.submissionId: submissionId,
+    ApiKeys.submittedItems: submittedItems.map((e) => e.toJson()).toList(),
   };
 }

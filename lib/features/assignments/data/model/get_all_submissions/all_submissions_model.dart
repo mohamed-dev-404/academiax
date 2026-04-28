@@ -1,5 +1,5 @@
 import 'package:sams_app/core/utils/constants/api_keys.dart';
-import 'package:sams_app/features/assignments/data/model/get_all_submissions/ass_submission_model.dart';
+import 'package:sams_app/features/assignments/data/model/get_all_submissions/assignment_submission_model.dart';
 import 'package:sams_app/features/assignments/data/model/get_all_submissions/pagination_model.dart';
 import 'package:sams_app/features/assignments/data/model/get_all_submissions/state_model.dart';
 
