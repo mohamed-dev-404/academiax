@@ -181,7 +181,7 @@ class AssignmentRepoImpl implements AssignmentRepo {
     required String description,
     required String dueDate,
     required bool enablePlagiarismCheck,
-    required int plagiarismThreshold,
+     int? plagiarismThreshold,
     required List<XFile> selectedFiles,
   }) async {
     try {
@@ -213,7 +213,7 @@ class AssignmentRepoImpl implements AssignmentRepo {
         title: title,
         description: description,
         dueDate: dueDate,
-        plagiarismThreshold: plagiarismThreshold,
+        plagiarismThreshold: plagiarismThreshold ,
         classworkId: classworkId,
         metadata: metadataList,
         enablePlagiarism: enablePlagiarismCheck,
@@ -234,7 +234,7 @@ class AssignmentRepoImpl implements AssignmentRepo {
     required String title,
     required String description,
     required String dueDate,
-    required int plagiarismThreshold,
+     int? plagiarismThreshold,
     required String classworkId,
     required List<PresignedUrlModel> metadata,
     bool enablePlagiarism = false,

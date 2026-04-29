@@ -45,6 +45,7 @@ class PlagiarismSection extends StatelessWidget {
                 child: TitledInputField(
                   label: 'Plagiarism Threshold (%)',
                   child: AppTextField(
+                    validator: (value) => cubit.validatePlagiarismThreshold(value),
                     prefixIcon: const Icon(Icons.percent),
                     hintText: 'Enter value (e.g. 25)',
                     textFieldType: TextFieldType.numerical,

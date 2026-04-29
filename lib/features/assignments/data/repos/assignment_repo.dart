@@ -33,7 +33,7 @@ abstract class AssignmentRepo {
     required String description,
     required String classworkId,
     required bool enablePlagiarismCheck,
-    required int plagiarismThreshold,
+     int? plagiarismThreshold,
     required String dueDate,
     required List<XFile> selectedFiles,
   });

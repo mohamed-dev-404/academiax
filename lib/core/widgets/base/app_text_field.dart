@@ -28,6 +28,9 @@ class AppTextField extends StatelessWidget {
   final int? minLines;
   final TextInputAction? textInputAction; //Controls "Next" vs "Done" button
 
+  // custom validator function passed to TextFormField
+  final String? Function(String?)? validator;
+
   const AppTextField({
     super.key,
     required this.hintText,
@@ -43,6 +46,7 @@ class AppTextField extends StatelessWidget {
     this.maxLines,
     this.minLines,
     this.textInputAction,
+    this.validator,
   });
 
   @override
@@ -98,7 +102,7 @@ class AppTextField extends StatelessWidget {
       },
 
       // Centralized Switch-Case for validation based on the Enum
-      validator: (value) {
+      validator: validator ?? (value) {
         switch (textFieldType) {
           case TextFieldType.academicEmail:
             return AppValidators.validateAcademicEmail(value);

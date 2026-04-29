@@ -1,66 +1,10 @@
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:sams_app/core/utils/mixins/cubit_message_mixin.dart';
-// import 'package:sams_app/core/utils/mixins/safe_emit_mixin.dart';
-// import 'package:sams_app/features/assignments/data/repos/assignment_repo.dart';
-// import 'package:sams_app/features/assignments/presentation/view_model/cubits/create_assignment/create_assignment_state.dart';
-
-// //* Handles Assignment Creation only.
-// class CreateAssignmentCubit extends Cubit<CreateAssignmentState>
-//     with CubitMessageMixin, SafeEmitMixin {
-//   final AssignmentRepo assignmentRepo;
-
-//   CreateAssignmentCubit(this.assignmentRepo) : super(CreateAssignmentInitial());
-
-//   //* Full Workflow: Request Presigned URLs → S3 Upload → Backend Confirmation
-//   Future<void> createAssignment({
-//     required String courseId,
-//     required String title,
-//     required String description,
-//     required String dueDate,
-//     required List<XFile> selectedFiles,
-//   }) async {
-//     // 1. Show loading state (with file upload indicator if needed)
-//     emit(
-//       CreateAssignmentLoading(isUploadingFiles: selectedFiles.isNotEmpty),
-//     );
-
-//     // 2. Execute the full creation workflow in the repository
-//     final result = await assignmentRepo.uploadAssignmentFullWorkflow(
-//       courseId: courseId,
-//       title: title,
-//       description: description,
-//       dueDate: dueDate,
-//       selectedFiles: selectedFiles,
-//     );
-
-//     result.fold(
-//       (failure) {
-//         // Show error message via mixin
-//         emitMessage(failure);
-//         emit(CreateAssignmentFailure(failure));
-//       },
-//       (newAssignment) {
-//         // Success logic: Notify refresh trigger if you use one
-//         // AssignmentRefreshTrigger.requestRefresh();
-
-//         emit(
-//           CreateAssignmentSuccess(
-//             assignment: newAssignment,
-//             message: 'Assignment created successfully!',
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:sams_app/core/utils/mixins/cubit_message_mixin.dart';
 import 'package:sams_app/core/utils/mixins/safe_emit_mixin.dart';
+import 'package:sams_app/core/validators/app_validators.dart';
 import 'package:sams_app/features/assignments/data/repos/assignment_repo.dart';
 import 'package:sams_app/features/quizzes/data/model/data_models/classwork_item_model.dart';
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
@@ -90,7 +34,7 @@ class CreateAssignmentCubit extends Cubit<CreateAssignmentState>
   TimeOfDay? _selectedTime;
   late String courseId;
   bool enablePlagiarism = false;
-  int plagiarismThreshold = 30;
+  int? plagiarismThreshold;
 
   void _initControllers() {
     titleController = TextEditingController();
@@ -234,6 +178,12 @@ class CreateAssignmentCubit extends Cubit<CreateAssignmentState>
   void updateThreshold(int value) {
     plagiarismThreshold = value;
     
+  }
+
+  String? validatePlagiarismThreshold(String? value) {
+    if (!enablePlagiarism) return null;
+
+    return AppValidators.validateNumber(value, min: 0, max: 100);
   }
 
   @override
