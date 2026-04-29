@@ -69,12 +69,17 @@ final class GradeSubmissionFailure extends GradeSubmissionState {
 
 sealed class ApproveAllState extends AssignmentSubmissionState {}
 
-final class ApproveAllLoading extends ApproveAllState {}
+final class ApproveAllLoading extends ApproveAllState {
+   final AllSubmissionsModel? submissions;
+
+  ApproveAllLoading({this.submissions});
+}
 
 final class ApproveAllSuccess extends ApproveAllState {
   final BaseResponse response;
+final AllSubmissionsModel submissions; 
 
-  ApproveAllSuccess(this.response);
+  ApproveAllSuccess({required this.response, required this.submissions});
 }
 
 final class ApproveAllFailure extends ApproveAllState {

@@ -58,6 +58,7 @@ class AssignmentActionsList extends StatelessWidget {
                   extra: {
                     'assignmentId': assignment.id,
                     'courseId': courseId,
+                    'enablePlagiarismCheck': assignment.enablePlagiarismCheck,
                   }, 
                 );
                 // context.push(
