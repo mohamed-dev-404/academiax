@@ -51,21 +51,22 @@ class AssignmentActionsList extends StatelessWidget {
                 //   assignment: assignment,
                 //   courseId: courseId,
                 // );
-                // context.push(
-                //   RoutesName.assignmentSubmission,
-                //   extra: {
-                //     'assignmentId': assignment.id,
-                //     'courseId': courseId,
-                //   }, 
-                // );
                 context.push(
-                  RoutesName.submissionDetails,
+                  RoutesName.assignmentSubmission,
                   extra: {
                     'assignmentId': assignment.id,
                     'courseId': courseId,
-
-                  },
+                    'enablePlagiarismCheck': assignment.enablePlagiarismCheck,
+                  }, 
                 );
+                // context.push(
+                //   RoutesName.submissionDetails,
+                //   extra: {
+                //     'assignmentId': assignment.id,
+                //     'courseId': courseId,
+
+                //   },
+                // );
               },
             ),
           );

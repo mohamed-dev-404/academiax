@@ -1,9 +1,9 @@
 import 'package:sams_app/core/utils/constants/api_keys.dart';
 
 class SubmittedItemModel {
-  final String originalFileName;
-  final String key;
-  final String displayUrl;
+  final String? originalFileName;
+  final String? key;
+  final String? displayUrl;
 
   SubmittedItemModel({
     required this.originalFileName,

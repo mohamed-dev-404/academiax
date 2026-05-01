@@ -15,12 +15,14 @@ class AllSubmissionsModel {
   });
 
   factory AllSubmissionsModel.fromJson(Map<String, dynamic> json) {
+    final data = json[ApiKeys.data] ?? {};
     return AllSubmissionsModel(
-      stats: StateModel.fromJson(json[ApiKeys.stats]),
-      submissions: (json[ApiKeys.submissions] as List)
-          .map((e) => AssSubmissionModel.fromJson(e))
-          .toList(),
-      pagination: PaginationModel.fromJson(json[ApiKeys.pagination]),
+      stats: StateModel.fromJson(data[ApiKeys.stats] ?? {}),
+      submissions: (data[ApiKeys.submissions] as List?)
+              ?.map((e) => AssSubmissionModel.fromJson(e))
+              .toList() ??
+          [],
+      pagination: PaginationModel.fromJson(json[ApiKeys.pagination] ?? {}),
     );
   }
 }

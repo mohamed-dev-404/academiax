@@ -15,7 +15,7 @@ class AnimatedDocumentCard extends StatefulWidget {
     required this.type,
     required this.icon,
     required this.color,
-    this.onTap,
+    required this.onTap,
   });
 
   @override

@@ -18,7 +18,7 @@ class SubmissionCard extends StatefulWidget {
     required this.formattedTime,
     required this.displayScore,
     required this.maxScore,
-    this.onTap, 
+    this.onTap,
     required this.isGraded,
   });
 
@@ -122,7 +122,9 @@ class _SubmissionCardState extends State<SubmissionCard> {
                           children: [
                             RichText(
                               text: TextSpan(
-                                text: widget.displayScore,
+                                text: widget.isGraded == false
+                                    ? '-'
+                                    : widget.displayScore,
                                 style: AppStyles.mobileBodyLargeSb.copyWith(
                                   color: statusColor,
                                 ),

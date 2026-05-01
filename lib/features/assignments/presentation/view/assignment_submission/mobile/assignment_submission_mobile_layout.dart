@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sams_app/core/utils/assets/app_lottie.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
+import 'package:sams_app/core/utils/router/routes_name.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/core/widgets/base/app_animated_loading_indicator.dart';
 import 'package:sams_app/core/widgets/mobile/mobile_custom_app_bar.dart';
@@ -14,148 +16,185 @@ import 'package:sams_app/features/assignments/presentation/view_model/cubits/ass
 import 'package:sams_app/features/assignments/presentation/view_model/cubits/assignmemt_submission/assignment_submission_state.dart';
 
 class AssignmentSubmissionMobileLayout extends StatelessWidget {
-  const AssignmentSubmissionMobileLayout({super.key, required this.assignmentId});
+  const AssignmentSubmissionMobileLayout({
+    super.key,
+    required this.assignmentId,
+    required this.enablePlagiarismCheck,
+  });
+
   final String assignmentId;
+  final bool enablePlagiarismCheck;
 
   @override
   Widget build(BuildContext context) {
+    // Initial data fetch when the screen is first opened
     if (ModalRoute.of(context)?.isCurrent ?? false) {
-      context
-          .read<AssignmentSubmissionCubit>()
-          .getAllSubmissions(assignmentId: assignmentId);
+      context.read<AssignmentSubmissionCubit>().getAllSubmissions(
+            assignmentId: assignmentId,
+          );
     }
 
-    return Scaffold(
-      appBar: const MobileCustomAppBar(
-        title: 'Assignmet Submission',
-        titleStyle: TextStyle(fontSize: 20),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child:
-            BlocBuilder<AssignmentSubmissionCubit, AssignmentSubmissionState>(
-              builder: (context, state) {
-                if (state is SubmissionsLoading) {
-                  return const Center(
-                              child: AppAnimatedLoadingIndicator(),
-                            );
-                } else if (state is SubmissionsFailure) {
-                  return const Center(
-                    child: Text('Failed to load submissions'),
-                  );
-                }
-                int totalSubmitted = 0;
-                int totalMarked = 0;
-                int totalUnmarked = 0;
-                List<AssSubmissionModel> gradedList = [];
-                List<AssSubmissionModel> neddedReviewList = [];
-                if (state is SubmissionsSuccess) {
-                  final allList = state.submissions.submissions;
-                  gradedList = allList
-                      .where((e) => e.neededReview == true)
-                      .toList();
-                  neddedReviewList = allList
-                      .where((e) => e.neededReview == false)
-                      .toList();
-                  final submissions = state.submissions;
-                  totalSubmitted = submissions.stats.submitted;
-                  totalMarked = submissions.stats.marked;
-                  totalUnmarked = submissions.stats.unmarked;
-                  return CustomScrollView(
-                    slivers: [
-                      /// HEADER
-                      SliverToBoxAdapter(
-                        child: Container(
-                          padding: const EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryLight,
-                            borderRadius: BorderRadius.circular(35),
-                            border: Border.all(
-                              color: AppColors.secondaryLightActive,
+    return BlocListener<AssignmentSubmissionCubit, AssignmentSubmissionState>(
+      listener: (context, state) {
+        // Show success message when "Approve All" succeeds
+        if (state is ApproveAllSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.response.message ,
+                style: const TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+         // Silent refresh to fetch updated data without showing full-screen loading
+          context.read<AssignmentSubmissionCubit>().getAllSubmissions(
+                assignmentId: assignmentId,
+                showLoading: false,
+              );
+        }
+       // Show error message if "Approve All" fails
+        if (state is ApproveAllFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errMessage),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: const MobileCustomAppBar(
+          title: 'Assignment Submission',
+          titleStyle: TextStyle(fontSize: 20),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: BlocBuilder<AssignmentSubmissionCubit, AssignmentSubmissionState>(
+            builder: (context, state) {
+               // Determine the data source to keep UI stable during button loading states
+              dynamic displayData;
+              if (state is SubmissionsSuccess) {
+                displayData = state.submissions;
+              } else if (state is ApproveAllLoading) {
+                displayData = state.submissions;
+              } else if (state is ApproveAllSuccess) {
+                displayData = state.submissions;
+              }
+               // Show full-screen loading only if there is no existing data
+              if (state is SubmissionsLoading && displayData == null) {
+                return const Center(child: AppAnimatedLoadingIndicator());
+              }
+
+              if (state is SubmissionsFailure && displayData == null) {
+                return const Center(child: Text('Failed to load submissions'));
+              }
+              // If data exists, build the UI
+              if (displayData != null) {
+                // Extract full submissions list
+                final List<AssSubmissionModel> allList = displayData.submissions;
+                final gradedList = allList.where((e) => e.neededReview == false).toList();
+                final neddedReviewList = allList.where((e) => e.neededReview == true).toList();
+
+                return CustomScrollView(
+                  slivers: [
+                    /// HEADER SECTION
+                    SliverToBoxAdapter(
+                      child: Container(
+                        padding: const EdgeInsets.all(30),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryLight,
+                          borderRadius: BorderRadius.circular(35),
+                          border: Border.all(color: AppColors.secondaryLightActive),
+                        ),
+                        child: Column(
+                          children: [
+                            Lottie.asset(AppLottie.quizSubmissions),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Submissions Overview',
+                              style: AppStyles.mobileTitleSmallSb,
                             ),
-                          ),
-                          child: Column(
-                            children: [
-                              Lottie.asset(AppLottie.quizSubmissions),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Submissions Overview',
-                                style: AppStyles.mobileTitleSmallSb,
-                              ),
-                            ],
-                          ),
+                          ],
                         ),
                       ),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 20),
-                      ),
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
 
-                      /// STATS
+                     /// STATS BAR (submitted / marked / unmarked)
+                    SliverToBoxAdapter(
+                      child: AssignSubmissionsStatsBar(
+                        totalSubmitted: displayData.stats.submitted,
+                        totalMarked: displayData.stats.marked,
+                        totalUnmarked: displayData.stats.unmarked,
+                      ),
+                    ),
+
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    /// EMPTY STATE
+                    if (allList.isEmpty)
                       SliverToBoxAdapter(
-                        child: AssignSubmissionsStatsBar(
-                          totalSubmitted: totalSubmitted,
-                          totalMarked: totalMarked,
-                          totalUnmarked: totalUnmarked,
+                        child: Column(
+                          children: [
+                            Lottie.asset(AppLottie.empty, width: 200),
+                            Text(
+                              'No submissions yet!',
+                              style: AppStyles.mobileBodyLargeSb,
+                            ),
+                          ],
                         ),
-                      ),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 20),
-                      ),
-
-                      /// if no submissions
-                      if (allList.isEmpty)
+                      )
+                    else ...[
+                      /// NEEDS REVIEW SECTION
+                      if (neddedReviewList.isNotEmpty) ...[
                         SliverToBoxAdapter(
-                          child: Column(
-                            children: [
-                              Lottie.asset(AppLottie.empty, width: 200),
-                              const SizedBox(height: 12),
-                              Text(
-                                'No submissions yet!',
-                                style: AppStyles.mobileBodyLargeSb,
-                              ),
-                            ],
-                          ),
-                        )
-                      else ...[
-                        /// ================= NEED REVIEW =================
-                        if (neddedReviewList.isNotEmpty) ...[
-                          SliverToBoxAdapter(
-                            child: _buildSectionTitle(
-                              'Needs Review',
-                              Colors.orange,
-                            ),
-                          ),
-                          _buildSubmissionSliverList(neddedReviewList),
-                        ],
+                          child: _buildSectionTitle('Needs Review', Colors.orange),
+                        ),
+                        _buildSubmissionSliverList(list: neddedReviewList),
+                      ],
 
-                        /// ================= GRADED =================
-                        if (gradedList.isNotEmpty) ...[
-                          SliverToBoxAdapter(
-                            child: _buildSectionTitle('Graded', Colors.green),
-                          ),
-                          _buildSubmissionSliverList(gradedList),
-                        ],
+                      /// GRADED SECTION
+                      if (gradedList.isNotEmpty) ...[
+                        SliverToBoxAdapter(
+                          child: _buildSectionTitle('Graded', Colors.green),
+                        ),
+                        _buildSubmissionSliverList(list: gradedList),
                       ],
 
                       /// APPROVE ALL BUTTON
-                      SliverToBoxAdapter(
-                        child: Center(
-                          child: SizedBox(
-                            width: 180,
-                            child: ApproveAllButton(
-                              onTap: () {},
+                      if (enablePlagiarismCheck && neddedReviewList.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Center(
+                              child: SizedBox(
+                                width: 180,
+                                child: ApproveAllButton(
+                                  isLoading: state is ApproveAllLoading,
+                                  isSuccess: state is ApproveAllSuccess,
+                                  onTap: () {
+                                    context.read<AssignmentSubmissionCubit>().approveAllSubmissions(
+                                          assignmentId: assignmentId,
+                                        );
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-
-                      const SliverToBoxAdapter(child: SizedBox(height: 20)),
                     ],
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                  ],
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
       ),
     );
   }
@@ -180,23 +219,30 @@ class AssignmentSubmissionMobileLayout extends StatelessWidget {
     );
   }
 
-  SliverList _buildSubmissionSliverList(List<AssSubmissionModel> list) {
+  SliverList _buildSubmissionSliverList({
+    required List<AssSubmissionModel> list,
+  }) {
     return SliverList.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {
         final item = list[index];
-
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: SubmissionCard(
-            studentName: item.studentInfo.name,
-            academicId: item.studentInfo.academicId,
+            studentName: item.studentInfo.name ?? '',
+            academicId: item.studentInfo.academicId ?? '',
             formattedTime: item.formattedTime,
             displayScore: item.earnedPoints.toString(),
             maxScore: item.points.toString(),
             isGraded: !item.neededReview,
             onTap: () {
-              // TODO: navigate
+              context.push(
+                RoutesName.submissionDetails,
+                extra: {
+                  'submissionId': item.id,
+                  'courseId': '',
+                },
+              );
             },
           ),
         );

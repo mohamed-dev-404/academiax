@@ -140,17 +140,27 @@ class EndPoints {
   static String addAssignmentItems(String assignmentId) =>
       'instructor/assignments/$assignmentId/items';
 
-  //? --- Submissions --- ;
-  static String getSubmissions(String assignmentId) =>
-      'assignments/$assignmentId/submissions';
-  static String getAssignmentSubmissionDetails(String submissionId) =>
-      'assignments/submissions/$submissionId';
-  static String gradeSubmission(String submissionId) =>
-      'assignments/submissions/$submissionId/grade';
-  static String approveSubmissions(String assignmentId) =>
-      'assignments/$assignmentId/approve-submissions';
+// //? --- Instructor Submissions Endpoints --- ;
+
+/// 1. Fetches all student submissions for a specific assignment.
+static String getSubmissions(String assignmentId) => 
+    'instructor/assignments/$assignmentId/submissions';
+
+/// 2. Retrieves detailed information for a single assignment submission.
+static String getAssignmentSubmissionDetails(String submissionId) => 
+    'instructor/assignment-submissions/$submissionId';
+
+/// 3. Updates or assigns a grade to a specific student submission.
+static String gradeSubmission(String submissionId) => 
+    'instructor/assignment-submissions/$submissionId/grade';
+
+/// 4. Approves all submissions for a given assignment in a single action.
+static String approveSubmissions(String assignmentId) => 
+    'instructor/assignments/$assignmentId/submissions/approve-all';
+
   static String submitAssignment(String assignmentId) =>
       'assignments/$assignmentId/submissions';
+      
   static String unsubmitAssignment(String submissionId) =>
       'assignment-submissions/$submissionId';
 }

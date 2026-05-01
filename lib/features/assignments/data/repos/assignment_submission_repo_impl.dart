@@ -33,9 +33,7 @@ class AssignmentSubmissionRepoImpl implements AssignmentSubmissionRepo {
         '${EndPoints.getSubmissions(assignmentId)}?size=$size&page=$page',
       );
 
-      final data = response[ApiKeys.data];
-
-      final result = AllSubmissionsModel.fromJson(data);
+    final result = AllSubmissionsModel.fromJson(response);
 
       return right(result);
     } on ApiException catch (e) {
@@ -52,7 +50,7 @@ class AssignmentSubmissionRepoImpl implements AssignmentSubmissionRepo {
   }) async {
     try {
       final response = await api.get(
-        EndPoints.getSubmissionDetails(submissionId),
+        EndPoints.getAssignmentSubmissionDetails(submissionId),
       );
 
       final submission = SubmissionDetailsModel.fromJson(

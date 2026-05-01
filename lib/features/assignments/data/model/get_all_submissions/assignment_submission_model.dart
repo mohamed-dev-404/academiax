@@ -39,7 +39,7 @@ class AssSubmissionModel {
           DateFormat('M/d/yyyy, h:mm:ss a').parse(submittedAt);
       return DateFormat('hh:mm a').format(parsedDate);
     } catch (e) {
-      return submittedAt;
+      return submittedAt; 
     }
   }
 }
