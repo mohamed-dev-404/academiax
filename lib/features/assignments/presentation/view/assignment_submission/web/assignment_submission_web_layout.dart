@@ -203,6 +203,7 @@ class AssignmentSubmissionWebLayout extends StatelessWidget {
                                       const SizedBox(height: 20),
                                       _buildGrid(gradedList, context),
                                     ],
+                                    const SizedBox(height: 80),
 
                                     /// APPROVE ALL BUTTON
                                     /// Same behavior as mobile
@@ -215,6 +216,7 @@ class AssignmentSubmissionWebLayout extends StatelessWidget {
                                         child: Center(
                                           child: SizedBox(
                                             width: 200,
+                                            height: 45,
                                             child: ApproveAllButton(
                                               /// Button loading state
                                               isLoading:
