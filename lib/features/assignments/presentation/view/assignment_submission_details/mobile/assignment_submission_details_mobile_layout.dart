@@ -6,6 +6,7 @@ import 'package:sams_app/features/assignments/data/model/assignment_item_model.d
 import 'package:sams_app/features/assignments/data/model/helper/file_extension_helper.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_details_view/logic/assignment_details_handler.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_submission_details/mobile/mobile_decision_buttons.dart';
+import 'package:sams_app/features/assignments/presentation/view/assignment_submission_details/shared/similarity_report_dialog.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_submission_details/shared/submission_details_header.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_submission_details/shared/animated_document_card.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignment_submission_details/shared/similarity_item.dart';
@@ -26,6 +27,7 @@ class AssignmentSubmissionDetailsMobileLayout extends StatelessWidget {
       backgroundColor: const Color(0xFF158A9E),
       // BlocListener handles the logic of what happens AFTER a successful grade
       body: BlocListener<AssignmentSubmissionCubit, AssignmentSubmissionState>(
+        
         listener: (context, state) {
           if (state is GradeSubmissionSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -59,6 +61,10 @@ class AssignmentSubmissionDetailsMobileLayout extends StatelessWidget {
           }
         },
         child: BlocBuilder<AssignmentSubmissionCubit, AssignmentSubmissionState>(
+          buildWhen: (previous, current) => 
+      current is SubmissionDetailsLoading || 
+      current is SubmissionDetailsSuccess || 
+      current is SubmissionDetailsFailure,
           builder: (context, state) {
             if (state is SubmissionDetailsLoading) {
               return const Center(child: AppAnimatedLoadingIndicator());
@@ -140,7 +146,7 @@ class AssignmentSubmissionDetailsMobileLayout extends StatelessWidget {
                               type: 'View',
                               icon: Icons.search,
                               color: Colors.blue,
-                              onTap: () => _showSimilarityDialog(context),
+                              onTap: () => _showSimilarityDialog(context, submissionId, context.read<AssignmentSubmissionCubit>()),
                             ),
                             const SizedBox(height: 24),
                             // Section disappears automatically if isReviewRequired becomes false
@@ -171,43 +177,16 @@ class AssignmentSubmissionDetailsMobileLayout extends StatelessWidget {
       ),
     );
   }
-}
-
-void _showSimilarityDialog(BuildContext context) {
+  void _showSimilarityDialog(BuildContext context, String submissionId, AssignmentSubmissionCubit cubit) {
+  
   showDialog(
     context: context,
-    barrierDismissible: true,
-    builder: (context) {
-      return Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          width: 400,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SimilarityItem(
-                percentage: 10,
-                text: "Nadia's assignment is similar to Mariam's",
-              ),
-              SizedBox(height: 12),
-              SimilarityItem(
-                percentage: 80,
-                text: "Nadia's assignment is similar to Mariam's",
-              ),
-              SizedBox(height: 12),
-              SimilarityItem(
-                percentage: 20,
-                text: "Nadia's assignment is similar to Mariam's",
-              ),
-            ],
-          ),
-        ),
-      );
-    },
+    builder: (context) => SimilarityReportDialog(
+      submissionId: submissionId,
+      cubit: cubit,
+    ),
   );
 }
+}
+
+

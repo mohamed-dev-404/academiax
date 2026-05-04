@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sams_app/features/assignments/data/model/base_response.dart';
 import 'package:sams_app/features/assignments/data/model/get_all_submissions/all_submissions_model.dart';
+import 'package:sams_app/features/assignments/data/model/get_plagiarism_report/plagiarism_report_model.dart';
 import 'package:sams_app/features/assignments/data/model/get_submission_details/submission_details_model.dart';
 
 @immutable
@@ -82,4 +83,23 @@ final class ApproveAllFailure extends ApproveAllState {
   final String errMessage;
 
   ApproveAllFailure(this.errMessage);
+}
+
+
+// ================= SIMILARITY REPORT =================
+
+sealed class SimilarityReportState extends AssignmentSubmissionState {}
+
+final class SimilarityReportLoading extends SimilarityReportState {}
+
+final class SimilarityReportSuccess extends SimilarityReportState {
+  final PlagiarismReportModel report;
+
+  SimilarityReportSuccess(this.report);
+}
+
+final class SimilarityReportFailure extends SimilarityReportState {
+  final String errMessage;
+
+  SimilarityReportFailure(this.errMessage);
 }

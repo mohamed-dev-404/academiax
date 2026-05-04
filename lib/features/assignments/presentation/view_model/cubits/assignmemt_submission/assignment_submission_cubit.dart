@@ -105,4 +105,21 @@ class AssignmentSubmissionCubit extends Cubit<AssignmentSubmissionState>
       },
     );
   }
+
+  // ================= SIMILARITY REPORT =================
+
+  Future<void> getSimilarityReport({
+    required String submissionId,
+  }) async {
+    emit(SimilarityReportLoading());
+
+    final result = await repo.getSimilarityReport(
+      submissionId: submissionId,
+    );
+
+    result.fold(
+      (failure) => emit(SimilarityReportFailure(failure)),
+      (report) => emit(SimilarityReportSuccess(report)),
+    );
+  }
 }
