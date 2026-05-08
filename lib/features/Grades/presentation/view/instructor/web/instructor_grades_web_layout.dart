@@ -29,7 +29,7 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
 
   String _visibilityFilter = 'all';
   String _searchQuery = '';
-  
+
   int _currentPage = 1;
   int _pageSize = 10;
 
@@ -86,14 +86,16 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
           row.student.academicId.toLowerCase().contains(query);
     }).toList();
   }
-  
+
   /// Paginated rows.
   List<GradeRowModel> get _paginatedRows {
     final start = (_currentPage - 1) * _pageSize;
     final end = start + _pageSize;
     if (start >= _filteredRows.length) return [];
     return _filteredRows.sublist(
-        start, end > _filteredRows.length ? _filteredRows.length : end);
+      start,
+      end > _filteredRows.length ? _filteredRows.length : end,
+    );
   }
 
   @override
@@ -134,13 +136,18 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
 
             // ─── Table ───
             SizedBox(
-              height: _paginatedRows.isEmpty 
-                  ? 300.h 
+              height: _paginatedRows.isEmpty
+                  ? 300
                   : 52.h + (_paginatedRows.length * 56.h) + 20.h,
               child: _paginatedRows.isEmpty
-                  ? const GradesEmptyState(
-                      title: 'No students found',
-                      subtitle: 'Try a different search query',
+                  ? const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GradesEmptyState(
+                          title: 'No students found',
+                          subtitle: 'Try a different search query',
+                        ),
+                      ],
                     )
                   : InstructorGradesWebTable(
                       columns: _filteredGradeColumns,
@@ -162,7 +169,9 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
             const Divider(height: 1, color: AppColors.whiteHover),
             GradesPaginationControls(
               currentPage: _currentPage,
-              totalPages: (_filteredRows.length / _pageSize).ceil() == 0 ? 1 : (_filteredRows.length / _pageSize).ceil(),
+              totalPages: (_filteredRows.length / _pageSize).ceil() == 0
+                  ? 1
+                  : (_filteredRows.length / _pageSize).ceil(),
               pageSize: _pageSize,
               totalElements: _filteredRows.length,
               onPageChanged: (page) => setState(() => _currentPage = page),

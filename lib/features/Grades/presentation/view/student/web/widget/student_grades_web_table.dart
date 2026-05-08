@@ -12,24 +12,22 @@ class StudentGradesWebTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.whiteHover),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Column(
-            children: [
-              // Table header
-              _buildTableHeader(),
-              // Table rows
-              ...grades.asMap().entries.map(
-                (entry) => _buildTableRow(entry.value, entry.key),
-              ),
-            ],
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.whiteHover),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          children: [
+            // Table header
+            _buildTableHeader(),
+            // Table rows
+            ...grades.asMap().entries.map(
+              (entry) => _buildTableRow(entry.value, entry.key),
+            ),
+          ],
         ),
       ),
     );
