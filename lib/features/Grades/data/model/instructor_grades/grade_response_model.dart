@@ -33,6 +33,36 @@ class GradeResponseModel {
     );
   }
 
+  // * ─── Computed Helpers ───
+
+  /// Grade columns only (excludes ID and Name columns, i.e. columns without points).
+  List<GradeColumnModel> get gradeColumns =>
+      columns.where((c) => c.points != null).toList();
+
+  /// Initial column visibility map derived from [columns] data (key → isVisible).
+  /// Use this to seed mutable UI state; do NOT read it after the user has toggled visibility.
+  Map<String, bool> get columnVisibility => {
+        for (final col in columns)
+          if (col.isVisible != null) col.key: col.isVisible!,
+      };
+
+  /// Filters [gradeColumns] based on a [visibilityFilter] string ('all' | 'visible' | 'hidden').
+  /// Visibility is resolved from the [columnVisibility] getter on this model.
+  List<GradeColumnModel> filteredGradeColumns({required String visibilityFilter}) {
+    switch (visibilityFilter.toLowerCase()) {
+      case 'visible':
+        return gradeColumns
+            .where((c) => columnVisibility[c.key] == true)
+            .toList();
+      case 'hidden':
+        return gradeColumns
+            .where((c) => columnVisibility[c.key] != true)
+            .toList();
+      default:
+        return gradeColumns;
+    }
+  }
+
   GradeResponseModel copyWith({
     List<GradeColumnModel>? columns,
     List<GradeRowModel>? rows,
