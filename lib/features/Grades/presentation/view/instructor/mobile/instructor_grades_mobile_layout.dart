@@ -35,10 +35,7 @@ class _InstructorGradesMobileLayoutState
   @override
   void initState() {
     super.initState();
-    _columnVisibility = {
-      for (final col in MockInstructorGrades.columns)
-        if (col.isVisible != null) col.key: col.isVisible!,
-    };
+    _columnVisibility = MockInstructorGrades.response.columnVisibility;
   }
 
   @override
@@ -47,25 +44,11 @@ class _InstructorGradesMobileLayoutState
     super.dispose();
   }
 
-  /// Grade columns only.
-  List<GradeColumnModel> get _gradeColumns =>
-      MockInstructorGrades.columns.where((c) => c.points != null).toList();
-
-  /// Filtered grade columns based on visibility filter.
-  List<GradeColumnModel> get _filteredGradeColumns {
-    switch (_visibilityFilter.toLowerCase()) {
-      case 'visible':
-        return _gradeColumns
-            .where((c) => _columnVisibility[c.key] == true)
-            .toList();
-      case 'hidden':
-        return _gradeColumns
-            .where((c) => _columnVisibility[c.key] != true)
-            .toList();
-      default:
-        return _gradeColumns;
-    }
-  }
+  /// Delegates column filtering to the model.
+  List<GradeColumnModel> get _filteredGradeColumns =>
+      MockInstructorGrades.response.filteredGradeColumns(
+        visibilityFilter: _visibilityFilter,
+      );
 
   /// Filtered rows.
   List<GradeRowModel> get _filteredRows {
@@ -100,7 +83,7 @@ class _InstructorGradesMobileLayoutState
               _visibilityFilter = filter;
               _displayedCount = 10;
             }),
-            gradeColumns: _gradeColumns,
+            gradeColumns: MockInstructorGrades.response.gradeColumns,
             columnVisibility: _columnVisibility,
             onColumnVisibilityToggled: (key, isVis) {
               setState(() {

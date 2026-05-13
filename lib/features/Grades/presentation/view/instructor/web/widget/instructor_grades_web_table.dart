@@ -31,7 +31,7 @@ class InstructorGradesWebTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataTable2(
-      columnSpacing: 12,
+      columnSpacing: 26,
       horizontalMargin: 12,
       minWidth: 600 + (columns.length * 120).toDouble(),
       headingRowHeight: 52.h,
@@ -40,9 +40,10 @@ class InstructorGradesWebTable extends StatelessWidget {
       headingTextStyle: AppStyles.mobileBodyXsmallMd.copyWith(
         color: Colors.white,
       ),
-      sortColumnIndex: sortColumnIndex,
-      sortAscending: sortAscending,
-      scrollController: ScrollController(), // Provide a scroll controller for the table itself
+      // Sort arrow is handled entirely by our custom label widgets
+      // (AnimatedSwitcher inside _SortableHeader / _buildGradeColumnHeader),
+      // so we disable the package’s built-in arrow to avoid layout shifts.
+      scrollController: ScrollController(),
       columns: _buildColumns(context),
       rows: rows.asMap().entries.map((e) => _buildRow(e.value, e.key)).toList(),
     );
@@ -51,20 +52,30 @@ class InstructorGradesWebTable extends StatelessWidget {
   List<DataColumn2> _buildColumns(BuildContext context) {
     return [
       DataColumn2(
-        label: const Text('ID'),
+        label: _SortableHeader(
+          title: 'ID',
+          index: 0,
+          sortColumnIndex: sortColumnIndex,
+          sortAscending: sortAscending,
+        ),
         size: ColumnSize.S,
         fixedWidth: 120.w,
         onSort: onSort,
       ),
       DataColumn2(
-        label: const Text('Name'),
+        label: _SortableHeader(
+          title: 'Name',
+          index: 1,
+          sortColumnIndex: sortColumnIndex,
+          sortAscending: sortAscending,
+        ),
         size: ColumnSize.L,
-        fixedWidth: 200.w,
+        fixedWidth: 250.w,
         onSort: onSort,
       ),
-      ...columns.map((col) {
+      ...columns.asMap().entries.map((entry) {
         return DataColumn2(
-          label: _buildGradeColumnHeader(context, col),
+          label: _buildGradeColumnHeader(context, entry.value, 2 + entry.key),
           size: ColumnSize.M,
           onSort: onSort,
         );
@@ -72,14 +83,27 @@ class InstructorGradesWebTable extends StatelessWidget {
     ];
   }
 
-  Widget _buildGradeColumnHeader(BuildContext context, GradeColumnModel col) {
+  Widget _buildGradeColumnHeader(
+    BuildContext context,
+    GradeColumnModel col,
+    int colIndex,
+  ) {
     final isVisible = columnVisibility[col.key] ?? true;
+    final isActive = sortColumnIndex == colIndex;
+
+    // Determine which icon to show — always in the same slot so layout never shifts.
+    final IconData sortIcon = isActive
+        ? (sortAscending ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded)
+        : Icons.swap_vert_rounded;
+    final Color sortIconColor = isActive
+        ? Colors.white.withValues(alpha: 0.9)
+        : Colors.white.withValues(alpha: 0.4);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
               child: Text(
@@ -88,6 +112,21 @@ class InstructorGradesWebTable extends StatelessWidget {
                   color: Colors.white,
                 ),
                 overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            // Fixed-size slot — icon animates in place, no layout shift.
+            SizedBox(width: 2.w),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 220),
+              transitionBuilder: (child, animation) => FadeTransition(
+                opacity: animation,
+                child: ScaleTransition(scale: animation, child: child),
+              ),
+              child: Icon(
+                sortIcon,
+                key: ValueKey(sortIcon),
+                size: 12.sp,
+                color: sortIconColor,
               ),
             ),
             SizedBox(width: 4.w),
@@ -147,14 +186,71 @@ class InstructorGradesWebTable extends StatelessWidget {
         ...columns.map((col) {
           final score = row.grades[col.key];
           return DataCell(
-            Center(
-              child: GradeCell(
-                score: score,
-                maxScore: col.points,
-              ),
+            GradeCell(
+              score: score,
+              maxScore: col.points,
             ),
           );
         }),
+      ],
+    );
+  }
+}
+
+/// Header label for plain sortable columns (ID, Name).
+/// Always renders the sort icon in the same fixed slot — no layout shift.
+/// Uses [AnimatedSwitcher] to smoothly cross-fade between:
+///   • [swap_vert]       — column is not the active sort column
+///   • [arrow_upward]   — active, ascending
+///   • [arrow_downward] — active, descending
+class _SortableHeader extends StatelessWidget {
+  final String title;
+
+  /// This column’s positional index in the table (0 = ID, 1 = Name, ...).
+  final int index;
+
+  /// Active sort column index from the parent. Null → no column sorted yet.
+  final int? sortColumnIndex;
+
+  /// Current sort direction — only meaningful when [sortColumnIndex] == [index].
+  final bool sortAscending;
+
+  const _SortableHeader({
+    required this.title,
+    required this.index,
+    required this.sortColumnIndex,
+    required this.sortAscending,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isActive = sortColumnIndex == index;
+    final IconData sortIcon = isActive
+        ? (sortAscending ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded)
+        : Icons.swap_vert_rounded;
+    final Color sortIconColor = isActive
+        ? Colors.white.withValues(alpha: 0.95)
+        : Colors.white.withValues(alpha: 0.4);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(title),
+        SizedBox(width: 4.w),
+        // Fixed slot — always here, icon swaps smoothly.
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 220),
+          transitionBuilder: (child, animation) => FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(scale: animation, child: child),
+          ),
+          child: Icon(
+            sortIcon,
+            key: ValueKey(sortIcon),
+            size: 14.sp,
+            color: sortIconColor,
+          ),
+        ),
       ],
     );
   }

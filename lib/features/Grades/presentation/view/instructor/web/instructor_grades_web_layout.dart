@@ -43,10 +43,7 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
   @override
   void initState() {
     super.initState();
-    _columnVisibility = {
-      for (final col in MockInstructorGrades.columns)
-        if (col.isVisible != null) col.key: col.isVisible!,
-    };
+    _columnVisibility = MockInstructorGrades.response.columnVisibility;
   }
 
   @override
@@ -57,27 +54,13 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
 
   // ─── Computed Data ───
 
-  /// Get grade columns (excluding ID and Name).
-  List<GradeColumnModel> get _gradeColumns =>
-      MockInstructorGrades.columns.where((c) => c.points != null).toList();
+  /// Delegates column filtering to the model.
+  List<GradeColumnModel> get _filteredGradeColumns =>
+      MockInstructorGrades.response.filteredGradeColumns(
+        visibilityFilter: _visibilityFilter,
+      );
 
-  /// Filter columns based on visibility filter.
-  List<GradeColumnModel> get _filteredGradeColumns {
-    switch (_visibilityFilter.toLowerCase()) {
-      case 'visible':
-        return _gradeColumns
-            .where((c) => _columnVisibility[c.key] == true)
-            .toList();
-      case 'hidden':
-        return _gradeColumns
-            .where((c) => _columnVisibility[c.key] != true)
-            .toList();
-      default:
-        return _gradeColumns;
-    }
-  }
-
-  /// Filter rows based on search query.
+  // ! Filter rows based on search query.(will be handle by request)
   List<GradeRowModel> get _filteredRows {
     if (_searchQuery.isEmpty) return MockInstructorGrades.rows;
     final query = _searchQuery.toLowerCase();
@@ -87,14 +70,43 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
     }).toList();
   }
 
-  /// Paginated rows.
+  // TODO: Sorted rows. (Review and understand its logic carefully)
+  List<GradeRowModel> get _sortedRows {
+    if (_sortColumnIndex == null) return _filteredRows;
+    final sorted = List<GradeRowModel>.from(_filteredRows);
+    sorted.sort((a, b) {
+      int cmp;
+      if (_sortColumnIndex == 0) {
+        // Sort by student ID
+        cmp = a.student.academicId.compareTo(b.student.academicId);
+      } else if (_sortColumnIndex == 1) {
+        // Sort by student name
+        cmp = a.student.name.compareTo(b.student.name);
+      } else {
+        // Sort by grade score — null scores sink to the bottom
+        final gradeColIdx = _sortColumnIndex! - 2;
+        if (gradeColIdx >= _filteredGradeColumns.length) return 0;
+        final col = _filteredGradeColumns[gradeColIdx];
+        final aScore = a.grades[col.key];
+        final bScore = b.grades[col.key];
+        if (aScore == null && bScore == null) return 0;
+        if (aScore == null) return 1;
+        if (bScore == null) return -1;
+        cmp = (aScore as num).compareTo(bScore as num);
+      }
+      return _sortAscending ? cmp : -cmp;
+    });
+    return sorted;
+  }
+
+  // ! Paginated rows. (will be handle by request)
   List<GradeRowModel> get _paginatedRows {
     final start = (_currentPage - 1) * _pageSize;
     final end = start + _pageSize;
-    if (start >= _filteredRows.length) return [];
-    return _filteredRows.sublist(
+    if (start >= _sortedRows.length) return [];
+    return _sortedRows.sublist(
       start,
-      end > _filteredRows.length ? _filteredRows.length : end,
+      end > _sortedRows.length ? _sortedRows.length : end,
     );
   }
 
@@ -129,7 +141,9 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
               visibilityFilter: _visibilityFilter,
               onVisibilityFilterChanged: (filter) =>
                   setState(() => _visibilityFilter = filter),
-              onExport: () {},
+              onExport: () {
+                // TODO: implement export logic
+              },
               onImport: () {},
             ),
             SizedBox(height: 16.h),
@@ -158,9 +172,16 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
                       }),
                       sortColumnIndex: _sortColumnIndex,
                       sortAscending: _sortAscending,
-                      onSort: (idx, asc) => setState(() {
-                        _sortColumnIndex = idx;
-                        _sortAscending = asc;
+                      onSort: (idx, _) => setState(() {
+                        if (_sortColumnIndex == idx) {
+                          // Same column → toggle direction
+                          _sortAscending = !_sortAscending;
+                        } else {
+                          // New column → switch and reset to ascending
+                          _sortColumnIndex = idx;
+                          _sortAscending = true;
+                        }
+                        _currentPage = 1;
                       }),
                     ),
             ),
