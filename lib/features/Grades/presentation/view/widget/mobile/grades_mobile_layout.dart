@@ -11,11 +11,9 @@ import 'package:sams_app/features/Grades/presentation/view/student/mobile/studen
 class GradesMobileLayout extends StatelessWidget {
   const GradesMobileLayout({super.key});
 
-  static bool isInstructor = CurrentRole.role == UserRole.instructor;
-
   @override
   Widget build(BuildContext context) {
-    if (isInstructor) {
+    if (CurrentRole.role == UserRole.instructor) {
       return const InstructorGradesMobileLayout();
     }
     return const StudentGradesMobileLayout();

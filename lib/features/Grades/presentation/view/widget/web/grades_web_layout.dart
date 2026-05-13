@@ -11,11 +11,9 @@ import 'package:sams_app/features/Grades/presentation/view/student/web/student_g
 class GradesWebLayout extends StatelessWidget {
   const GradesWebLayout({super.key});
 
-  static bool isInstructor = CurrentRole.role == UserRole.instructor;
-
   @override
   Widget build(BuildContext context) {
-    if (isInstructor) {
+    if (CurrentRole.role == UserRole.instructor) {
       return const InstructorGradesWebLayout();
     }
     return const StudentGradesWebLayout();
