@@ -5,6 +5,7 @@ import 'package:sams_app/core/models/course_header_card_model.dart';
 import 'package:sams_app/core/utils/services/service_locator.dart';
 import 'package:sams_app/core/widgets/shared/adaptive_layout.dart';
 import 'package:sams_app/features/Grades/presentation/view/grades_tab_view.dart';
+import 'package:sams_app/features/Grades/presentation/view_model/grade_cubit/grade_cubit.dart';
 import 'package:sams_app/features/announcements/presentation/view/announcement_tab_view/announcements_tab_view.dart';
 import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcements_fetch/announcements_fetch_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignments_tab_view.dart';
@@ -69,16 +70,21 @@ class CourseDetailsView extends StatelessWidget {
       ),
 
       'Assignments': AssignmentsTabView(courseId: courseId),
-       
-       //* Announcements 
+
+      //* Announcements
       'Announcements': BlocProvider(
-        create: (context) => getIt<AnnouncementsFetchCubit>()..fetchAnnouncements(courseId: courseId),
+        create: (context) =>
+            getIt<AnnouncementsFetchCubit>()
+              ..fetchAnnouncements(courseId: courseId),
         child: AnnouncementsTabView(courseId: courseId),
       ),
 
-      'Grades': GradesTabView(courseId: courseId),
-       
-       //* Quizzes 
+      'Grades': BlocProvider(
+        create: (context) => getIt<GradeCubit>()..getGrades(courseId: courseId),
+        child: GradesTabView(courseId: courseId),
+      ),
+
+      //* Quizzes
       'Quizzes': BlocProvider(
         create: (_) =>
             GetAllQuizesCubit(getIt<QuizRepository>())
