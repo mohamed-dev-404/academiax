@@ -37,7 +37,8 @@ extension StudentGradesListX on Iterable<StudentGradeModel> {
 
   num get totalMaxScore => fold<num>(0, (sum, g) => sum + g.maxScore);
 
-  num get totalScore => fold<num>(0, (sum, g) => sum + (g.score ?? 0));
+  num get totalScore =>
+      where((g) => g.isVisible).fold<num>(0, (sum, g) => sum + (g.score ?? 0));
 
   num get percentage =>
       totalMaxScore > 0 ? (totalScore / totalMaxScore * 100) : 0;

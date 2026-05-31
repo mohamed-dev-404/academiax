@@ -6,8 +6,8 @@ import 'package:sams_app/features/Grades/presentation/view/student/utils/student
 
 /// ─── Summary Row (Web) ───
 class GradesSummaryRow extends StatelessWidget {
-  const GradesSummaryRow({super.key, required this.grades});
-  final List<StudentGradeModel> grades;
+  const GradesSummaryRow({super.key, required this.allGrades});
+  final List<StudentGradeModel> allGrades;
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +16,22 @@ class GradesSummaryRow extends StatelessWidget {
         _SummaryCard(
           icon: Icons.grading_rounded,
           label: 'Graded',
-          value: grades.formattedGradedCountText,
+          value: allGrades.formattedGradedCountText,
           color: AppColors.primary,
         ),
         const SizedBox(width: 16),
         _SummaryCard(
           icon: Icons.score_rounded,
           label: 'Total Score',
-          value: grades.formattedTotalScoreFractionText,
+          value: allGrades.formattedTotalScoreFractionText,
           color: AppColors.secondary,
         ),
         const SizedBox(width: 16),
         _SummaryCard(
           icon: Icons.percent_rounded,
           label: 'Percentage',
-          value: grades.formattedPercentageText,
-          color: grades.averageScoreColor,
+          value: allGrades.formattedPercentageText,
+          color: allGrades.averageScoreColor,
         ),
       ],
     );
