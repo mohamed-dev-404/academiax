@@ -5,6 +5,8 @@ import 'package:sams_app/features/Grades/data/model/student_grades/student_grade
 abstract class GradeRepo {
   Future<Either<String, StudentGradeModel>> getStudentGrades();
 
+
+// Fetches all grades for a given [courseId] with pagination and optional search.
   Future<Either<String, GradeResponseModel>> getAllGrades({
     required String courseId,
     int page = 1,
