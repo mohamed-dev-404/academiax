@@ -9,12 +9,14 @@ import 'package:sams_app/features/Grades/presentation/view/student/mobile/studen
 /// Currently defaults to Instructor view for demonstration.
 /// When backend is connected, this will check the authenticated user's role.
 class GradesMobileLayout extends StatelessWidget {
-  const GradesMobileLayout({super.key});
+  const GradesMobileLayout({super.key, required this.courseId});
+
+  final String courseId;
 
   @override
   Widget build(BuildContext context) {
     if (CurrentRole.role == UserRole.instructor) {
-      return const InstructorGradesMobileLayout();
+      return InstructorGradesMobileLayout(courseId: courseId);
     }
     return const StudentGradesMobileLayout();
   }
