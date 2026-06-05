@@ -45,7 +45,11 @@ class GradeCubit extends Cubit<GradeState> {
 
   //* Fetches grades for instructors.
   Future<void> getGradesForInstructor() async {
-    emit(GradeLoading());
+    if (instructorGrades == null) {
+      emit(GradeLoading());
+    } else {
+      emit(GradeTableLoading());
+    }
 
     var result = await _repo.getAllGrades(
       courseId: storedCourseId,
@@ -63,9 +67,35 @@ class GradeCubit extends Cubit<GradeState> {
     );
   }
 
-  // * Toggles the visibility of classwork grades for instructors.
-  Future<void> toggleClassworkVisiability() async {
-    // Implement logic to toggle the visibility of classwork grades
+  /// Called from UI when the user triggers a search (search icon tap / submit).
+  void onSearch() {
+    currentPage = 1; // reset to first page on new search
+    getGradesForInstructor();
+  }
+
+  /// Called from UI when the user changes the current page.
+  void onPageChanged(int page) {
+    currentPage = page;
+    getGradesForInstructor();
+  }
+
+  /// Called from UI when the user changes page size (rows per page).
+  void onPageSizeChanged(int size) {
+    perPage = size;
+    currentPage = 1; // reset to first page on page size change
+    getGradesForInstructor();
+  }
+
+  //* Toggles the visibility of classwork grades for instructors.
+  Future<void> toggleClassworkVisiability({required String classworkId}) async {
+    var result = await _repo.toggleClassworkVisibility(
+      courseId: storedCourseId,
+      classworkId: classworkId,
+    );
+    result.fold(
+      (failureMessage) => emit(ToggleClassworkVisibilityFailed(failureMessage)),
+      (_) => emit(ToggleClassworkVisibilitySuccess()),
+    );
   }
 
   //* Fetches grades for students.
