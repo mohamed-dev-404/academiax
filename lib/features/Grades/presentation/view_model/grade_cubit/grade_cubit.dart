@@ -94,7 +94,7 @@ class GradeCubit extends Cubit<GradeState> {
     );
     result.fold(
       (failureMessage) => emit(ToggleClassworkVisibilityFailed(failureMessage)),
-      (_) => emit(ToggleClassworkVisibilitySuccess()),
+      (_) => emit(ToggleClassworkVisibilitySuccess(classworkId)),
     );
   }
 
