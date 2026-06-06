@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sams_app/core/helper/app_toast.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/Grades/data/mock/mock_instructor_grades.dart';
 import 'package:sams_app/features/Grades/data/model/instructor_grades/grade_column_model.dart';
 import 'package:sams_app/features/Grades/data/model/instructor_grades/grade_row_model.dart';
 import 'package:sams_app/features/Grades/presentation/view/instructor/web/widget/grades_filter_bar.dart';
-import 'package:sams_app/features/Grades/presentation/view/widget/shared/grades_empty_state.dart';
-import 'package:sams_app/features/Grades/presentation/view/instructor/web/widget/instructor_grades_web_table.dart';
+import 'package:sams_app/features/Grades/presentation/view/widget/shared/grade_error_widget.dart';
 import 'package:sams_app/features/Grades/presentation/view/instructor/web/widget/grades_pagination_controls.dart';
+import 'package:sams_app/features/Grades/presentation/view_model/grade_cubit/grade_cubit.dart';
+
+import 'package:sams_app/features/Grades/presentation/view/instructor/web/widget/instructor_grades_web_table_content.dart';
 
 /// ═══════════════════════════════════════════════════════════════
 /// INSTRUCTOR — WEB LAYOUT
@@ -29,56 +32,41 @@ class InstructorGradesWebLayout extends StatefulWidget {
 }
 
 class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
-  // ─── Local UI State ───
-  final TextEditingController _searchController = TextEditingController();
-
+  // ─── Local UI State (sorting & column visibility only) ───
   String _visibilityFilter = 'all';
-  String _searchQuery = '';
-
-  int _currentPage = 1;
-  int _pageSize = 10;
 
   // Column visibility map (key → isVisible)
-  late Map<String, bool> _columnVisibility;
+  Map<String, bool> _columnVisibility = {};
+
+  // ─── Optimistic toggle tracking ───
+  String? _lastToggledKey;
+  bool? _lastToggledOldValue;
 
   // Sorting state
   int? _sortColumnIndex;
   bool _sortAscending = true;
 
-  @override
-  void initState() {
-    super.initState();
-    _columnVisibility = MockInstructorGrades.response.columnVisibility;
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
   // ─── Computed Data ───
 
   /// Delegates column filtering to the model.
-  List<GradeColumnModel> get _filteredGradeColumns =>
-      MockInstructorGrades.response.filteredGradeColumns(
-        visibilityFilter: _visibilityFilter,
-      );
-
-  // ! Filter rows based on search query.(will be handle by request)
-  List<GradeRowModel> get _filteredRows {
-    if (_searchQuery.isEmpty) return MockInstructorGrades.rows;
-    final query = _searchQuery.toLowerCase();
-    return MockInstructorGrades.rows.where((row) {
-      return row.student.name.toLowerCase().contains(query) ||
-          row.student.academicId.toLowerCase().contains(query);
-    }).toList();
+  List<GradeColumnModel> _filteredGradeColumns(GradeCubit cubit) {
+    final response = cubit.instructorGrades;
+    if (response == null) return [];
+    return response.filteredGradeColumns(
+      visibilityFilter: _visibilityFilter,
+      currentVisibility: _columnVisibility,
+    );
   }
 
-  // TODO: Sorted rows. (Review and understand its logic carefully)
-  List<GradeRowModel> get _sortedRows {
-    if (_sortColumnIndex == null) return _filteredRows;
-    final sorted = List<GradeRowModel>.from(_filteredRows);
+  /// Sorted rows — sorting is handled purely in UI.
+  List<GradeRowModel> _sortedRows(GradeCubit cubit) {
+    final response = cubit.instructorGrades;
+    if (response == null) return [];
+    final rows = response.rows;
+    if (_sortColumnIndex == null) return rows;
+
+    final filteredCols = _filteredGradeColumns(cubit);
+    final sorted = List<GradeRowModel>.from(rows);
     sorted.sort((a, b) {
       int cmp;
       if (_sortColumnIndex == 0) {
@@ -90,8 +78,8 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
       } else {
         // Sort by grade score — null scores sink to the bottom
         final gradeColIdx = _sortColumnIndex! - 2;
-        if (gradeColIdx >= _filteredGradeColumns.length) return 0;
-        final col = _filteredGradeColumns[gradeColIdx];
+        if (gradeColIdx >= filteredCols.length) return 0;
+        final col = filteredCols[gradeColIdx];
         final aScore = a.grades[col.key];
         final bScore = b.grades[col.key];
         if (aScore == null && bScore == null) return 0;
@@ -104,108 +92,168 @@ class _InstructorGradesWebLayoutState extends State<InstructorGradesWebLayout> {
     return sorted;
   }
 
-  // ! Paginated rows. (will be handle by request)
-  List<GradeRowModel> get _paginatedRows {
-    final start = (_currentPage - 1) * _pageSize;
-    final end = start + _pageSize;
-    if (start >= _sortedRows.length) return [];
-    return _sortedRows.sublist(
-      start,
-      end > _sortedRows.length ? _sortedRows.length : end,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ─── Title ───
-            Text(
-              'Students Grades',
-              style: AppStyles.mobileTitleMediumSb.copyWith(
-                color: AppColors.primaryDark,
-              ),
-            ),
-            SizedBox(height: 16.h),
+    final cubit = context.read<GradeCubit>();
 
-            // ─── Filters Bar ───
-            GradesFilterBar(
-              searchController: _searchController,
-              onSearch: (query) => setState(() {
-                _searchQuery = query;
-                _currentPage = 1;
-              }),
-              visibilityFilter: _visibilityFilter,
-              onVisibilityFilterChanged: (filter) =>
-                  setState(() => _visibilityFilter = filter),
-              courseId: widget.courseId,
-              onImport: () {},
+    return BlocListener<GradeCubit, GradeState>(
+      listenWhen: (prev, curr) =>
+          curr is ToggleClassworkVisibilitySuccess ||
+          curr is ToggleClassworkVisibilityFailed,
+      listener: (context, state) {
+        if (state is ToggleClassworkVisibilitySuccess) {
+          AppToast.success(context, 'Visibility updated successfully');
+        } else if (state is ToggleClassworkVisibilityFailed) {
+          // Revert the optimistic UI change
+          if (_lastToggledKey != null && _lastToggledOldValue != null) {
+            setState(() {
+              _columnVisibility[_lastToggledKey!] = _lastToggledOldValue!;
+            });
+          }
+          AppToast.error(context, state.errorMessage);
+        }
+      },
+      child: BlocBuilder<GradeCubit, GradeState>(
+      buildWhen: (prev, curr) =>
+          curr is GradeLoading ||
+          curr is GradeLoadedSuccessfully ||
+          curr is GradeLoadingFailed,
+      builder: (context, state) {
+        // ─── Full Loading (initial load) ───
+        if (state is GradeLoading) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(64),
+              child: CircularProgressIndicator(color: AppColors.primary),
             ),
-            SizedBox(height: 16.h),
+          );
+        }
 
-            // ─── Table ───
-            SizedBox(
-              height: _paginatedRows.isEmpty
-                  ? 300
-                  : 52.h + (_paginatedRows.length * 56.h) + 20.h,
-              child: _paginatedRows.isEmpty
-                  ? const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GradesEmptyState(
-                          title: 'No students found',
-                          subtitle: 'Try a different search query',
-                        ),
-                      ],
-                    )
-                  : InstructorGradesWebTable(
-                      columns: _filteredGradeColumns,
-                      rows: _paginatedRows,
-                      columnVisibility: _columnVisibility,
-                      onVisibilityChanged: (key, isVis) => setState(() {
-                        _columnVisibility[key] = isVis;
-                      }),
-                      sortColumnIndex: _sortColumnIndex,
-                      sortAscending: _sortAscending,
-                      onSort: (idx, _) => setState(() {
-                        if (_sortColumnIndex == idx) {
-                          // Same column → toggle direction
-                          _sortAscending = !_sortAscending;
-                        } else {
-                          // New column → switch and reset to ascending
-                          _sortColumnIndex = idx;
-                          _sortAscending = true;
-                        }
-                        _currentPage = 1;
-                      }),
-                    ),
-            ),
+        // ─── Error State ───
+        if (state is GradeLoadingFailed) {
+          return GradeErrorWidget(
+            errorMessage: state.errorMessage,
+            onRetry: () => cubit.getGradesForInstructor(),
+          );
+        }
 
-            // ─── Pagination ───
-            const Divider(height: 1, color: AppColors.whiteHover),
-            GradesPaginationControls(
-              currentPage: _currentPage,
-              totalPages: (_filteredRows.length / _pageSize).ceil() == 0
-                  ? 1
-                  : (_filteredRows.length / _pageSize).ceil(),
-              pageSize: _pageSize,
-              totalElements: _filteredRows.length,
-              onPageChanged: (page) => setState(() => _currentPage = page),
-              onPageSizeChanged: (size) => setState(() {
-                _pageSize = size;
-                _currentPage = 1;
-              }),
+        // ─── Loaded State ───
+        final grades = cubit.instructorGrades;
+        if (grades == null) return const SizedBox.shrink();
+
+        // Initialize column visibility from server data on first load
+        if (_columnVisibility.isEmpty) {
+          _columnVisibility = Map<String, bool>.from(grades.columnVisibility);
+        }
+
+        final displayRows = _sortedRows(cubit);
+        final filteredCols = _filteredGradeColumns(cubit);
+        final pagination = grades.pagination;
+
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ─── Title ───
+                Text(
+                  'Students Grades',
+                  style: AppStyles.mobileTitleMediumSb.copyWith(
+                    color: AppColors.primaryDark,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+
+                // ─── Filters Bar ───
+                GradesFilterBar(
+                  searchController: cubit.searchController,
+                  onSearch: (_) => cubit.onSearch(),
+                  visibilityFilter: _visibilityFilter,
+                  onVisibilityFilterChanged: (filter) =>
+                      setState(() => _visibilityFilter = filter),
+                  courseId: widget.courseId,
+                ),
+                SizedBox(height: 16.h),
+
+                // ─── Table Section (rebuilds on GradeTableLoading) ───
+                BlocBuilder<GradeCubit, GradeState>(
+                  buildWhen: (prev, curr) =>
+                      curr is GradeTableLoading ||
+                      curr is GradeLoadedSuccessfully ||
+                      curr is GradeLoadingFailed,
+                  builder: (context, tableState) {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeInOut,
+                      switchOutCurve: Curves.easeInOut,
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      child: tableState is GradeTableLoading
+                          ? const SizedBox(
+                              key: ValueKey('table_loading'),
+                              height: 300,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primary,
+                                  strokeWidth: 2.5,
+                                ),
+                              ),
+                            )
+                          : InstructorGradesWebTableContent(
+                              key: ValueKey(
+                                '${pagination.currentPage}_${pagination.size}_${cubit.searchController.text}',
+                              ),
+                              rows: displayRows,
+                              columns: filteredCols,
+                              columnVisibility: _columnVisibility,
+                              onVisibilityChanged: (key, isVis) {
+                                _lastToggledKey = key;
+                                _lastToggledOldValue = !isVis;
+                                setState(() {
+                                  _columnVisibility[key] = isVis;
+                                });
+                              },
+                              sortColumnIndex: _sortColumnIndex,
+                              sortAscending: _sortAscending,
+                              onSort: (idx, _) => setState(() {
+                                if (_sortColumnIndex == idx) {
+                                  // Same column → toggle direction
+                                  _sortAscending = !_sortAscending;
+                                } else {
+                                  // New column → switch and reset to ascending
+                                  _sortColumnIndex = idx;
+                                  _sortAscending = true;
+                                }
+                              }),
+                            ),
+                    );
+                  },
+                ),
+
+                // ─── Pagination ───
+                const Divider(height: 1, color: AppColors.whiteHover),
+                GradesPaginationControls(
+                  currentPage: cubit.currentPage,
+                  totalPages: pagination.totalPages,
+                  pageSize: cubit.perPage,
+                  totalElements: pagination.totalElements,
+                  onPageChanged: (page) => cubit.onPageChanged(page),
+                  onPageSizeChanged: (size) => cubit.onPageSizeChanged(size),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        );
+      },
       ),
     );
   }

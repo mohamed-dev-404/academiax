@@ -17,7 +17,7 @@ class GradeColumnModel {
     return GradeColumnModel(
       key: json[ApiKeys.key] as String,
       name: json[ApiKeys.name] as String,
-      points: json[ApiKeys.points] as int?,
+      points: json[ApiKeys.points] as num?,
       isVisible: json[ApiKeys.isVisible] as bool?,
     );
   }

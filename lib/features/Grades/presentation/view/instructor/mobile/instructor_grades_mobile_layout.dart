@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sams_app/core/helper/app_toast.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
-import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/Grades/data/mock/mock_instructor_grades.dart';
 import 'package:sams_app/features/Grades/data/model/instructor_grades/grade_column_model.dart';
-import 'package:sams_app/features/Grades/data/model/instructor_grades/grade_row_model.dart';
-import 'package:sams_app/features/Grades/presentation/view/widget/shared/grades_empty_state.dart';
-import 'package:sams_app/features/Grades/presentation/view/instructor/mobile/widget/grades_import_export_bar.dart';
+import 'package:sams_app/features/Grades/presentation/view/widget/shared/grade_error_widget.dart';
+import 'package:sams_app/features/Grades/presentation/view/instructor/mobile/widget/grades_export_bar.dart';
 import 'package:sams_app/features/Grades/presentation/view/instructor/mobile/widget/instructor_grades_mobile_top_bar.dart';
-import 'package:sams_app/features/Grades/presentation/view/instructor/mobile/widget/instructor_student_grade_card.dart';
+import 'package:sams_app/features/Grades/presentation/view_model/grade_cubit/grade_cubit.dart';
+
+import 'package:sams_app/features/Grades/presentation/view/instructor/mobile/widget/instructor_grades_mobile_cards_content.dart';
 
 /// ═══════════════════════════════════════════════════════════════
 /// INSTRUCTOR — MOBILE LAYOUT
@@ -26,141 +27,163 @@ class InstructorGradesMobileLayout extends StatefulWidget {
 
 class _InstructorGradesMobileLayoutState
     extends State<InstructorGradesMobileLayout> {
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-  int _displayedCount = 10;
+  // ─── Local UI State (column visibility filter only) ───
   String _visibilityFilter = 'All';
 
   // Column visibility map
-  late Map<String, bool> _columnVisibility;
+  Map<String, bool> _columnVisibility = {};
 
-  @override
-  void initState() {
-    super.initState();
-    _columnVisibility = MockInstructorGrades.response.columnVisibility;
-  }
+  // ─── Optimistic toggle tracking ───
+  String? _lastToggledKey;
+  bool? _lastToggledOldValue;
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
+  // ─── Computed Data ───
 
   /// Delegates column filtering to the model.
-  List<GradeColumnModel> get _filteredGradeColumns =>
-      MockInstructorGrades.response.filteredGradeColumns(
-        visibilityFilter: _visibilityFilter,
-      );
-
-  /// Filtered rows.
-  List<GradeRowModel> get _filteredRows {
-    if (_searchQuery.isEmpty) return MockInstructorGrades.rows;
-    final query = _searchQuery.toLowerCase();
-    return MockInstructorGrades.rows.where((row) {
-      return row.student.name.toLowerCase().contains(query) ||
-          row.student.academicId.toLowerCase().contains(query);
-    }).toList();
-  }
-
-  /// Displayed rows (Lazy loading simulation).
-  List<GradeRowModel> get _displayedRows {
-    if (_displayedCount >= _filteredRows.length) return _filteredRows;
-    return _filteredRows.sublist(0, _displayedCount);
+  List<GradeColumnModel> _filteredGradeColumns(GradeCubit cubit) {
+    final response = cubit.instructorGrades;
+    if (response == null) return [];
+    return response.filteredGradeColumns(
+      visibilityFilter: _visibilityFilter,
+      currentVisibility: _columnVisibility,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          // ─── Top Bar ───
-          InstructorGradesMobileTopBar(
-            searchController: _searchController,
-            onSearchChanged: (query) => setState(() {
-              _searchQuery = query;
-              _displayedCount = 10;
-            }),
-            visibilityFilter: _visibilityFilter,
-            onFilterChanged: (filter) => setState(() {
-              _visibilityFilter = filter;
-              _displayedCount = 10;
-            }),
-            gradeColumns: MockInstructorGrades.response.gradeColumns,
-            columnVisibility: _columnVisibility,
-            onColumnVisibilityToggled: (key, isVis) {
-              setState(() {
-                _columnVisibility[key] = isVis;
-              });
-            },
-          ),
+    final cubit = context.read<GradeCubit>();
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: GradesImportExportBar(
-              courseId: widget.courseId,
-              onImport: () {},
+    return BlocListener<GradeCubit, GradeState>(
+      listenWhen: (prev, curr) =>
+          curr is ToggleClassworkVisibilitySuccess ||
+          curr is ToggleClassworkVisibilityFailed,
+      listener: (context, state) {
+        if (state is ToggleClassworkVisibilitySuccess) {
+          AppToast.success(context, 'Visibility updated successfully');
+        } else if (state is ToggleClassworkVisibilityFailed) {
+          // Revert the optimistic UI change
+          if (_lastToggledKey != null && _lastToggledOldValue != null) {
+            setState(() {
+              _columnVisibility[_lastToggledKey!] = _lastToggledOldValue!;
+            });
+          }
+          AppToast.error(context, state.errorMessage);
+        }
+      },
+      child: BlocBuilder<GradeCubit, GradeState>(
+      buildWhen: (prev, curr) =>
+          curr is GradeLoading ||
+          curr is GradeLoadedSuccessfully ||
+          curr is GradeLoadingFailed,
+      builder: (context, state) {
+        // ─── Full Loading (initial load) ───
+        if (state is GradeLoading) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(64),
+              child: CircularProgressIndicator(color: AppColors.primary),
             ),
-          ),
+          );
+        }
 
-          // ─── Student Cards ───
-          if (_filteredRows.isEmpty)
-            const Padding(
-              padding: EdgeInsets.only(top: 32),
-              child: GradesEmptyState(
-                title: 'No students found',
-                subtitle: 'Try a different search query',
+        // ─── Error State ───
+        if (state is GradeLoadingFailed) {
+          return GradeErrorWidget(
+            errorMessage: state.errorMessage,
+            onRetry: () => cubit.getGradesForInstructor(),
+          );
+        }
+
+        // ─── Loaded State ───
+        final grades = cubit.instructorGrades;
+        if (grades == null) return const SizedBox.shrink();
+
+        // Initialize column visibility from server data on first load
+        if (_columnVisibility.isEmpty) {
+          _columnVisibility = Map<String, bool>.from(grades.columnVisibility);
+        }
+
+        final rows = grades.rows;
+        final filteredCols = _filteredGradeColumns(cubit);
+        final pagination = grades.pagination;
+
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              // ─── Top Bar ───
+              InstructorGradesMobileTopBar(
+                searchController: cubit.searchController,
+                onSearchSubmitted: () => cubit.onSearch(),
+                visibilityFilter: _visibilityFilter,
+                onFilterChanged: (filter) => setState(() {
+                  _visibilityFilter = filter;
+                }),
+                gradeColumns: grades.gradeColumns,
+                columnVisibility: _columnVisibility,
+                onColumnVisibilityToggled: (key, isVis) {
+                  _lastToggledKey = key;
+                  _lastToggledOldValue = !isVis;
+                  setState(() {
+                    _columnVisibility[key] = isVis;
+                  });
+                },
               ),
-            )
-          else
-            Column(
-              children: [
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  itemCount: _displayedRows.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 10),
-                  itemBuilder: (context, index) {
-                    return InstructorStudentGradeCard(
-                      row: _displayedRows[index],
-                      gradeColumns: _filteredGradeColumns,
-                    );
-                  },
+
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
                 ),
-                if (_displayedCount < _filteredRows.length)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24),
-                    child: OutlinedButton(
-                      onPressed: () {
-                        setState(() {
-                          _displayedCount += 10;
-                        });
-                      },
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.primary,
-                        side: const BorderSide(color: AppColors.primary),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 12,
-                        ),
-                      ),
-                      child: Text(
-                        'Load More',
-                        style: AppStyles.mobileBodySmallMd,
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 24),
-              ],
-            ),
-        ],
-      ),
+                child: GradesExportBar(
+                  courseId: widget.courseId,
+                ),
+              ),
+
+              // ─── Student Cards Section (rebuilds on GradeTableLoading) ───
+              BlocBuilder<GradeCubit, GradeState>(
+                buildWhen: (prev, curr) =>
+                    curr is GradeTableLoading ||
+                    curr is GradeLoadedSuccessfully ||
+                    curr is GradeLoadingFailed,
+                builder: (context, tableState) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    switchInCurve: Curves.easeInOut,
+                    switchOutCurve: Curves.easeInOut,
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    child: tableState is GradeTableLoading
+                        ? const SizedBox(
+                            key: ValueKey('cards_loading'),
+                            height: 200,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.primary,
+                                strokeWidth: 2.5,
+                              ),
+                            ),
+                          )
+                        : InstructorGradesMobileCardsContent(
+                            key: ValueKey(
+                              '${pagination.currentPage}_${pagination.size}_${cubit.searchController.text}',
+                            ),
+                            rows: rows,
+                            filteredCols: filteredCols,
+                            pagination: pagination,
+                            cubit: cubit,
+                          ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    ),
     );
   }
 }

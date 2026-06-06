@@ -47,16 +47,20 @@ class GradeResponseModel {
       };
 
   /// Filters [gradeColumns] based on a [visibilityFilter] string ('all' | 'visible' | 'hidden').
-  /// Visibility is resolved from the [columnVisibility] getter on this model.
-  List<GradeColumnModel> filteredGradeColumns({required String visibilityFilter}) {
+  /// Visibility is resolved from the [currentVisibility] map if provided, otherwise falls back to [columnVisibility].
+  List<GradeColumnModel> filteredGradeColumns({
+    required String visibilityFilter,
+    Map<String, bool>? currentVisibility,
+  }) {
+    final visibilityMap = currentVisibility ?? columnVisibility;
     switch (visibilityFilter.toLowerCase()) {
       case 'visible':
         return gradeColumns
-            .where((c) => columnVisibility[c.key] == true)
+            .where((c) => visibilityMap[c.key] == true)
             .toList();
       case 'hidden':
         return gradeColumns
-            .where((c) => columnVisibility[c.key] != true)
+            .where((c) => visibilityMap[c.key] != true)
             .toList();
       default:
         return gradeColumns;

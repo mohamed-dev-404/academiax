@@ -136,6 +136,7 @@ class InstructorGradesWebTable extends StatelessWidget {
                   context: context,
                   columnName: col.name,
                   currentlyVisible: isVisible,
+                  classworkId: col.key,
                 );
                 if (confirmed) {
                   onVisibilityChanged(col.key, !isVisible);

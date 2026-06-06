@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
-import 'package:sams_app/features/Grades/presentation/view/instructor/shared/action_button.dart';
 import 'package:sams_app/features/Grades/presentation/view/instructor/shared/export_excel_button.dart';
 
 /// Reusable filter bar for the instructor grades view.
@@ -15,7 +14,6 @@ class GradesFilterBar extends StatelessWidget {
     required this.visibilityFilter,
     required this.onVisibilityFilterChanged,
     required this.courseId,
-    this.onImport,
   });
 
   final TextEditingController searchController;
@@ -23,7 +21,6 @@ class GradesFilterBar extends StatelessWidget {
   final String visibilityFilter; // 'all', 'visible', 'hidden'
   final ValueChanged<String> onVisibilityFilterChanged;
   final String courseId;
-  final VoidCallback? onImport;
 
   @override
   Widget build(BuildContext context) {
@@ -56,18 +53,9 @@ class GradesFilterBar extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
 
-          //* Row 2: Import / Export buttons
+          //* Row 2: Export Button
           Row(
-            children: [
-              ExportExcelButton(courseId: courseId),
-              SizedBox(width: 8.w),
-              ActionButton(
-                label: 'Import Excel',
-                icon: Icon(Icons.file_upload_outlined, size: 18..clamp(16, 20)),
-                color: AppColors.secondary,
-                onPressed: onImport,
-              ),
-            ],
+            children: [ExportExcelButton(courseId: courseId)],
           ),
         ],
       ),
@@ -199,6 +187,15 @@ class _SearchField extends StatelessWidget {
           Icons.search_rounded,
           color: AppColors.primary,
           size: 20.sp.clamp(18, 22),
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(
+            Icons.search_rounded,
+            color: AppColors.primary,
+            size: 20.sp.clamp(18, 22),
+          ),
+          tooltip: 'Search',
+          onPressed: () => onSubmitted(controller.text),
         ),
         filled: true,
         fillColor: AppColors.whiteLight,

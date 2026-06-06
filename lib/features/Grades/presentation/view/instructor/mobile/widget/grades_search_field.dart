@@ -9,13 +9,13 @@ class GradesSearchField extends StatelessWidget {
     super.key,
     required this.controller,
     this.onSubmitted,
-    this.onChanged,
+    this.onSearchTap,
     this.hintText = 'Search by name or ID...',
   });
 
   final TextEditingController controller;
   final ValueChanged<String>? onSubmitted;
-  final ValueChanged<String>? onChanged;
+  final VoidCallback? onSearchTap;
   final String hintText;
 
   @override
@@ -23,7 +23,6 @@ class GradesSearchField extends StatelessWidget {
     return TextField(
       controller: controller,
       onSubmitted: onSubmitted,
-      onChanged: onChanged,
       textInputAction: TextInputAction.search,
       style: AppStyles.mobileBodySmallRg.copyWith(
         color: AppColors.primaryDark,
@@ -38,19 +37,15 @@ class GradesSearchField extends StatelessWidget {
           color: AppColors.primary,
           size: 20.sp.clamp(18, 22),
         ),
-        suffixIcon: controller.text.isNotEmpty
-            ? IconButton(
-                icon: Icon(
-                  Icons.close_rounded,
-                  color: AppColors.whiteDarkHover,
-                  size: 18.sp.clamp(16, 20),
-                ),
-                onPressed: () {
-                  controller.clear();
-                  onChanged?.call('');
-                },
-              )
-            : null,
+        suffixIcon: IconButton(
+          icon: Icon(
+            Icons.search_rounded,
+            color: AppColors.primary,
+            size: 20.sp.clamp(18, 22),
+          ),
+          tooltip: 'Search',
+          onPressed: onSearchTap,
+        ),
         filled: true,
         fillColor: AppColors.whiteLight,
         contentPadding: EdgeInsets.symmetric(

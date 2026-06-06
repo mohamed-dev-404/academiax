@@ -114,5 +114,4 @@ class EndPoints {
   /// endpoint to toggle classwork visibility
   /// Needs [courseId] and [classworkId] to be passed in the URL.
   static String toggleClassworkVisibility({required String courseId, required String classworkId}) => 'instructor/courses/$courseId/classworks/$classworkId/toggle-visibility';
-
 }

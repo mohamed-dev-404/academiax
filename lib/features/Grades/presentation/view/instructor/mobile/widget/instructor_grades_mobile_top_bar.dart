@@ -10,7 +10,7 @@ class InstructorGradesMobileTopBar extends StatefulWidget {
   const InstructorGradesMobileTopBar({
     super.key,
     required this.searchController,
-    required this.onSearchChanged,
+    required this.onSearchSubmitted,
     required this.visibilityFilter,
     required this.onFilterChanged,
     required this.gradeColumns,
@@ -19,7 +19,7 @@ class InstructorGradesMobileTopBar extends StatefulWidget {
   });
 
   final TextEditingController searchController;
-  final ValueChanged<String> onSearchChanged;
+  final VoidCallback onSearchSubmitted;
   final String visibilityFilter;
   final ValueChanged<String> onFilterChanged;
   final List<GradeColumnModel> gradeColumns;
@@ -68,7 +68,8 @@ class _InstructorGradesMobileTopBarState
           // Search
           GradesSearchField(
             controller: widget.searchController,
-            onChanged: widget.onSearchChanged,
+            onSubmitted: (_) => widget.onSearchSubmitted(),
+            onSearchTap: widget.onSearchSubmitted,
             hintText: 'Search students...',
           ),
           const SizedBox(height: 12),
@@ -106,6 +107,7 @@ class _InstructorGradesMobileTopBarState
               context: context,
               columnName: col.name,
               currentlyVisible: isVis,
+              classworkId: col.key,
             );
             if (confirmed && mounted) {
               widget.onColumnVisibilityToggled(col.key, !isVis);

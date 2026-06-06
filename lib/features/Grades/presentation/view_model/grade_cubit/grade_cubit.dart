@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_app/core/enums/enum_user_role.dart';
 import 'package:sams_app/features/Grades/data/model/instructor_grades/grade_response_model.dart';
@@ -11,17 +12,22 @@ class GradeCubit extends Cubit<GradeState> {
   GradeCubit(this._repo) : super(GradeInitial());
   final GradeRepo _repo;
 
-  //* This variable will hold the course ID for which grades are being managed.
+  //? This variable will hold the course ID for which grades are being managed.
   // It will updated when call getGrades() method with the courseId parameter.
   String storedCourseId = '';
 
-  //* This list will hold the grades data for students.
+  //? This list will hold the grades data for students.
   //It can be updated when fetching grades from the repository.
   List<StudentGradeModel> studentGrades = [];
 
-  //* This variable will hold the grades data for instructors.
+  //? This variable will hold the grades data for instructors.
   // It can be updated when fetching grades from the repository.
   GradeResponseModel? instructorGrades;
+
+  //? Pagination and search state variables for managing grade data retrieval.
+  int currentPage = 1;
+  int perPage = 10;
+  TextEditingController searchController = TextEditingController();
 
   ///* Fetches grades based on the current user's role (instructor or student).
   Future<void> getGrades({required String courseId}) async {
@@ -38,12 +44,57 @@ class GradeCubit extends Cubit<GradeState> {
 
   //* Fetches grades for instructors.
   Future<void> getGradesForInstructor() async {
-    // Implement logic to load grades for the instructor
+    if (instructorGrades == null) {
+      emit(GradeLoading());
+    } else {
+      emit(GradeTableLoading());
+    }
+
+    var result = await _repo.getAllGrades(
+      courseId: storedCourseId,
+      page: currentPage,
+      perPage: perPage,
+      search: searchController.text,
+    );
+
+    result.fold(
+      (failure) => emit(GradeLoadingFailed(failure)),
+      (gradesData) {
+        instructorGrades = gradesData;
+        emit(GradeLoadedSuccessfully());
+      },
+    );
   }
 
-  // * Toggles the visibility of classwork grades for instructors.
-  Future<void> toggleClassworkVisiability() async {
-    // Implement logic to toggle the visibility of classwork grades
+  /// Called from UI when the user triggers a search (search icon tap / submit).
+  void onSearch() {
+    currentPage = 1; // reset to first page on new search
+    getGradesForInstructor();
+  }
+
+  /// Called from UI when the user changes the current page.
+  void onPageChanged(int page) {
+    currentPage = page;
+    getGradesForInstructor();
+  }
+
+  /// Called from UI when the user changes page size (rows per page).
+  void onPageSizeChanged(int size) {
+    perPage = size;
+    currentPage = 1; // reset to first page on page size change
+    getGradesForInstructor();
+  }
+
+  //* Toggles the visibility of classwork grades for instructors.
+  Future<void> toggleClassworkVisiability({required String classworkId}) async {
+    var result = await _repo.toggleClassworkVisibility(
+      courseId: storedCourseId,
+      classworkId: classworkId,
+    );
+    result.fold(
+      (failureMessage) => emit(ToggleClassworkVisibilityFailed(failureMessage)),
+      (_) => emit(ToggleClassworkVisibilitySuccess(classworkId)),
+    );
   }
 
   //* Fetches grades for students.

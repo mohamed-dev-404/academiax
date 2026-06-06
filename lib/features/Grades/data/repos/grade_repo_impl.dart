@@ -36,6 +36,11 @@ class GradeRepoImpl implements GradeRepo {
   }
 
   /// get all grades for a specific course. required [courseId] & optional [search], [page], [perPage]
+  /// [courseId] -> The identifier of the course.
+  /// [page] -> The current page number.
+  /// [perPage] -> The number of items per page.
+  /// [search] -> The search query.
+  /// Returns [Right(GradeResponseModel)] on success, [Left(errorMessage)] on failure.
   @override
   Future<Either<String, GradeResponseModel>> getAllGrades({
     required String courseId,
@@ -81,6 +86,30 @@ class GradeRepoImpl implements GradeRepo {
       return Left(e.errorModel.errorMessage); // failure case
     } catch (e) {
       return Left(e.toString()); // failure case
+    }
+  }
+
+  /// Toggles the visibility of a specific classwork for all students in a course.
+  /// [courseId] -> The identifier of the course.
+  /// [classworkId] -> The identifier of the classwork to toggle visibility for.
+  /// Returns [Right(null)] on success, [Left(errorMessage)] on failure.
+  @override
+  Future<Either<String, void>> toggleClassworkVisibility({
+    required String courseId,
+    required String classworkId,
+  }) async {
+    try {
+      await api.patch(
+        EndPoints.toggleClassworkVisibility(
+          courseId: courseId,
+          classworkId: classworkId,
+        ),
+      );
+      return const Right(null);
+    } on ApiException catch (e) {
+      return Left(e.errorModel.errorMessage);
+    } catch (e) {
+      return Left(e.toString());
     }
   }
 }

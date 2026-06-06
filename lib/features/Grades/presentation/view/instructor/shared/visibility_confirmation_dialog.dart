@@ -1,23 +1,33 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
+import 'package:sams_app/features/Grades/presentation/view_model/grade_cubit/grade_cubit.dart';
 
 class VisibilityConfirmationDialog extends StatefulWidget {
   const VisibilityConfirmationDialog({
     super.key,
     required this.columnName,
     required this.currentlyVisible,
+    required this.classworkId,
   });
 
   final String columnName;
   final bool currentlyVisible;
+  final String classworkId;
 
   static Future<bool> show({
     required BuildContext context,
     required String columnName,
     required bool currentlyVisible,
+    required String classworkId,
   }) async {
+    // Capture the cubit from the caller's context (where the provider exists)
+    // BEFORE showGeneralDialog, since the dialog's overlay route is outside
+    // the original widget tree and can't inherit the provider.
+    final gradeCubit = context.read<GradeCubit>();
+
     final result = await showGeneralDialog<bool>(
       context: context,
       barrierDismissible: true,
@@ -25,9 +35,13 @@ class VisibilityConfirmationDialog extends StatefulWidget {
       barrierColor: AppColors.black.withValues(alpha: 0.4),
       transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (context, animation, secondaryAnimation) {
-        return VisibilityConfirmationDialog(
-          columnName: columnName,
-          currentlyVisible: currentlyVisible,
+        return BlocProvider.value(
+          value: gradeCubit,
+          child: VisibilityConfirmationDialog(
+            columnName: columnName,
+            currentlyVisible: currentlyVisible,
+            classworkId: classworkId,
+          ),
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -198,7 +212,12 @@ class _VisibilityConfirmationDialogState
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(true),
+                      onPressed: () {
+                        context.read<GradeCubit>().toggleClassworkVisiability(
+                          classworkId: widget.classworkId,
+                        );
+                        Navigator.of(context).pop(true);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
