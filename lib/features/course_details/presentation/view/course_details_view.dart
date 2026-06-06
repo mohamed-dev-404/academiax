@@ -9,7 +9,6 @@ import 'package:sams_app/features/grades/presentation/view_model/grade_cubit/gra
 import 'package:sams_app/features/announcements/presentation/view/announcement_tab_view/announcements_tab_view.dart';
 import 'package:sams_app/features/announcements/presentation/view_model/cubit/announcements_fetch/announcements_fetch_cubit.dart';
 import 'package:sams_app/features/assignments/presentation/view/assignments_tab_view.dart';
-import 'package:sams_app/features/course_code/presentation/view/course_code_tab_view.dart';
 import 'package:sams_app/features/course_details/presentation/view/widget/mobile/tab_bar_mobile_layout.dart';
 import 'package:sams_app/features/course_details/presentation/view/widget/web/tab_bar_web_layout.dart';
 import 'package:sams_app/features/course_details/presentation/view_models/course_navigation/course_navigation_cubit.dart';
@@ -17,7 +16,6 @@ import 'package:sams_app/features/live_sessions/presentation/view/live_sessions_
 import 'package:sams_app/features/materials/presentation/view/material_tab_view/materials_tab_view.dart';
 import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_cubit.dart';
 import 'package:sams_app/features/materials/presentation/view_model/cubits/material_fetch/material_fetch_cubit.dart';
-import 'package:sams_app/features/members_list/presentation/view/members_list_tab_view.dart';
 import 'package:sams_app/features/quizzes/data/repos/quiz_repository.dart';
 import 'package:sams_app/features/quizzes/presentation/view/quiz_tab/quizzes_tab_view.dart';
 import 'package:sams_app/features/quizzes/presentation/view_model/get_all_quizes_cubit/get_all_quizes_cubit.dart';
@@ -79,6 +77,7 @@ class CourseDetailsView extends StatelessWidget {
         child: AnnouncementsTabView(courseId: courseId),
       ),
 
+      //* Grades
       'Grades': BlocProvider(
         create: (context) => getIt<GradeCubit>()..getGrades(courseId: courseId),
         child: GradesTabView(courseId: courseId),
@@ -93,10 +92,6 @@ class CourseDetailsView extends StatelessWidget {
       ),
 
       'Live Sessions': LiveSessionsTabView(courseId: courseId),
-
-      'Course Code': CourseCodeTabView(courseId: courseId),
-
-      'Members List': MembersListTabView(courseId: courseId),
     };
 
     // Return only the tabs that are visible for the current role,

@@ -30,14 +30,11 @@ class CourseNavigationCubit extends Cubit<int> {
     CourseTabItem(title: 'Grades'),
     CourseTabItem(title: 'Quizzes'),
     CourseTabItem(title: 'Live Sessions'),
-    CourseTabItem(title: 'Course Code'),
-    CourseTabItem(title: 'Members List'),
+    // CourseTabItem(title: 'Course Code'),
+    // CourseTabItem(title: 'Members List'),
   ];
 
   List<CourseTabItem> get visibleTabs {
-    if (userRole == UserRole.student) {
-      return _allTabs.where((tab) => tab.title != 'Members List').toList();
-    }
     return _allTabs;
   }
 
