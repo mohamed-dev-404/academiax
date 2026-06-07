@@ -77,7 +77,6 @@ class _AssignmentSubmissionMobileLayoutState
   Widget build(BuildContext context) {
     return BlocListener<AssignmentSubmissionCubit, AssignmentSubmissionState>(
       listener: (context, state) {
-
         /// ================= APPROVE ALL SUCCESS =================
         /// Show success message + refresh list silently
         if (state is ApproveAllSuccess) {
@@ -122,11 +121,8 @@ class _AssignmentSubmissionMobileLayoutState
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
 
-          child: BlocBuilder<
-              AssignmentSubmissionCubit,
-              AssignmentSubmissionState>(
+          child: BlocBuilder<AssignmentSubmissionCubit, AssignmentSubmissionState>(
             builder: (context, state) {
-
               /// Holds current UI-safe data to prevent flickering
               dynamic displayData;
 
@@ -142,8 +138,7 @@ class _AssignmentSubmissionMobileLayoutState
 
               /// ================= INITIAL LOADING =================
               /// Show loader only if no cached data exists
-              if (state is SubmissionsLoading &&
-                  displayData == null) {
+              if (state is SubmissionsLoading && displayData == null) {
                 return const Center(
                   child: AppAnimatedLoadingIndicator(),
                 );
@@ -151,8 +146,7 @@ class _AssignmentSubmissionMobileLayoutState
 
               /// ================= FAILURE STATE =================
               /// Show error only when no data is available
-              if (state is SubmissionsFailure &&
-                  displayData == null) {
+              if (state is SubmissionsFailure && displayData == null) {
                 return const Center(
                   child: Text('Failed to load submissions'),
                 );
@@ -165,8 +159,7 @@ class _AssignmentSubmissionMobileLayoutState
               }
 
               /// Extract full submissions list
-              final List<AssSubmissionModel> allList =
-                  displayData.submissions;
+              final List<AssSubmissionModel> allList = displayData.submissions;
 
               /// Split submissions into categories
               final gradedList = allList
@@ -180,7 +173,6 @@ class _AssignmentSubmissionMobileLayoutState
               return CustomScrollView(
                 controller: scrollController,
                 slivers: [
-
                   /// ================= HEADER SECTION =================
                   /// Page title + animation banner
                   SliverToBoxAdapter(
@@ -195,7 +187,11 @@ class _AssignmentSubmissionMobileLayoutState
                       ),
                       child: Column(
                         children: [
-                          Lottie.asset(AppLottie.quizSubmissions),
+                          Lottie.asset(
+                            AppLottie.assignmentSubmission,
+                            width: 150,
+                            height: 150,
+                          ),
                           const SizedBox(height: 8),
                           Text(
                             'Submissions Overview',
@@ -235,10 +231,8 @@ class _AssignmentSubmissionMobileLayoutState
                         ],
                       ),
                     )
-
                   /// ================= DATA STATE =================
                   else ...[
-
                     /// ---------- NEEDS REVIEW SECTION ----------
                     if (neddedReviewList.isNotEmpty) ...[
                       SliverToBoxAdapter(
@@ -268,25 +262,27 @@ class _AssignmentSubmissionMobileLayoutState
                     /// ================= PAGINATION LOADING =================
                     /// Shows loading indicator when fetching next page
                     SliverToBoxAdapter(
-                      child: BlocBuilder<
-                          AssignmentSubmissionCubit,
-                          AssignmentSubmissionState>(
-                        builder: (context, state) {
-                          final cubit = context
-                              .read<AssignmentSubmissionCubit>();
+                      child:
+                          BlocBuilder<
+                            AssignmentSubmissionCubit,
+                            AssignmentSubmissionState
+                          >(
+                            builder: (context, state) {
+                              final cubit = context
+                                  .read<AssignmentSubmissionCubit>();
 
-                          if (cubit.isLoadingMore) {
-                            return const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 20),
-                              child: Center(
-                                child: AppAnimatedLoadingIndicator(),
-                              ),
-                            );
-                          }
+                              if (cubit.isLoadingMore) {
+                                return const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+                                  child: Center(
+                                    child: AppAnimatedLoadingIndicator(),
+                                  ),
+                                );
+                              }
 
-                          return const SizedBox.shrink();
-                        },
-                      ),
+                              return const SizedBox.shrink();
+                            },
+                          ),
                     ),
 
                     /// ================= APPROVE ALL BUTTON =================
@@ -308,11 +304,9 @@ class _AssignmentSubmissionMobileLayoutState
                                 /// Trigger bulk approval action
                                 onTap: () {
                                   context
-                                      .read<
-                                          AssignmentSubmissionCubit>()
+                                      .read<AssignmentSubmissionCubit>()
                                       .approveAllSubmissions(
-                                        assignmentId:
-                                            widget.assignmentId,
+                                        assignmentId: widget.assignmentId,
                                       );
                                 },
                               ),
