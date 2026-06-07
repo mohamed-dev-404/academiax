@@ -5,7 +5,6 @@ import 'package:sams_app/core/utils/configs/size_config.dart';
 import 'package:sams_app/core/utils/styles/app_styles.dart';
 
 class HeaderSection extends StatelessWidget {
-  
   const HeaderSection({super.key});
 
   @override
@@ -49,7 +48,7 @@ class HeaderSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-               'NEW ASSIGNMENT',
+              'NEW ASSIGNMENT',
               style: AppStyles.mobileBodyXsmallRg.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -62,7 +61,7 @@ class HeaderSection extends StatelessWidget {
 
           // * ──────────────────── Title ────────────────────
           Text(
-             'Create New Quiz',
+            'Create New Assignment',
             style: AppStyles.mobileTitleMediumSb.copyWith(
               color: Colors.white,
               fontSize: 24,
@@ -73,7 +72,7 @@ class HeaderSection extends StatelessWidget {
 
           // * ──────────────────── Description ────────────────────
           Text(
-           'Fill in the details to set up a new assessment for your class.',
+            'Fill in the details to set up a new assessment for your class.',
             style: AppStyles.mobileBodySmallRg.copyWith(
               color: AppColors.whiteLight.withValues(alpha: 0.8),
             ),
