@@ -1,0 +1,40 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - run: flutter pub get
+
+      - run: flutter build web --release
+
+      - run: npm install --global vercel
+
+      - run: |
+          vercel pull \
+          --yes \
+          --environment=production \
+          --token=${{ secrets.VERCEL_TOKEN }}
+
+      - run: |
+          vercel build \
+          --prod \
+          --token=${{ secrets.VERCEL_TOKEN }}
+
+      - run: |
+          vercel deploy \
+          --prebuilt \
+          --prod \
+          --token=${{ secrets.VERCEL_TOKEN }}
