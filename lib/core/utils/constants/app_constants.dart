@@ -3,7 +3,7 @@ class AppConstants {
 
   //? Base URL
   static String get baseUrl =>
-      'https://sams-api.uaenorth.cloudapp.azure.com/api/v1';
+      'https://sams-api.uaenorth.cloudapp.azure.com/api/v1/';
 
   static const int maxSizeUploadPic = 5 * 1024 * 1024;
   static const String googleDocUrl =
