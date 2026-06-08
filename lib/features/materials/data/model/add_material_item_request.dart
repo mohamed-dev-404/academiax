@@ -7,6 +7,6 @@ class AddMaterialItemsRequest {
   AddMaterialItemsRequest({required this.materialItems});
 
   Map<String, dynamic> toJson() => {
-    ApiKeys.materialItems : materialItems.map((e) => e.toJson()).toList(),
+    ApiKeys.materialItems: materialItems.map((e) => e.toJson()).toList(),
   };
 }

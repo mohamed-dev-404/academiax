@@ -5,17 +5,18 @@ import 'package:sams_app/features/announcements/presentation/view/announcement_d
 import 'package:sams_app/features/announcements/presentation/view/announcement_details/widget/shared/comments_section.dart';
 
 class AnnouncementDetailsMobileViewBody extends StatelessWidget {
-  const AnnouncementDetailsMobileViewBody({super.key, required this.announcementId,});
+  const AnnouncementDetailsMobileViewBody({
+    super.key,
+    required this.announcementId,
+  });
   final String announcementId;
   // final String courseId;
   @override
   Widget build(BuildContext context) {
-    return    Column(
+    return Column(
       children: [
-        const MobileHeaderSection(
-      
-        ),
-         const Expanded(
+        const MobileHeaderSection(),
+        const Expanded(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -30,22 +31,10 @@ class AnnouncementDetailsMobileViewBody extends StatelessWidget {
             ),
           ),
         ),
-        AddCommentBar(announcementId: announcementId,),
+        AddCommentBar(
+          announcementId: announcementId,
+        ),
       ],
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

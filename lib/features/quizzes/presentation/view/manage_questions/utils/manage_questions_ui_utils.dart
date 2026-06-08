@@ -23,8 +23,6 @@ class ManageQuestionsUiUtils {
     }
   }
 
-
-
   static String getBadgeLabel(QuizMode mode) {
     switch (mode) {
       case QuizMode.draft:

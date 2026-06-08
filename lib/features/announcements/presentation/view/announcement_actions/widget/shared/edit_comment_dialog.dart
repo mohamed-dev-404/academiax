@@ -11,9 +11,10 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/co
 import 'package:sams_app/features/announcements/presentation/view_model/cubit/comment_actions/comment_actions_state.dart';
 
 class EditCommentDialog extends StatefulWidget {
-  final CommentDetails comment;  // The existing comment model to be edited
-  final String? announcementId;  // ID needed to refresh data after success
-  final AnnouncementsFetchCubit fetchCubit;  // Reference to the cubit that fetches UI data
+  final CommentDetails comment; // The existing comment model to be edited
+  final String? announcementId; // ID needed to refresh data after success
+  final AnnouncementsFetchCubit
+  fetchCubit; // Reference to the cubit that fetches UI data
 
   const EditCommentDialog({
     super.key,
@@ -44,7 +45,9 @@ class _EditCommentDialogState extends State<EditCommentDialog> {
   @override
   Widget build(BuildContext context) {
     // Dynamic width calculation for Responsiveness (Desktop/Web vs Mobile)
-    double dialogWidth = MediaQuery.of(context).size.width > 600 ? 450 : MediaQuery.of(context).size.width;
+    double dialogWidth = MediaQuery.of(context).size.width > 600
+        ? 450
+        : MediaQuery.of(context).size.width;
 
     return BlocConsumer<CommentActionsCubit, CommentActionsState>(
       listener: (context, state) {
@@ -71,7 +74,9 @@ class _EditCommentDialogState extends State<EditCommentDialog> {
         return AlertDialog(
           scrollable: true,
           backgroundColor: AppColors.whiteLight,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
           title: const Center(child: Text('Edit Comment')),
           titleTextStyle: AppStyles.mobileTitleMediumSb.copyWith(
             color: AppColors.primaryDarkHover,
@@ -139,9 +144,9 @@ class _EditCommentDialogState extends State<EditCommentDialog> {
     final content = _controller.text.trim();
     if (content.isNotEmpty && content != widget.comment.content) {
       context.read<CommentActionsCubit>().updateComment(
-            commentId: widget.comment.id,
-            content: content,
-          );
+        commentId: widget.comment.id,
+        content: content,
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

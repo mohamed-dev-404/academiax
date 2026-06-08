@@ -246,7 +246,7 @@ final List<StudentSubmissionModel> mockSubmissionDetails = [
   ),
   const StudentSubmissionModel(
     id: '69c00b00c02d96d94370043c',
-    text: "Explain the purpose of Middleware in an Express.js application.",
+    text: 'Explain the purpose of Middleware in an Express.js application.',
     questionType: 'WRITTEN',
     timeLimit: 500,
     points: 10,
@@ -257,7 +257,7 @@ final List<StudentSubmissionModel> mockSubmissionDetails = [
   ),
   const StudentSubmissionModel(
     id: '69c00b00c02d96d94370043d',
-    text: "What is the difference between final and const in Dart?",
+    text: 'What is the difference between final and const in Dart?',
     questionType: 'WRITTEN',
     timeLimit: 60,
     points: 4,
@@ -305,7 +305,7 @@ final List<StudentSubmissionModel> mockSubmissionDetails = [
   ),
   const StudentSubmissionModel(
     id: '69c00b00c02d96d943700443',
-    text: "Flutter uses Skia as its primary 2D rendering engine.",
+    text: 'Flutter uses Skia as its primary 2D rendering engine.',
     questionType: 'TRUE_FALSE',
     timeLimit: 30,
     points: 5,

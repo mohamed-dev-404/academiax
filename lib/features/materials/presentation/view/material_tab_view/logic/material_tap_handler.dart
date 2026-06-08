@@ -102,30 +102,38 @@ class MaterialTabHandler {
     cubit.fetchMaterialDetails(materialId: material.id);
 
     //* 4. STATE OBSERVER: React to the API response through the Bloc stream
-    cubit.stream.firstWhere(
-      (state) => state is MaterialFetchDetailsSuccess || state is MaterialDetailsFetchFailure,
-    ).timeout(
-      const Duration(seconds: 15),
-      onTimeout: () => MaterialDetailsFetchFailure('Connection Timeout'),
-    ).then((state) {
-      //* 5. CLEANUP: Safely dismiss the loading overlay using its own context
-      if (dialogContext != null && dialogContext!.mounted) {
-        Navigator.of(dialogContext!).pop();
-      }
+    cubit.stream
+        .firstWhere(
+          (state) =>
+              state is MaterialFetchDetailsSuccess ||
+              state is MaterialDetailsFetchFailure,
+        )
+        .timeout(
+          const Duration(seconds: 15),
+          onTimeout: () => MaterialDetailsFetchFailure('Connection Timeout'),
+        )
+        .then((state) {
+          //* 5. CLEANUP: Safely dismiss the loading overlay using its own context
+          if (dialogContext != null && dialogContext!.mounted) {
+            Navigator.of(dialogContext!).pop();
+          }
 
-      //* 6. FINALIZATION: Ensure the parent view is still active before navigating
-      if (context.mounted) {
-        if (state is MaterialFetchDetailsSuccess) {
-          MaterialsNavigationHandler.navigateToEditMaterial(
-            context,
-            courseId: courseId,
-            material: state.material,
-          );
-        } else {
-          AppSnackBar.error(context, 'Data synchronization failed. Please try again.'); 
-        }
-      }
-    });
+          //* 6. FINALIZATION: Ensure the parent view is still active before navigating
+          if (context.mounted) {
+            if (state is MaterialFetchDetailsSuccess) {
+              MaterialsNavigationHandler.navigateToEditMaterial(
+                context,
+                courseId: courseId,
+                material: state.material,
+              );
+            } else {
+              AppSnackBar.error(
+                context,
+                'Data synchronization failed. Please try again.',
+              );
+            }
+          }
+        });
   }
 
   /// Helper to maintain consistent row styling for menu items.

@@ -93,7 +93,9 @@ class InstructorGradesWebTable extends StatelessWidget {
 
     // Determine which icon to show — always in the same slot so layout never shifts.
     final IconData sortIcon = isActive
-        ? (sortAscending ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded)
+        ? (sortAscending
+              ? Icons.arrow_upward_rounded
+              : Icons.arrow_downward_rounded)
         : Icons.swap_vert_rounded;
     final Color sortIconColor = isActive
         ? Colors.white.withValues(alpha: 0.9)
@@ -227,7 +229,9 @@ class _SortableHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isActive = sortColumnIndex == index;
     final IconData sortIcon = isActive
-        ? (sortAscending ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded)
+        ? (sortAscending
+              ? Icons.arrow_upward_rounded
+              : Icons.arrow_downward_rounded)
         : Icons.swap_vert_rounded;
     final Color sortIconColor = isActive
         ? Colors.white.withValues(alpha: 0.95)

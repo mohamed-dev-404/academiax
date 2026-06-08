@@ -50,7 +50,7 @@ class ImageProcessorImpl implements ImageProcessor {
       return const Left('Failed to process image');
     }
   }
-  
+
   //? Compress to reduce file size while keeping acceptable quality
   Future<Uint8List> _compress(Uint8List bytes) async {
     final result = await FlutterImageCompress.compressWithList(

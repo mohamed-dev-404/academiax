@@ -61,24 +61,32 @@ class MaterialDetailsHandler {
   }
 
   /// Triggers the visual interface for updating material metadata.
-  /// mobile 
+  /// mobile
   /// [material] represents the current state of the document being modified.
-  static void onEditMaterialMobile(BuildContext context, MaterialModel material) {
+  static void onEditMaterialMobile(
+    BuildContext context,
+    MaterialModel material,
+  ) {
     //_ Action: Delegates the Bottom Sheet/Dialog assembly to the Navigation Layer.
     MaterialsNavigationHandler.showEditMaterialSheet(
       context,
       material: material,
     );
   }
-  
+
   /// Triggers the visual interface for updating material metadata.
-  /// web  
+  /// web
   /// [material] represents the current state of the document being modified.
-  static void onEditMaterialWeb(BuildContext context, MaterialModel material, String courseId) {
+  static void onEditMaterialWeb(
+    BuildContext context,
+    MaterialModel material,
+    String courseId,
+  ) {
     //_ Action: Delegates the Bottom Sheet/Dialog assembly to the Navigation Layer.
     MaterialsNavigationHandler.showEdieMaterialDialog(
       context,
-      material: material, courseId: courseId,
+      material: material,
+      courseId: courseId,
     );
   }
 

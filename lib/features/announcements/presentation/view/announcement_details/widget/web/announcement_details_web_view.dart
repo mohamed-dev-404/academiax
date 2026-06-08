@@ -6,8 +6,12 @@ class AnnouncementDetailsWebView extends StatelessWidget {
   final String announcementId;
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: SafeArea(child: AnnouncementDetailsWebViewBody(announcementId: announcementId, )),
+    return Scaffold(
+      body: SafeArea(
+        child: AnnouncementDetailsWebViewBody(
+          announcementId: announcementId,
+        ),
+      ),
     );
   }
 }

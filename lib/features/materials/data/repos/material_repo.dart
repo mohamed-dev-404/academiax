@@ -10,7 +10,7 @@ abstract class MaterialRepo {
     required String courseId,
   });
 
-   //* Return cached materials
+  //* Return cached materials
   List<MaterialModel> getCachedMaterials();
 
   //* Fetch a single material details
@@ -26,19 +26,19 @@ abstract class MaterialRepo {
     required List<XFile> selectedFiles,
   });
 
-//* Update a material title and/or description
+  //* Update a material title and/or description
   Future<Either<String, MaterialModel>> updateMaterial({
     required String materialId,
     required UpdateMaterialRequest request,
   });
 
-//* Delete an item from material 
+  //* Delete an item from material
   Future<Either<String, MaterialModel>> deleteMaterialItem({
     required String materialId,
     required String itemKey,
   });
 
-//* Add new items to a material 
+  //* Add new items to a material
   Future<Either<String, MaterialModel>> addItemsToMaterial({
     required String materialId,
     required String courseId,

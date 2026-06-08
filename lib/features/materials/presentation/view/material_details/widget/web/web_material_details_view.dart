@@ -8,18 +8,28 @@ class WebMaterialDetailsView extends StatelessWidget {
   final String courseId;
   final String materialId;
 
-  const WebMaterialDetailsView({super.key, required this.courseId, required this.materialId});
+  const WebMaterialDetailsView({
+    super.key,
+    required this.courseId,
+    required this.materialId,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //* Floating Action Button: Positioned for quick access to add new course items.
       //* It receives the [courseId] to ensure new uploads are linked to the correct course.
-      floatingActionButton: AddMaterialItemsFloatingBuutton(courseId: courseId, materialId: materialId,),
+      floatingActionButton: AddMaterialItemsFloatingBuutton(
+        courseId: courseId,
+        materialId: materialId,
+      ),
 
       //* Main Content: Delegated to the Web-specific body widget which handles
       //* the dual-pane layout and state management.
-      body:  WebMaterialDetailsViewBody(courseId: courseId, materialId: materialId,),
+      body: WebMaterialDetailsViewBody(
+        courseId: courseId,
+        materialId: materialId,
+      ),
     );
   }
 }

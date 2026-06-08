@@ -29,7 +29,7 @@ class CommentActionsCubit extends Cubit<CommentActionsState> {
     required String commentId,
     required String content,
   }) async {
-     emit(UpdateCommentLoading()); 
+    emit(UpdateCommentLoading());
     final result = await announcementsRepo.updateComment(
       commentId: commentId,
       request: CommentRequestModel(content: content),
@@ -43,7 +43,7 @@ class CommentActionsCubit extends Cubit<CommentActionsState> {
 
   // 3- Delete Comment
   Future<void> deleteComment({required String commentId}) async {
-     emit(DeleteCommentLoading()); 
+    emit(DeleteCommentLoading());
 
     final result = await announcementsRepo.deleteComment(
       commentId: commentId,

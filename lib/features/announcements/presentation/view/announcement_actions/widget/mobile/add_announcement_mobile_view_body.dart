@@ -38,12 +38,16 @@ class _AddAnnouncementMobileViewBodyState
         if (state is AddAnnouncementSuccess) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.message),backgroundColor: AppColors.green,));
+          ).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.green,
+            ),
+          );
           Navigator.pop(context, true);
         } else if (state is AddAnnouncementFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              
               content: Text(state.errMessage),
               backgroundColor: Colors.red,
             ),
@@ -86,7 +90,10 @@ class _AddAnnouncementMobileViewBodyState
               //   titleController: _titleController,
               //   contentController: _contentController,
               // ),
-              AnnouncementFormSection(titleController: _titleController, contentController: _contentController,),
+              AnnouncementFormSection(
+                titleController: _titleController,
+                contentController: _contentController,
+              ),
               const SizedBox(height: 80),
               AppButton(
                 model: AppButtonStyleModel(

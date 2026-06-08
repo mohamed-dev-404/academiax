@@ -2,12 +2,12 @@ import 'package:intl/intl.dart';
 import 'package:sams_app/core/utils/constants/api_keys.dart';
 
 class CommentDetails {
-  final String id;           
+  final String id;
   final String content;
   final String date;
   final String userName;
-  final String authorAcademicId; 
-  final String? profilePic;      
+  final String authorAcademicId;
+  final String? profilePic;
 
   CommentDetails({
     required this.id,
@@ -28,7 +28,7 @@ class CommentDetails {
       try {
         DateFormat inputFormat = DateFormat('M/d/yyyy, h:mm:ss a');
         DateTime parsedDate = inputFormat.parse(rawDate);
-        
+
         formattedDate = DateFormat('MMM d, h:mm a').format(parsedDate);
       } catch (e) {
         formattedDate = rawDate;
@@ -38,7 +38,7 @@ class CommentDetails {
     return CommentDetails(
       id: json[ApiKeys.id] ?? '',
       content: json[ApiKeys.content] ?? '',
-      date: formattedDate, 
+      date: formattedDate,
       userName: author?[ApiKeys.name] ?? 'User',
       authorAcademicId: author?[ApiKeys.academicId] ?? '',
       profilePic: author?[ApiKeys.profilePic],

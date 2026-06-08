@@ -8,7 +8,6 @@ import 'package:sams_app/features/announcements/data/model/update_announcement_r
 
 //* Abstract contract for announcements data operations
 abstract class AnnouncementsRepo {
-  
   //* Returns cached announcements from local storage
   List<AnnouncementModel> getCachedAnnouncements();
 
@@ -39,7 +38,6 @@ abstract class AnnouncementsRepo {
   Future<Either<String, String>> deleteAnnouncement({
     required String announcementId,
   });
-
 
   //* --- Comment Operations ---
 

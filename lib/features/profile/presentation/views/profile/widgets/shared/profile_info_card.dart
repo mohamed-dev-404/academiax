@@ -86,8 +86,12 @@ class ProfileInfoCard extends StatelessWidget {
             InteractiveWrapper(
               hoverColor: AppColors.redLightHover,
               onTap: () {
-                final profileCubit = context.read<ProfileCubit>();// Access the ProfileCubit to perform logout action
-                showDialog(// Show the logout confirmation dialog
+                final profileCubit = context
+                    .read<
+                      ProfileCubit
+                    >(); // Access the ProfileCubit to perform logout action
+                showDialog(
+                  // Show the logout confirmation dialog
                   context: context,
                   builder: (dialogContext) => BlocProvider.value(
                     value: profileCubit,

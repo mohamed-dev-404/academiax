@@ -9,7 +9,6 @@ class CourseTitleRow extends StatelessWidget {
   final CourseModel course;
   final bool isMobile;
   final double w, h;
-   
 
   const CourseTitleRow({
     super.key,
@@ -20,7 +19,7 @@ class CourseTitleRow extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-   final int titleMaxLength = SizeConfig.isMobile(context) ? 30 : 24;
+    final int titleMaxLength = SizeConfig.isMobile(context) ? 30 : 24;
     return Flexible(
       flex: 2,
       child: Container(
@@ -41,7 +40,9 @@ class CourseTitleRow extends StatelessWidget {
                   ),
             children: [
               TextSpan(
-                text: course.name.length > titleMaxLength ? '${course.name.substring(0, titleMaxLength)}...' : course.name,
+                text: course.name.length > titleMaxLength
+                    ? '${course.name.substring(0, titleMaxLength)}...'
+                    : course.name,
               ),
               //? Visual distinction for the academic code
               TextSpan(

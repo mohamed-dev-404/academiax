@@ -6,13 +6,13 @@ import 'package:sams_app/features/profile/data/models/user_model.dart';
 abstract class ProfileRepo {
   //* Returns current user data or failure message
   Future<Either<String, UserModel>> getUserProfile();
-  
+
   //* Update user name
   Future<Either<String, UserModel>> updateName(String name);
 
   //? Process image and upload — multi-step operation
   Future<Either<String, UserModel>> uploadProfilePicture(XFile imageFile);
-  
+
   //! Delete profile picture
   Future<Either<String, UserModel>> deleteProfilePicture();
 

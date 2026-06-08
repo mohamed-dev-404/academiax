@@ -24,7 +24,7 @@ class CourseCardContent extends StatelessWidget {
       //? Dynamic padding to ensure text doesn't overlap background graphics
       left: cardWidth * 0.10,
       right: cardWidth * 0.05,
-      top:isMobile ? cardHeight * 0.2 : cardHeight * 0.17,
+      top: isMobile ? cardHeight * 0.2 : cardHeight * 0.17,
       bottom: cardHeight * 0.08,
       child: Column(
         mainAxisSize: MainAxisSize.min,

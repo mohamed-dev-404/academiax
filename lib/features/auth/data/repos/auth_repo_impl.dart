@@ -65,7 +65,7 @@ class AuthRepoImpl implements AuthRepo {
           ApiKeys.academicEmail: academicEmail,
           ApiKeys.academicId: academicId,
           ApiKeys.password: password,
-          ApiKeys.confirmPassword : confirmPassword,
+          ApiKeys.confirmPassword: confirmPassword,
         },
       );
       //parsing and extract success message

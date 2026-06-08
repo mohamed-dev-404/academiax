@@ -179,7 +179,8 @@ class MaterialRepoImpl implements MaterialRepo {
       EndPoints.createMaterialUploadUrls(courseId),
       data: {
         ApiKeys.context: 'materials',
-        ApiKeys.filesMetadata: filesMetadata},
+        ApiKeys.filesMetadata: filesMetadata,
+      },
     );
 
     final List data = response[ApiKeys.data];
@@ -285,7 +286,6 @@ class MaterialRepoImpl implements MaterialRepo {
     required String materialId,
   }) async {
     try {
-      
       await api.delete(EndPoints.deleteMaterial(materialId));
 
       return right(unit); // Success: returns unit (functional void)

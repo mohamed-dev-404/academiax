@@ -5,7 +5,7 @@ import 'package:sams_app/core/utils/styles/app_styles.dart';
 import 'package:sams_app/core/widgets/base/app_text_field.dart';
 import 'package:sams_app/core/widgets/shared/titled_input_field.dart';
 
-//* Generic input field with label and hint 
+//* Generic input field with label and hint
 class InputFieldTile extends StatelessWidget {
   final String label;
   final String hint;

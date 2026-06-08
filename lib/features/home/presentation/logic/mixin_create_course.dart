@@ -111,7 +111,12 @@ mixin CreateCourseLogic<T extends StatefulWidget> on State<T> {
 
   // ! Error Snackbar - Shows grade distribution error
   void _showDistributionError(BuildContext context) {
-    AppSnackBar.error(context,(remainingPoints > 0) ? 'Still have ${remainingPoints.toStringAsFixed(0)} points left!' : 'Exceeded by ${remainingPoints.abs().toStringAsFixed(0)} points!'); 
+    AppSnackBar.error(
+      context,
+      (remainingPoints > 0)
+          ? 'Still have ${remainingPoints.toStringAsFixed(0)} points left!'
+          : 'Exceeded by ${remainingPoints.abs().toStringAsFixed(0)} points!',
+    );
   }
 
   // ! Dispose - Prevent memory leaks
@@ -134,29 +139,33 @@ mixin CreateCourseLogic<T extends StatefulWidget> on State<T> {
     addDynamicField(label: 'Quiz 1');
   }
 
-//! Grade Status - Determines the current state of grade distribution for UI feedback
-GradeStatus get gradeStatus {
-  final double total = double.tryParse(totalGradeController.text) ?? 0;
-  final double finalExam = double.tryParse(finalExamController.text) ?? 0;
+  //! Grade Status - Determines the current state of grade distribution for UI feedback
+  GradeStatus get gradeStatus {
+    final double total = double.tryParse(totalGradeController.text) ?? 0;
+    final double finalExam = double.tryParse(finalExamController.text) ?? 0;
 
-  // 1. Initial State: Missing core grade information
-  if (total <= 0 || finalExam <= 0) return GradeStatus.remaining;
+    // 1. Initial State: Missing core grade information
+    if (total <= 0 || finalExam <= 0) return GradeStatus.remaining;
 
-  // 2. Edge Case: Final exam equals total grade and no classwork points assigned yet
-  if (total == finalExam &&
-      classworkFields.every(
-        (f) => (double.tryParse(f['gradeController'].text) ?? 0) == 0,
-      )) {
-    return GradeStatus.remaining;
+    // 2. Edge Case: Final exam equals total grade and no classwork points assigned yet
+    if (total == finalExam &&
+        classworkFields.every(
+          (f) => (double.tryParse(f['gradeController'].text) ?? 0) == 0,
+        )) {
+      return GradeStatus.remaining;
+    }
+
+    // 3. Normal Distribution States
+    if (remainingPoints > 0) {
+      return GradeStatus.remaining; // Still points left to assign
+    }
+    if (remainingPoints.abs() <= 0.001) {
+      return GradeStatus.done; // Perfectly balanced
+    }
+
+    // 4. Error State: Points exceeded total limit
+    return GradeStatus.exceeded;
   }
-
-  // 3. Normal Distribution States
-  if (remainingPoints > 0) return GradeStatus.remaining; // Still points left to assign
-  if (remainingPoints.abs() <= 0.001) return GradeStatus.done; // Perfectly balanced
-
-  // 4. Error State: Points exceeded total limit
-  return GradeStatus.exceeded;
-}
 }
 
 //* Grade Status Enum - Represents the state of grade distribution for UI feedback

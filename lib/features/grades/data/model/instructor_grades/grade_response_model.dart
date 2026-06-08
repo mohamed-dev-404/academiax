@@ -42,9 +42,9 @@ class GradeResponseModel {
   /// Initial column visibility map derived from [columns] data (key → isVisible).
   /// Use this to seed mutable UI state; do NOT read it after the user has toggled visibility.
   Map<String, bool> get columnVisibility => {
-        for (final col in columns)
-          if (col.isVisible != null) col.key: col.isVisible!,
-      };
+    for (final col in columns)
+      if (col.isVisible != null) col.key: col.isVisible!,
+  };
 
   /// Filters [gradeColumns] based on a [visibilityFilter] string ('all' | 'visible' | 'hidden').
   /// Visibility is resolved from the [currentVisibility] map if provided, otherwise falls back to [columnVisibility].
@@ -55,13 +55,9 @@ class GradeResponseModel {
     final visibilityMap = currentVisibility ?? columnVisibility;
     switch (visibilityFilter.toLowerCase()) {
       case 'visible':
-        return gradeColumns
-            .where((c) => visibilityMap[c.key] == true)
-            .toList();
+        return gradeColumns.where((c) => visibilityMap[c.key] == true).toList();
       case 'hidden':
-        return gradeColumns
-            .where((c) => visibilityMap[c.key] != true)
-            .toList();
+        return gradeColumns.where((c) => visibilityMap[c.key] != true).toList();
       default:
         return gradeColumns;
     }

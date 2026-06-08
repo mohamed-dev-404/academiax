@@ -6,6 +6,6 @@ class CommentRequestModel {
   CommentRequestModel({required this.content});
 
   Map<String, dynamic> toJson() => {
-        ApiKeys.content: content,
-      };
+    ApiKeys.content: content,
+  };
 }

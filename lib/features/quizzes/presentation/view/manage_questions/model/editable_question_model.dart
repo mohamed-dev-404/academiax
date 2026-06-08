@@ -26,19 +26,18 @@ class EditableOptionModel {
 
   /// Factory for creating a brand-new option with a generated ID.
   factory EditableOptionModel.empty() => EditableOptionModel(
-        localId: _uuid.v4(),
-      );
+    localId: _uuid.v4(),
+  );
 
   /// Factory for creating a True/False pair.
   factory EditableOptionModel.trueFalse({
     required String label,
     required bool isCorrect,
-  }) =>
-      EditableOptionModel(
-        localId: _uuid.v4(),
-        text: label,
-        isCorrect: isCorrect,
-      );
+  }) => EditableOptionModel(
+    localId: _uuid.v4(),
+    text: label,
+    isCorrect: isCorrect,
+  );
 
   EditableOptionModel copyWith({
     String? text,
@@ -53,9 +52,9 @@ class EditableOptionModel {
 
   /// Converts to the API DTO.
   CreateOptionModel toDto() => CreateOptionModel(
-        text: text,
-        isCorrect: isCorrect,
-      );
+    text: text,
+    isCorrect: isCorrect,
+  );
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -89,29 +88,29 @@ class EditableQuestionModel {
 
   /// Creates a new WRITTEN question.
   factory EditableQuestionModel.written() => EditableQuestionModel(
-        localId: _uuid.v4(),
-        questionType: ApiValues.written,
-      );
+    localId: _uuid.v4(),
+    questionType: ApiValues.written,
+  );
 
   /// Creates a new MCQ question with 2 default empty options.
   factory EditableQuestionModel.mcq() => EditableQuestionModel(
-        localId: _uuid.v4(),
-        questionType: ApiValues.mcq,
-        options: [
-          EditableOptionModel.empty(),
-          EditableOptionModel.empty(),
-        ],
-      );
+    localId: _uuid.v4(),
+    questionType: ApiValues.mcq,
+    options: [
+      EditableOptionModel.empty(),
+      EditableOptionModel.empty(),
+    ],
+  );
 
   /// Creates a new TRUE_FALSE question with fixed True/False options.
   factory EditableQuestionModel.trueFalse() => EditableQuestionModel(
-        localId: _uuid.v4(),
-        questionType: ApiValues.trueFalse,
-        options: [
-          EditableOptionModel.trueFalse(label: 'True', isCorrect: true),
-          EditableOptionModel.trueFalse(label: 'False', isCorrect: false),
-        ],
-      );
+    localId: _uuid.v4(),
+    questionType: ApiValues.trueFalse,
+    options: [
+      EditableOptionModel.trueFalse(label: 'True', isCorrect: true),
+      EditableOptionModel.trueFalse(label: 'False', isCorrect: false),
+    ],
+  );
 
   /// Creates from an API-fetched [QuestionModel] (for edit/view modes).
   factory EditableQuestionModel.fromServer(QuestionModel model) {
@@ -119,11 +118,13 @@ class EditableQuestionModel {
 
     if (model is ChoiceQuestionModel) {
       options = model.options
-          .map((opt) => EditableOptionModel(
-                localId: _uuid.v4(),
-                text: opt.text,
-                isCorrect: opt.isCorrect ?? false,
-              ))
+          .map(
+            (opt) => EditableOptionModel(
+              localId: _uuid.v4(),
+              text: opt.text,
+              isCorrect: opt.isCorrect ?? false,
+            ),
+          )
           .toList();
     } else {
       options = [];

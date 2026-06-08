@@ -1,6 +1,6 @@
 enum SignUpStatus {
-  initial, 
-  loading, 
+  initial,
+  loading,
   codeSent,
   codeResent,
   success,

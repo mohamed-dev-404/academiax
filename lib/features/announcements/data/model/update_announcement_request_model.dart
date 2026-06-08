@@ -10,19 +10,19 @@ class UpdateAnnouncementRequestModel {
   });
 
   /// Converts the model instance into a JSON Map.
-  /// 
+  ///
   /// It dynamically constructs the map to include only the non-null fields.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    
+
     if (title != null) {
-      data[ApiKeys.title] = title;   
+      data[ApiKeys.title] = title;
     }
-    
+
     if (content != null) {
-      data[ApiKeys.content] = content; 
+      data[ApiKeys.content] = content;
     }
-    
+
     return data;
   }
 }

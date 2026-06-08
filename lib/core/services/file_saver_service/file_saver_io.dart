@@ -23,7 +23,8 @@ Future<void> saveFile(Uint8List bytes, String filename) async {
   // Fallback to path_provider directories (often app-specific / hidden from user)
   if (file == null) {
     final dir =
-        await getDownloadsDirectory() ?? await getApplicationDocumentsDirectory();
+        await getDownloadsDirectory() ??
+        await getApplicationDocumentsDirectory();
     file = File('${dir.path}/$filename');
   }
 

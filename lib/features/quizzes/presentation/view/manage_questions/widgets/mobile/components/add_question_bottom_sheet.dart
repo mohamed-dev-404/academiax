@@ -7,7 +7,10 @@ import 'package:sams_app/core/utils/styles/app_styles.dart';
 /// choose which type of [ApiValues] question they want to append to their quiz.
 class AddQuestionBottomSheet {
   /// Displays the modal sheet and fires [onAdd] with the selected question type.
-  static void show(BuildContext context, {required void Function(String type) onAdd}) {
+  static void show(
+    BuildContext context, {
+    required void Function(String type) onAdd,
+  }) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,

@@ -21,10 +21,7 @@ class SubmissionsHeaderCard extends StatelessWidget {
           Lottie.asset(AppLottie.quizSubmissions),
 
           const SizedBox(height: 8),
-          Text(
-            'Submissions Overview',
-            style: AppStyles.mobileTitleSmallSb
-          ),
+          Text('Submissions Overview', style: AppStyles.mobileTitleSmallSb),
         ],
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:sams_app/core/validators/app_validators.dart';
 
 String maskEmail(String email) {

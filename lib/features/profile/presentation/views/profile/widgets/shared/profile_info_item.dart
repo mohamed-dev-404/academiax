@@ -21,7 +21,7 @@ class ProfileInfoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0,top: 10.0),
+      padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
       child: SizedBox(
         width: double.infinity,
         child: Row(

@@ -9,6 +9,7 @@ mixin CubitMessageMixin {
       _messageController.add(msg);
     }
   }
+
   void closeMessages() {
     _messageController.close();
   }

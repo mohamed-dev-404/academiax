@@ -55,8 +55,8 @@ class _ProfileMainLayoutBodyState extends State<ProfileMainLayoutBody> {
           current is UploadProfilePicSuccess ||
           current is UploadProfilePicFailure ||
           current is LogoutSuccess ||
-          current is LogoutFailure||
-          current is UpdateNameSuccess || 
+          current is LogoutFailure ||
+          current is UpdateNameSuccess ||
           current is UpdateNameFailure,
 
       listener: (context, state) {
@@ -65,7 +65,6 @@ class _ProfileMainLayoutBodyState extends State<ProfileMainLayoutBody> {
         }
 
         if (state is LogoutFailure) {
-
           AppSnackBar.error(context, state.errMessage);
         }
 

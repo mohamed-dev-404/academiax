@@ -57,10 +57,11 @@ class MaterialDetailsInfoCard extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10),
                   child: IconButton(
                     //_ Action: Delegates sheet/dialog triggering to the MaterialDetailsHandler.
-                    onPressed: () => MaterialDetailsHandler.onEditMaterialMobile(
-                      context,
-                      material,
-                    ),
+                    onPressed: () =>
+                        MaterialDetailsHandler.onEditMaterialMobile(
+                          context,
+                          material,
+                        ),
                     icon: SvgPicture.asset(
                       AppIcons.iconsEditMaterial,
                     ),

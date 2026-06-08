@@ -81,7 +81,10 @@ class _AddClassworkDialogState extends State<AddClassworkDialog> {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 400),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 28.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 28.0,
+            ),
             child: Form(
               key: _formKey,
               child: Column(
@@ -92,7 +95,9 @@ class _AddClassworkDialogState extends State<AddClassworkDialog> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SizedBox(width: 24), // Spacing to balance the close button
+                      const SizedBox(
+                        width: 24,
+                      ), // Spacing to balance the close button
                       Text(
                         'New Classwork',
                         style: AppStyles.mobileTitleSmallSb.copyWith(
@@ -117,61 +122,61 @@ class _AddClassworkDialogState extends State<AddClassworkDialog> {
                   const Divider(color: AppColors.whiteHover, thickness: 1),
                   const SizedBox(height: 20),
 
-                // ── Name field ──
-                TitledInputField(
-                  label: 'Classwork Name',
-                  child: AppTextField(
-                    hintText: 'e.g. Quiz 3',
-                    controller: _nameController,
-                    textFieldType: TextFieldType.normal,
+                  // ── Name field ──
+                  TitledInputField(
+                    label: 'Classwork Name',
+                    child: AppTextField(
+                      hintText: 'e.g. Quiz 3',
+                      controller: _nameController,
+                      textFieldType: TextFieldType.normal,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                // ── Points field ──
-                TitledInputField(
-                  label: 'Total Marks',
-                  child: AppTextField(
-                    hintText: 'e.g. 5',
-                    controller: _pointsController,
-                    textFieldType: TextFieldType.decimal,
+                  // ── Points field ──
+                  TitledInputField(
+                    label: 'Total Marks',
+                    child: AppTextField(
+                      hintText: 'e.g. 5',
+                      controller: _pointsController,
+                      textFieldType: TextFieldType.decimal,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                // ── Submit button (shows loading when saving) ──
-                BlocBuilder<CreateQuizCubit, CreateQuizState>(
-                  buildWhen: (_, curr) =>
-                      curr is CreateClassworkLoading ||
-                      curr is CreateClassworkSuccess ||
-                      curr is CreateClassworkFailure,
-                  builder: (context, state) {
-                    final isLoading = state is CreateClassworkLoading;
+                  // ── Submit button (shows loading when saving) ──
+                  BlocBuilder<CreateQuizCubit, CreateQuizState>(
+                    buildWhen: (_, curr) =>
+                        curr is CreateClassworkLoading ||
+                        curr is CreateClassworkSuccess ||
+                        curr is CreateClassworkFailure,
+                    builder: (context, state) {
+                      final isLoading = state is CreateClassworkLoading;
 
-                    if (isLoading) {
-                      return const Center(
-                        child: SizedBox(
-                          width: 32,
-                          height: 32,
-                          child: AppAnimatedLoadingIndicator(),
+                      if (isLoading) {
+                        return const Center(
+                          child: SizedBox(
+                            width: 32,
+                            height: 32,
+                            child: AppAnimatedLoadingIndicator(),
+                          ),
+                        );
+                      }
+
+                      return AppButton(
+                        model: AppButtonStyleModel(
+                          label: 'Done',
+                          onPressed: _submit,
                         ),
                       );
-                    }
-
-                    return AppButton(
-                      model: AppButtonStyleModel(
-                        label: 'Done',
-                        onPressed: _submit,
-                      ),
-                    );
-                  },
-                ),
-              ],
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

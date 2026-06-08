@@ -58,9 +58,7 @@ class TrueFalseToggle extends StatelessWidget {
               : AppColors.white,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isSelected
-                ? AppColors.green
-                : AppColors.whiteActive,
+            color: isSelected ? AppColors.green : AppColors.whiteActive,
             width: 1.5,
           ),
         ),
@@ -74,9 +72,7 @@ class TrueFalseToggle extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: isSelected ? AppColors.green : Colors.transparent,
                 border: Border.all(
-                  color: isSelected
-                      ? AppColors.green
-                      : AppColors.whiteActive,
+                  color: isSelected ? AppColors.green : AppColors.whiteActive,
                   width: 2,
                 ),
               ),
@@ -88,11 +84,8 @@ class TrueFalseToggle extends StatelessWidget {
             Text(
               label,
               style: AppStyles.mobileBodySmallMd.copyWith(
-                color: isSelected
-                    ? AppColors.greenDark
-                    : AppColors.whiteDarker,
-                fontWeight:
-                    isSelected ? FontWeight.w600 : FontWeight.w400,
+                color: isSelected ? AppColors.greenDark : AppColors.whiteDarker,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               ),
             ),
           ],

@@ -23,12 +23,8 @@ final class ProfileFailure extends ProfileState {
   ProfileFailure(this.errMessage);
 }
 
-
-
-
 //* Base state for profile actions (upload, update, etc.)
 sealed class ProfileActionState extends ProfileState {}
-
 
 //? Emitted while uploading profile picture.
 final class UploadProfilePicLoading extends ProfileActionState {

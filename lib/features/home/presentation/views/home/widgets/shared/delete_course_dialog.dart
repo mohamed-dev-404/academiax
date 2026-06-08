@@ -107,7 +107,7 @@ class DeleteCourseDialog extends StatelessWidget {
                     textColor: AppColors.primaryDark,
                     backgroundColor: AppColors.secondaryLight,
                     onPressed: () {
-                       context.read<HomeCubit>().removeCourse(
+                      context.read<HomeCubit>().removeCourse(
                         courseId: courseId,
                       );
                     },

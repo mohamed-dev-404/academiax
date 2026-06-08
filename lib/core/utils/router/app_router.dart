@@ -381,7 +381,7 @@ class AppRouter {
         name: RoutesName.announcementDetails,
         path: RoutesName.announcementDetails,
         builder: (context, state) {
-           final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
             RoutesName.announcementDetails,
             state.extra,
           );
@@ -389,7 +389,6 @@ class AppRouter {
           if (extra == null) return _fallbackHome();
 
           final announcementId = extra['announcementId'] as String? ?? '';
-         
 
           return MultiBlocProvider(
             providers: [
@@ -412,7 +411,7 @@ class AppRouter {
         name: RoutesName.addAnnouncement,
         path: RoutesName.addAnnouncement,
         builder: (context, state) {
-           final extra = RouterPayloadCache.get<Map<String, dynamic>>(
+          final extra = RouterPayloadCache.get<Map<String, dynamic>>(
             RoutesName.addAnnouncement,
             state.extra,
           );
@@ -420,7 +419,6 @@ class AppRouter {
           if (extra == null) return _fallbackHome();
 
           final courseId = extra['courseId'] as String? ?? '';
-          
 
           return BlocProvider(
             create: (context) => getIt<AnnouncementsActionsCubit>(),

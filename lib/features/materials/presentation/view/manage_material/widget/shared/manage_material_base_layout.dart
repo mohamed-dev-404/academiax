@@ -62,7 +62,11 @@ class ManageMaterialBaseLayout extends StatelessWidget {
 
             //* Feedback Overlays: Appear globally within the Stack during processing.
             if (isCreateUploading) const UploadingOverlay(),
-            if (isUpdateLoading) UpdateProgressOverlay(message: updateMsg, operationType: state.operationType,),
+            if (isUpdateLoading)
+              UpdateProgressOverlay(
+                message: updateMsg,
+                operationType: state.operationType,
+              ),
           ],
         );
       },

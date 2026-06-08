@@ -24,17 +24,18 @@ class _AddCommentBarState extends State<AddCommentBar> {
   Widget build(BuildContext context) {
     return BlocListener<CommentActionsCubit, CommentActionsState>(
       listener: (context, state) {
-        // TODO: implement listener
         if (state is AddCommentSuccess) {
           _commentController.clear();
           context.read<AnnouncementsFetchCubit>().fetchAnnouncementDetails(
-      announcementId: widget.announcementId,
-      showLoading: false, 
-    );
-        }
-        else if (state is AddCommentFailure) {
+            announcementId: widget.announcementId,
+            showLoading: false,
+          );
+        } else if (state is AddCommentFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errMessage), backgroundColor: AppColors.red),
+            SnackBar(
+              content: Text(state.errMessage),
+              backgroundColor: AppColors.red,
+            ),
           );
         }
       },
@@ -44,7 +45,7 @@ class _AddCommentBarState extends State<AddCommentBar> {
           color: Colors.white,
           border: Border(
             top: BorderSide(
-              color: AppColors.primaryDarkHover.withOpacity(0.10),
+              color: AppColors.primaryDarkHover.withValues(alpha: 0.10),
               width: 1,
             ),
           ),
@@ -70,7 +71,7 @@ class _AddCommentBarState extends State<AddCommentBar> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
-                      color: AppColors.primaryDarkHover.withOpacity(0.4),
+                      color: AppColors.primaryDarkHover.withValues(alpha: 0.4),
                       width: 1.5,
                     ),
                   ),
@@ -88,9 +89,9 @@ class _AddCommentBarState extends State<AddCommentBar> {
                   final content = _commentController.text.trim();
                   if (content.isNotEmpty) {
                     context.read<CommentActionsCubit>().addComment(
-                          announcementId: widget.announcementId,
-                          content: content,
-                        );
+                      announcementId: widget.announcementId,
+                      content: content,
+                    );
                   }
                 },
                 borderRadius: BorderRadius.circular(12),

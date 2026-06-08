@@ -45,9 +45,7 @@ class ReadOnlyOptionTile extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: isCorrect ? AppColors.green : Colors.transparent,
                 border: Border.all(
-                  color: isCorrect
-                      ? AppColors.green
-                      : AppColors.whiteActive,
+                  color: isCorrect ? AppColors.green : AppColors.whiteActive,
                   width: 2,
                 ),
               ),
@@ -62,11 +60,8 @@ class ReadOnlyOptionTile extends StatelessWidget {
               child: Text(
                 text.isEmpty ? 'Option ${index + 1}' : text,
                 style: AppStyles.mobileBodySmallRg.copyWith(
-                  color: isCorrect
-                      ? AppColors.greenDark
-                      : AppColors.blackDark,
-                  fontWeight:
-                      isCorrect ? FontWeight.w600 : FontWeight.w400,
+                  color: isCorrect ? AppColors.greenDark : AppColors.blackDark,
+                  fontWeight: isCorrect ? FontWeight.w600 : FontWeight.w400,
                 ),
               ),
             ),

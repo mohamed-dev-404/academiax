@@ -6,9 +6,9 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/an
 
 class AnnouncementsActionsCubit extends Cubit<AnnouncementsActionsState> {
   final AnnouncementsRepo announcementsRepo;
-  
 
-  AnnouncementsActionsCubit(this.announcementsRepo) : super(AnnouncementsActionsInitial());
+  AnnouncementsActionsCubit(this.announcementsRepo)
+    : super(AnnouncementsActionsInitial());
 
   // 1- Add Announcement
   Future<void> addAnnouncement({
@@ -17,7 +17,7 @@ class AnnouncementsActionsCubit extends Cubit<AnnouncementsActionsState> {
     required String content,
   }) async {
     // emit(AddAnnouncementLoading());
-    
+
     final result = await announcementsRepo.createAnnouncement(
       courseId: courseId,
       request: CreateAnnouncementRequestModel(title: title, content: content),
@@ -44,7 +44,8 @@ class AnnouncementsActionsCubit extends Cubit<AnnouncementsActionsState> {
 
     result.fold(
       (error) => emit(UpdateAnnouncementFailure(error)),
-      (updatedModel) => emit(UpdateAnnouncementSuccess('Announcement updated successfully')),
+      (updatedModel) =>
+          emit(UpdateAnnouncementSuccess('Announcement updated successfully')),
     );
   }
 

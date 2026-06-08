@@ -89,8 +89,9 @@ class _ProfilePicSectionState extends State<ProfilePicSection> {
                       current is UploadProfilePicLoading ||
                       current is! UploadProfilePicLoading,
                   builder: (context, state) {
-                    if (state is UploadProfilePicLoading|| state is DeleteProfilePicLoading) {
-                      return _buildLoadingOverlay();// show loading overlay
+                    if (state is UploadProfilePicLoading ||
+                        state is DeleteProfilePicLoading) {
+                      return _buildLoadingOverlay(); // show loading overlay
                     }
                     return const SizedBox.shrink();
                   },
@@ -112,18 +113,24 @@ class _ProfilePicSectionState extends State<ProfilePicSection> {
                           widget.userModel.profilePic != null &&
                           widget.userModel.profilePic!.isNotEmpty;
 
-                      if (profileState is UploadProfilePicSuccess) {// to show the edit icon if the pic is uploaded
+                      if (profileState is UploadProfilePicSuccess) {
+                        // to show the edit icon if the pic is uploaded
                         hasProfilePic = true;
-                      } else if (profileState is DeleteProfilePicSuccess) {// to show the add icon if the pic is deleted
+                      } else if (profileState is DeleteProfilePicSuccess) {
+                        // to show the add icon if the pic is deleted
                         hasProfilePic = false;
-                      } else if (profileState is ProfileSuccess) {// to set the hasProfilePic variable based on the profileState
+                      } else if (profileState is ProfileSuccess) {
+                        // to set the hasProfilePic variable based on the profileState
                         hasProfilePic =
                             profileState.userModel.profilePic != null &&
                             profileState.userModel.profilePic!.isNotEmpty;
                       }
                       return GestureDetector(
-                        onTap: () => _showImageSourceSheet(hasProfilePic),// show image source sheet
-                        child: _buildImageControlIcon(// build image control icon
+                        onTap: () => _showImageSourceSheet(
+                          hasProfilePic,
+                        ), // show image source sheet
+                        child: _buildImageControlIcon(
+                          // build image control icon
                           isMobile,
                           screenWidth,
                           hasProfilePic,

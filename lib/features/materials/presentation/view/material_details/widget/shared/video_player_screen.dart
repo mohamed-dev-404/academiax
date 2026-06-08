@@ -66,7 +66,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       // Refresh UI to display the player once initialized.
       setState(() {});
     } catch (e) {
-      debugPrint("Video Initialization Error: $e");
+      debugPrint('Video Initialization Error: $e');
     }
   }
 

@@ -22,10 +22,11 @@ class GradeRepoImpl implements GradeRepo {
         EndPoints.getMyGrades(courseId: courseId),
       );
 
-      final List<StudentGradeModel> grades =
-          (response[ApiKeys.data] as List)
-              .map((item) => StudentGradeModel.fromJson(item as Map<String, dynamic>))
-              .toList();
+      final List<StudentGradeModel> grades = (response[ApiKeys.data] as List)
+          .map(
+            (item) => StudentGradeModel.fromJson(item as Map<String, dynamic>),
+          )
+          .toList();
 
       return Right(grades);
     } on ApiException catch (e) {

@@ -41,13 +41,9 @@ class EditableOptionTile extends StatelessWidget {
               height: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isCorrect
-                    ? AppColors.green
-                    : Colors.transparent,
+                color: isCorrect ? AppColors.green : Colors.transparent,
                 border: Border.all(
-                  color: isCorrect
-                      ? AppColors.green
-                      : AppColors.whiteActive,
+                  color: isCorrect ? AppColors.green : AppColors.whiteActive,
                   width: 2,
                 ),
               ),

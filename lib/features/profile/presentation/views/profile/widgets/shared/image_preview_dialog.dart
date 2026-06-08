@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sams_app/core/utils/colors/app_colors.dart';
 import 'package:sams_app/core/utils/configs/size_config.dart';
 
-//* Dialog to preview an profile picture after updated 
+//* Dialog to preview an profile picture after updated
 class ImagePreviewDialog extends StatelessWidget {
   final String imageUrl;
 

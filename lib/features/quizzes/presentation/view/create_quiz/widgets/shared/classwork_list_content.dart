@@ -36,10 +36,9 @@ class ClassworkListContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (status) {
       ClassworkListStatus.loading => _buildLoading(),
-      ClassworkListStatus.error   => _buildError(),
-      ClassworkListStatus.loaded  => items.isEmpty
-          ? _buildEmpty()
-          : _buildList(),
+      ClassworkListStatus.error => _buildError(),
+      ClassworkListStatus.loaded =>
+        items.isEmpty ? _buildEmpty() : _buildList(),
     };
   }
 

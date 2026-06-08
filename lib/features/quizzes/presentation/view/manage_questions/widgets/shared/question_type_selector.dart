@@ -55,8 +55,7 @@ class QuestionTypeSelector extends StatelessWidget {
     final bgColor = isSelected
         ? AppColors.primaryLight
         : (enabled ? AppColors.white : AppColors.whiteHover);
-    final borderColor =
-        isSelected ? AppColors.primary : AppColors.whiteActive;
+    final borderColor = isSelected ? AppColors.primary : AppColors.whiteActive;
     final textColor = isSelected
         ? AppColors.primaryDark
         : (enabled ? AppColors.whiteDarker : AppColors.whiteDarkActive);

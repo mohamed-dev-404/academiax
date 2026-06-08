@@ -1,12 +1,10 @@
-
-
 //! Funcion that handle Dio Exceptions and throw suitable ApiException on each case of Dio Exceptions
 import 'package:dio/dio.dart';
 import 'package:sams_app/core/errors/exceptions/api_exception.dart';
 import 'package:sams_app/core/errors/models/error_model.dart';
 
 void handleDioExceptions(DioException e) {
- final String errorMessage;
+  final String errorMessage;
 
   switch (e.type) {
     case DioExceptionType.connectionTimeout:
@@ -51,9 +49,6 @@ void handleDioExceptions(DioException e) {
   );
 }
 
-
-
-
 //? handle Connection Error type
 String _handleConnectionError(DioException e) {
   if (e.error?.toString().contains('SocketException') ?? false) {
@@ -62,20 +57,19 @@ String _handleConnectionError(DioException e) {
   return 'Connection error. Please try again';
 }
 
-
 //? handle Unknown Error type
 String _handleUnknownError(DioException e) {
   if (e.error?.toString().contains('SocketException') ?? false) {
     return 'No internet connection. Please check your network';
   }
-  return e.error?.toString() ?? 'An unexpected error occurred. Please try again';
+  return e.error?.toString() ??
+      'An unexpected error occurred. Please try again';
 }
 
 //? handle Bad Response type
 String _handleBadResponse(DioException e) {
   final statusCode = e.response?.statusCode;
   final responseData = e.response?.data;
-
 
   //* Try to extract error message from response
   if (responseData != null && responseData is Map<String, dynamic>) {

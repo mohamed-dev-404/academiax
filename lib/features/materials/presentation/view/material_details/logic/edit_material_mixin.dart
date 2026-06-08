@@ -43,10 +43,10 @@ mixin EditMaterialMixin<T extends StatefulWidget> on State<T> {
     if (isChanged && title.isNotEmpty) {
       //* Dispatch update event to MaterialCrudCubit.
       context.read<MaterialCrudCubit>().updateMaterialMetadata(
-            materialId: material.id,
-            title: title,
-            description: description,
-          );
+        materialId: material.id,
+        title: title,
+        description: description,
+      );
     } else {
       //_ No changes detected: Dismiss UI immediately.
       Navigator.pop(context);

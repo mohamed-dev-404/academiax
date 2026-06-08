@@ -16,4 +16,3 @@ class MobileCreateCourseView extends StatelessWidget {
     );
   }
 }
-

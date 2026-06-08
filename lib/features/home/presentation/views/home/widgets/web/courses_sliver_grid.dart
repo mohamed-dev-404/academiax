@@ -60,7 +60,7 @@ class _CoursesSliverGridState extends State<CoursesSliverGrid> {
                 (context, index) {
                   //? The last item in the grid is always the "Create New Course" button
                   if (index == state.courses.length) {
-                    return  NewCourseCard(role: CurrentRole.role);
+                    return NewCourseCard(role: CurrentRole.role);
                   }
                   return CustomCourseCard(
                     course: state.courses[index],

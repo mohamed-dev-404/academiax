@@ -5,10 +5,10 @@ class RoutesName {
   static const String courses = '/courses';
   static const String createCourse = '/createCourse';
 
-//? profile routes
+  //? profile routes
   static const String profile = '/profile';
 
-//? course details routes
+  //? course details routes
   static const String materials = 'materials';
   static const String assignments = 'assignments';
   static const String announcements = 'announcements';
@@ -22,7 +22,6 @@ class RoutesName {
   static const String announcementDetails = '/announcementDetails';
   static const String addAnnouncement = '/addAnnouncement';
 
-
   //?auth routes
   //login
   static const String login = '/login';
@@ -31,7 +30,6 @@ class RoutesName {
   static const String forgotPassword = '/auth/forgot-password';
   static const String verifyOtp = '/auth/verify-otp';
   static const String resetPassword = '/auth/reset-password';
-
 
   //? Course details (tabs are widgets — NOT routes)
   static const String courseDetails = '/courseDetails';

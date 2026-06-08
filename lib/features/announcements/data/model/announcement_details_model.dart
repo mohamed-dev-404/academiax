@@ -5,7 +5,7 @@ class AnnouncementDetailsModel {
   final String id;
   final String title;
   final String content;
-  final List<CommentDetails> comments; 
+  final List<CommentDetails> comments;
 
   AnnouncementDetailsModel({
     required this.id,
@@ -20,9 +20,12 @@ class AnnouncementDetailsModel {
       id: (json[ApiKeys.id] as String?) ?? '',
       title: (json[ApiKeys.title] as String?) ?? 'No Title',
       content: (json[ApiKeys.content] as String?) ?? 'No Content',
-comments: (json[ApiKeys.comments] as List<dynamic>?)
+      comments:
+          (json[ApiKeys.comments] as List<dynamic>?)
               ?.map((e) => CommentDetails.fromJson(e as Map<String, dynamic>))
-              .toList() ?? [],    );
+              .toList() ??
+          [],
+    );
   }
 
   /// Method to convert AnnouncementDetailsModel instance to JSON

@@ -89,7 +89,6 @@ class AppColors {
   static const Color greenDarker = Color(0xFF074439);
 }
 
-
 //! ───────────────────────── Status Colors ─────────────────────────
 
 class StatusColors {

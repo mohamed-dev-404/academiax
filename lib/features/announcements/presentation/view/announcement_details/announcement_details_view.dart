@@ -8,20 +8,25 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/co
 
 class AnnouncementDetailsView extends StatelessWidget {
   const AnnouncementDetailsView({
-    super.key, required this.announcementId,
+    super.key,
+    required this.announcementId,
   });
   final String announcementId;
-  
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<CommentActionsCubit>(),
       child: AdaptiveLayout(
         mobileLayout: (BuildContext context) {
-          return  AnnouncementDetailsMobileView(announcementId: announcementId,);
+          return AnnouncementDetailsMobileView(
+            announcementId: announcementId,
+          );
         },
         webLayout: (BuildContext context) {
-          return  AnnouncementDetailsWebView(announcementId: announcementId,);
+          return AnnouncementDetailsWebView(
+            announcementId: announcementId,
+          );
         },
       ),
     );

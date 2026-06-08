@@ -23,7 +23,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 /// ```
 ///* Set `isLoading: false` to show the actual content instead of skeleton.
 class AppSkeletonizer extends StatelessWidget {
- /// Whether the data is loading (true → show skeleton)
+  /// Whether the data is loading (true → show skeleton)
   final bool isLoading;
 
   /// The actual content to display once loading is complete

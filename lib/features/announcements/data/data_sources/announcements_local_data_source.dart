@@ -4,7 +4,7 @@ import 'package:sams_app/features/announcements/data/model/announcement_model.da
 //* Local cache for announcements using GetStorage
 class AnnouncementLocalDataSource {
   final _storage = GetStorage();
-  
+
   static const String _announcementsKey = 'CACHED_ANNOUNCEMENTS';
 
   //? Serialize and write announcements list to local storage

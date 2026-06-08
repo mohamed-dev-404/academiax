@@ -57,8 +57,8 @@ import 'package:sams_app/features/home/presentation/views/create_course/widgets/
 class CustomBasicInformationSection extends StatelessWidget {
   const CustomBasicInformationSection({
     super.key,
-    required this.sectionTitle, 
-    required this.fields,       
+    required this.sectionTitle,
+    required this.fields,
   });
 
   final String sectionTitle;
@@ -68,12 +68,16 @@ class CustomBasicInformationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return CreatecourseFormSection(
       title: sectionTitle,
-      children: fields.map((field) => InputFieldTile(
-        label: field.label,
-        hint: field.hint,
-        textFieldType: field.type,
-        controller: field.controller,
-      )).toList(),
+      children: fields
+          .map(
+            (field) => InputFieldTile(
+              label: field.label,
+              hint: field.hint,
+              textFieldType: field.type,
+              controller: field.controller,
+            ),
+          )
+          .toList(),
     );
   }
 }

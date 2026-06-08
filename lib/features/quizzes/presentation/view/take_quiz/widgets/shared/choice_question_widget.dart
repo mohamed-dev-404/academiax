@@ -20,7 +20,7 @@ class ChoiceQuestionWidget extends StatelessWidget {
       children: List.generate(question.options.length, (index) {
         final option = question.options[index];
         final isSelected = selectedOptionId == option.id;
-        
+
         // Generates 'a', 'b', 'c', 'd' based on index
         final prefixLetter = String.fromCharCode(97 + index);
 

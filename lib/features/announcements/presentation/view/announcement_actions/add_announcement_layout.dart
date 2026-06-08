@@ -4,12 +4,12 @@ import 'package:sams_app/features/announcements/presentation/view/announcement_a
 
 class AddAnnouncementLayout extends StatelessWidget {
   const AddAnnouncementLayout({super.key, required this.courseId});
-  final String courseId ;
+  final String courseId;
   @override
   Widget build(BuildContext context) {
     return AdaptiveLayout(
       mobileLayout: (context) => AddAnnouncementMobileView(courseId: courseId),
-      webLayout: (context) =>  const SizedBox.shrink(),
+      webLayout: (context) => const SizedBox.shrink(),
     );
   }
 }

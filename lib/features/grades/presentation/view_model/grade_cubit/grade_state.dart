@@ -31,7 +31,8 @@ final class ToggleClassworkVisibilitySuccess extends GradeState {
   final String classworkId;
   final DateTime timestamp;
 
-  ToggleClassworkVisibilitySuccess(this.classworkId) : timestamp = DateTime.now();
+  ToggleClassworkVisibilitySuccess(this.classworkId)
+    : timestamp = DateTime.now();
 
   @override
   List<Object> get props => [classworkId, timestamp];
@@ -41,7 +42,8 @@ final class ToggleClassworkVisibilityFailed extends GradeState {
   final String errorMessage;
   final DateTime timestamp;
 
-  ToggleClassworkVisibilityFailed(this.errorMessage) : timestamp = DateTime.now();
+  ToggleClassworkVisibilityFailed(this.errorMessage)
+    : timestamp = DateTime.now();
 
   @override
   List<Object> get props => [errorMessage, timestamp];

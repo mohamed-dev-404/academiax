@@ -7,7 +7,7 @@ class AnnouncementFormSection extends StatelessWidget {
     super.key,
     required this.titleController,
     required this.contentController,
-    this.isEdit = false, 
+    this.isEdit = false,
   });
 
   final TextEditingController titleController;
@@ -30,7 +30,6 @@ class AnnouncementFormSection extends StatelessWidget {
         TextFormField(
           controller: titleController,
           validator: (value) {
-           
             if (!isEdit && (value == null || value.isEmpty)) {
               return 'Title cannot be empty';
             }

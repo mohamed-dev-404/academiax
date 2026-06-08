@@ -10,7 +10,7 @@ class CommentDivider extends StatelessWidget {
       padding: const EdgeInsets.only(left: 60, top: 4, bottom: 4),
       child: Divider(
         height: 24,
-        color: AppColors.primaryDarkHover.withOpacity(0.08),
+        color: AppColors.primaryDarkHover.withValues(alpha: 0.08),
       ),
     );
   }

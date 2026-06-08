@@ -10,7 +10,7 @@ import 'package:sams_app/features/quizzes/presentation/view_model/manage_quiz_cu
 /// The sticky bottom navigation bar component for the Manage Questions screen.
 ///
 /// Responsible for rendering the floating "Save Questions" or "Save Changes" button,
-/// executing local UI validation on all questions, and finally delegating to the 
+/// executing local UI validation on all questions, and finally delegating to the
 /// [ManageQuizCubit] for submission.
 class ManageQuestionsBottomBar extends StatelessWidget {
   final QuizMode mode;

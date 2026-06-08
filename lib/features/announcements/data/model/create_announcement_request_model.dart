@@ -12,7 +12,7 @@ class CreateAnnouncementRequestModel {
   /// Converts the model to a JSON map for the API request body.
   Map<String, dynamic> toJson() {
     return {
-      ApiKeys.title: title,   
+      ApiKeys.title: title,
       ApiKeys.content: content,
     };
   }

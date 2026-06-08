@@ -14,15 +14,18 @@ class AppLogger {
 
   static bool _enabled = true;
 
-
   /// enable or disable logging
   static void setEnabled(bool value) {
     _enabled = value;
   }
 
   /// log a general message with optional error and stack trace
-  static void log(String message,
-      {dynamic error, StackTrace? stackTrace, String? tag}) {
+  static void log(
+    String message, {
+    dynamic error,
+    StackTrace? stackTrace,
+    String? tag,
+  }) {
     if (!_enabled) return;
     final logMessage = tag != null ? '[$tag] $message' : message;
     if (error != null) {
@@ -32,37 +35,45 @@ class AppLogger {
     }
   }
 
-/// log a debug message with optional tag
+  /// log a debug message with optional tag
   static void debug(dynamic message, {String? tag}) {
     if (!_enabled) return;
     final logMessage = tag != null ? '[$tag] $message' : message;
     _logger.d(logMessage);
   }
 
-/// log an info message with optional tag
+  /// log an info message with optional tag
   static void info(dynamic message, {String? tag}) {
     if (!_enabled) return;
     final logMessage = tag != null ? '[$tag] $message' : message;
     _logger.i(logMessage);
   }
 
-/// log a warning message with optional error, stack trace, and tag
-  static void warning(dynamic message,
-      {dynamic error, StackTrace? stackTrace, String? tag}) {
+  /// log a warning message with optional error, stack trace, and tag
+  static void warning(
+    dynamic message, {
+    dynamic error,
+    StackTrace? stackTrace,
+    String? tag,
+  }) {
     if (!_enabled) return;
     final logMessage = tag != null ? '[$tag] ⚠️ $message' : '⚠️ $message';
     _logger.w(logMessage, error: error, stackTrace: stackTrace);
   }
 
-/// log an error message with optional error, stack trace, and tag
-  static void error(dynamic message,
-      {dynamic error, StackTrace? stackTrace, String? tag}) {
+  /// log an error message with optional error, stack trace, and tag
+  static void error(
+    dynamic message, {
+    dynamic error,
+    StackTrace? stackTrace,
+    String? tag,
+  }) {
     if (!_enabled) return;
     final logMessage = tag != null ? '[$tag] ❌ $message' : '❌ $message';
     _logger.e(logMessage, error: error, stackTrace: stackTrace);
   }
 
-/// log a success message with optional tag
+  /// log a success message with optional tag
   static void success(String message, {String? tag}) {
     if (!_enabled) return;
     final logMessage = tag != null ? '[$tag] ✅ $message' : '✅ $message';

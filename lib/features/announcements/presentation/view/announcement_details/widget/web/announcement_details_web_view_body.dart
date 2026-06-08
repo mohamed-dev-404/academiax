@@ -34,12 +34,12 @@ class AnnouncementDetailsWebViewBody extends StatelessWidget {
                         child: AnnouncementCard(),
                       ),
                     ),
-                    
+
                     // ── Vertical Divider ──
                     VerticalDivider(
                       width: 1,
                       thickness: 1,
-                      color: AppColors.primaryDarkHover.withOpacity(0.08),
+                      color: AppColors.primaryDarkHover.withValues(alpha: 0.08),
                     ),
 
                     // ── Right column: Comments + input ──

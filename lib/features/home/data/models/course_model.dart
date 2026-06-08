@@ -35,7 +35,7 @@ class CourseModel {
       ApiKeys.courseInvitationCode: courseInvitationCode,
     };
   }
-  
+
   CourseModel copyWith({
     String? id,
     String? name,

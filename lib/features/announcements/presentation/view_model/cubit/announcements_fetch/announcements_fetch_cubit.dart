@@ -9,10 +9,11 @@ import 'package:sams_app/features/announcements/presentation/view_model/cubit/an
 class AnnouncementsFetchCubit extends Cubit<AnnouncementsFetchState>
     with CubitMessageMixin, SafeEmitMixin {
   final AnnouncementsRepo announcementsRepo;
-  String? currentCourseId; 
+  String? currentCourseId;
   static final List<AnnouncementsFetchCubit> _instances = [];
 
-  AnnouncementsFetchCubit(this.announcementsRepo) : super(AnnouncementsFetchInitial()) {
+  AnnouncementsFetchCubit(this.announcementsRepo)
+    : super(AnnouncementsFetchInitial()) {
     _instances.add(this);
   }
 
@@ -38,7 +39,7 @@ class AnnouncementsFetchCubit extends Cubit<AnnouncementsFetchState>
   Future<void> fetchAnnouncements({required String courseId}) async {
     // Phase 1: Try to retrieve data from local storage for instant feedback
     final cachedData = announcementsRepo.getCachedAnnouncements();
-    currentCourseId = courseId; 
+    currentCourseId = courseId;
     if (cachedData.isNotEmpty) {
       emit(AnnouncementsFetchSuccess(cachedData));
     } else {
@@ -47,7 +48,9 @@ class AnnouncementsFetchCubit extends Cubit<AnnouncementsFetchState>
     }
 
     // Phase 3: Fetch fresh data from the remote server
-    final result = await announcementsRepo.fetchCourseAnnouncements(courseId: courseId);
+    final result = await announcementsRepo.fetchCourseAnnouncements(
+      courseId: courseId,
+    );
 
     result.fold(
       (failure) {
@@ -64,7 +67,10 @@ class AnnouncementsFetchCubit extends Cubit<AnnouncementsFetchState>
   }
 
   /// Fetches comprehensive details for a specific announcement including its content and comments.
-  Future<void> fetchAnnouncementDetails({required String announcementId,bool showLoading = true}) async {
+  Future<void> fetchAnnouncementDetails({
+    required String announcementId,
+    bool showLoading = true,
+  }) async {
     if (showLoading) {
       emit(AnnouncementDetailsFetchLoading());
     }

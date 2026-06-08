@@ -22,8 +22,9 @@ class ClassworkSelectorField extends StatelessWidget {
       buildWhen: (_, current) =>
           current is CreateQuizUIUpdated || current is CreateQuizInitial,
       builder: (context, state) {
-        final selectedClasswork =
-            context.read<CreateQuizCubit>().selectedClasswork;
+        final selectedClasswork = context
+            .read<CreateQuizCubit>()
+            .selectedClasswork;
 
         return InkWell(
           borderRadius: BorderRadius.circular(15),
@@ -36,8 +37,10 @@ class ClassworkSelectorField extends StatelessWidget {
               ),
             ),
             child: selectedClasswork != null
-                ? _buildSelectedLabel(selectedClasswork.name,
-                    selectedClasswork.points)
+                ? _buildSelectedLabel(
+                    selectedClasswork.name,
+                    selectedClasswork.points,
+                  )
                 : _buildPlaceholder(),
           ),
         );

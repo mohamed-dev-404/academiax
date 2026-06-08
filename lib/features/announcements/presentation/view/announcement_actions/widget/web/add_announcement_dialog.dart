@@ -92,7 +92,10 @@ class _AddAnnouncementDialogState extends State<AddAnnouncementDialog> {
                           //   titleController: _titleController,
                           //   contentController: _descriptionController,
                           // ),
-                          AnnouncementFormSection(titleController: _titleController, contentController: _descriptionController,),
+                          AnnouncementFormSection(
+                            titleController: _titleController,
+                            contentController: _descriptionController,
+                          ),
                           const SizedBox(height: 30),
                           // ── Submit Button ──
                           AppButton(

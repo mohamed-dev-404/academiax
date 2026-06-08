@@ -44,7 +44,7 @@ class AnnouncementCard extends StatelessWidget {
               color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: AppColors.primaryDarkHover.withOpacity(0.10),
+                color: AppColors.primaryDarkHover.withValues(alpha: 0.10),
                 width: 1,
               ),
             ),
@@ -90,7 +90,9 @@ class AnnouncementCard extends StatelessWidget {
                                 width: 20,
                                 height: 20,
                                 colorFilter: ColorFilter.mode(
-                                  AppColors.primaryDarkHover.withOpacity(0.7),
+                                  AppColors.primaryDarkHover.withValues(
+                                    alpha: 0.7,
+                                  ),
                                   BlendMode.srcIn,
                                 ),
                               ),
@@ -134,7 +136,6 @@ class AnnouncementCard extends StatelessWidget {
   ) async {
     final fetchCubit = context.read<AnnouncementsFetchCubit>();
     final actionsCubit = context.read<AnnouncementsActionsCubit>();
-  
 
     final result = await showDialog<String>(
       context: context,

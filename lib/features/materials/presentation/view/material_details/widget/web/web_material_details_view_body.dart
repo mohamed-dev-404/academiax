@@ -16,7 +16,11 @@ import 'package:sams_app/features/materials/presentation/view_model/cubits/mater
 class WebMaterialDetailsViewBody extends StatelessWidget {
   final String courseId;
   final String materialId;
-  const WebMaterialDetailsViewBody({super.key, required this.courseId, required this.materialId});
+  const WebMaterialDetailsViewBody({
+    super.key,
+    required this.courseId,
+    required this.materialId,
+  });
 
   @override
   Widget build(BuildContext context) {

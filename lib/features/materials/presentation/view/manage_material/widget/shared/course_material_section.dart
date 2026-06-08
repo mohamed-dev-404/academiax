@@ -33,17 +33,21 @@ class CourseMaterialSectionState extends State<CourseMaterialSection> {
 
   /// Filters out unique keys for remote items that the user has decided to keep.
   List<String> get remainingExistingIds => [
-        ..._existingVideos.map((e) => e.key ?? ''),
-        ..._existingDocuments.map((e) => e.key ?? ''),
-      ].where((k) => k.isNotEmpty).toList();
+    ..._existingVideos.map((e) => e.key ?? ''),
+    ..._existingDocuments.map((e) => e.key ?? ''),
+  ].where((k) => k.isNotEmpty).toList();
 
   @override
   void initState() {
     super.initState();
     //? Distribute initial items into their respective categories based on file type.
     if (widget.initialItems != null) {
-      _existingVideos = widget.initialItems!.where((item) => item.isVideoItem).toList();
-      _existingDocuments = widget.initialItems!.where((item) => !item.isVideoItem).toList();
+      _existingVideos = widget.initialItems!
+          .where((item) => item.isVideoItem)
+          .toList();
+      _existingDocuments = widget.initialItems!
+          .where((item) => !item.isVideoItem)
+          .toList();
     }
   }
 
@@ -128,7 +132,8 @@ class CourseMaterialSectionState extends State<CourseMaterialSection> {
       pickedFiles: _pickedDocuments,
       onTap: () => handleFileSelection(isVideo: false),
       onRemovePicked: (file) => setState(() => _pickedDocuments.remove(file)),
-      onRemoveExisting: (item) => setState(() => _existingDocuments.remove(item)),
+      onRemoveExisting: (item) =>
+          setState(() => _existingDocuments.remove(item)),
     );
   }
 }

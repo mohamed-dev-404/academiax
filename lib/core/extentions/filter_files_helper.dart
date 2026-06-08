@@ -32,8 +32,9 @@ extension FileHelper on String {
     if (name.endsWith('.pptx') || name.endsWith('.ppt')) return Icons.slideshow;
 
     // Word Documents
-    if (name.endsWith('.docx') || name.endsWith('.doc'))
-      {return Icons.description;}
+    if (name.endsWith('.docx') || name.endsWith('.doc')) {
+      return Icons.description;
+    }
 
     // Spreadsheets (Excel / CSV)
     if (name.endsWith('.xlsx') ||
@@ -65,8 +66,9 @@ extension FileHelper on String {
     if (name.endsWith('.pptx') || name.endsWith('.ppt')) return Colors.orange;
 
     // Word: Blue Accent
-    if (name.endsWith('.docx') || name.endsWith('.doc'))
-      {return Colors.blueAccent;}
+    if (name.endsWith('.docx') || name.endsWith('.doc')) {
+      return Colors.blueAccent;
+    }
 
     // Excel: Green
     if (name.endsWith('.xlsx') || name.endsWith('.xls')) return Colors.green;

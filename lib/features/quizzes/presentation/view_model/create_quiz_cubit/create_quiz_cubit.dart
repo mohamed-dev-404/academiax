@@ -132,15 +132,17 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
       final bool titleChanged = currentTitle != initialData!.title;
       final bool descChanged =
           currentDescription != (initialData!.description ?? '');
-      
-      final bool timeChanged = initialData!.startTime.year != currentStartTime.year ||
+
+      final bool timeChanged =
+          initialData!.startTime.year != currentStartTime.year ||
           initialData!.startTime.month != currentStartTime.month ||
           initialData!.startTime.day != currentStartTime.day ||
           initialData!.startTime.hour != currentStartTime.hour ||
           initialData!.startTime.minute != currentStartTime.minute;
 
-      final int originalDuration =
-          initialData!.endTime.difference(initialData!.startTime).inMinutes;
+      final int originalDuration = initialData!.endTime
+          .difference(initialData!.startTime)
+          .inMinutes;
       final bool durationChanged = currentDuration != originalDuration;
 
       // Only include fields in the body if they have actually been modified

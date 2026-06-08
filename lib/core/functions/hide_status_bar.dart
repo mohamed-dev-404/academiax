@@ -6,5 +6,6 @@ void hideStatusBar() {
     overlays: [SystemUiOverlay.bottom],
   );
 }
+
 /// usage:
 /// in main -> hideStatusBar();

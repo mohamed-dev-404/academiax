@@ -10,8 +10,9 @@ class MobileCustomAppBar extends StatelessWidget
   const MobileCustomAppBar({
     super.key,
     required this.title,
-     this.titleStyle,
-     this.arrowBackColor, this.onTap,
+    this.titleStyle,
+    this.arrowBackColor,
+    this.onTap,
   });
   final String title;
   final TextStyle? titleStyle;
@@ -26,12 +27,19 @@ class MobileCustomAppBar extends StatelessWidget
     //* AppBar implementation
     return AppBar(
       backgroundColor: Colors.transparent,
-      title: Text(title, style: titleStyle ?? AppStyles.mobileTitleLargeMd.copyWith(
-          color: AppColors.primaryDarkHover,
-        ),),
+      title: Text(
+        title,
+        style:
+            titleStyle ??
+            AppStyles.mobileTitleLargeMd.copyWith(
+              color: AppColors.primaryDarkHover,
+            ),
+      ),
       leading: IconButton(
         onPressed: onTap ?? () => context.pop(),
-        icon: GeneralArrowBack(color: arrowBackColor ?? AppColors.primaryDarkHover),
+        icon: GeneralArrowBack(
+          color: arrowBackColor ?? AppColors.primaryDarkHover,
+        ),
       ),
     );
   }

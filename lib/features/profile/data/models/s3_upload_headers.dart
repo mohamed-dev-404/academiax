@@ -6,7 +6,7 @@ class S3UploadHeaders {
   final int contentLength;
 
   S3UploadHeaders({required this.contentType, required this.contentLength});
-  
+
   // Maps headers for S3 direct binary upload
   Map<String, dynamic> toMap() => {
     ApiKeys.contentTypeHeader: contentType,

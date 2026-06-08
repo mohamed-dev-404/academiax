@@ -8,7 +8,7 @@ class UserModel extends Equatable {
   final String? name;
   final String? academicEmail;
   final String? academicId;
-  final String? profilePic; 
+  final String? profilePic;
 
   const UserModel({
     this.id,

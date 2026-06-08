@@ -129,10 +129,10 @@ class AnnouncementsMobileLayout extends StatelessWidget {
 
                             await context.push(
                               RoutesName.announcementDetails,
-                             extra: {
-                               'courseId': courseId,
-                               'announcementId': announcements[index].id,
-                             }
+                              extra: {
+                                'courseId': courseId,
+                                'announcementId': announcements[index].id,
+                              },
                             );
 
                             if (context.mounted) {

@@ -109,17 +109,16 @@ void setupServiceLocator() {
   );
 
   //* register MaterialFetchCubit (Factory to get a new instance for each course)
-  //* This cubit is used to fetch materials 
+  //* This cubit is used to fetch materials
   getIt.registerFactory<MaterialFetchCubit>(
     () => MaterialFetchCubit(getIt<MaterialRepo>()),
   );
 
-  //* register MaterialCrudCubit (Factory to get a new instance for each course) 
+  //* register MaterialCrudCubit (Factory to get a new instance for each course)
   //* This cubit is used to upload, update and delete materials
   getIt.registerFactory<MaterialCrudCubit>(
     () => MaterialCrudCubit(getIt<MaterialRepo>()),
   );
-
 
   //! Announcements Feature
   //* 1. Register Local Data Source
@@ -139,7 +138,7 @@ void setupServiceLocator() {
   getIt.registerFactory<AnnouncementsFetchCubit>(
     () => AnnouncementsFetchCubit(getIt<AnnouncementsRepo>()),
   );
-  
+
   //* 4. Register Actions Cubit (Add, Update, Delete)
   getIt.registerFactory<AnnouncementsActionsCubit>(
     () => AnnouncementsActionsCubit(getIt<AnnouncementsRepo>()),
@@ -150,7 +149,7 @@ void setupServiceLocator() {
   );
 
   //! Grades Feature
-  
+
   //* register GradeRepo
   getIt.registerLazySingleton<GradeRepo>(
     () => GradeRepoImpl(api: getIt<ApiConsumer>()),
@@ -160,6 +159,4 @@ void setupServiceLocator() {
   getIt.registerFactory<GradeCubit>(
     () => GradeCubit(getIt<GradeRepo>()),
   );
-
-} 
-
+}

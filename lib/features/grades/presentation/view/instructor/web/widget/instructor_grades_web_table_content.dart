@@ -28,7 +28,9 @@ class InstructorGradesWebTableContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: (rows.isEmpty || columns.isEmpty) ? 300 : 52.h + (rows.length * 56.h) + 20.h,
+      height: (rows.isEmpty || columns.isEmpty)
+          ? 300
+          : 52.h + (rows.length * 56.h) + 20.h,
       child: rows.isEmpty
           ? const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -40,16 +42,16 @@ class InstructorGradesWebTableContent extends StatelessWidget {
               ],
             )
           : columns.isEmpty
-              ? const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GradesEmptyState(
-                      title: 'No columns to display',
-                      subtitle: 'Adjust your visibility filter or toggle columns',
-                    ),
-                  ],
-                )
-              : InstructorGradesWebTable(
+          ? const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GradesEmptyState(
+                  title: 'No columns to display',
+                  subtitle: 'Adjust your visibility filter or toggle columns',
+                ),
+              ],
+            )
+          : InstructorGradesWebTable(
               columns: columns,
               rows: rows,
               columnVisibility: columnVisibility,

@@ -21,9 +21,9 @@ class ShowInvitationCodeDialog extends StatefulWidget {
 
 //* State for the dialog
 class _ShowInvitationCodeDialogState extends State<ShowInvitationCodeDialog> {
-  bool isCopied = false;// indicates if the code has been copied
+  bool isCopied = false; // indicates if the code has been copied
 
-//* Copies the invitation code to the clipboard
+  //* Copies the invitation code to the clipboard
   void _handleCopy() {
     Clipboard.setData(ClipboardData(text: widget.invitationCode));
     setState(() {
@@ -44,7 +44,10 @@ class _ShowInvitationCodeDialogState extends State<ShowInvitationCodeDialog> {
     final bool isMobile = SizeConfig.isMobile(context);
     final double screenWidth = SizeConfig.screenWidth(context);
     return AlertDialog(
-      insetPadding:  EdgeInsets.symmetric(horizontal: isMobile ? 20 : screenWidth * 0.25, vertical: 20),
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20 : screenWidth * 0.25,
+        vertical: 20,
+      ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
       backgroundColor: AppColors.whiteLight,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

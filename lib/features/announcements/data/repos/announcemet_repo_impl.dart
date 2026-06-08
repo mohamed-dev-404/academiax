@@ -90,7 +90,8 @@ class AnnouncementsRepoImpl implements AnnouncementsRepo {
         data: request.toJson(),
       );
 
-      final successMessage = response[ApiKeys.message] ?? 'Announcement created successfully';
+      final successMessage =
+          response[ApiKeys.message] ?? 'Announcement created successfully';
       return right(successMessage);
     } on ApiException catch (e) {
       return left(e.errorModel.errorMessage);
@@ -99,7 +100,7 @@ class AnnouncementsRepoImpl implements AnnouncementsRepo {
     }
   }
 
- //* DELETE → Remove announcement
+  //* DELETE → Remove announcement
   @override
   Future<Either<String, String>> deleteAnnouncement({
     required String announcementId,
@@ -111,7 +112,9 @@ class AnnouncementsRepoImpl implements AnnouncementsRepo {
 
       // Update local cache manually
       final currentCache = localDataSource.getCachedAnnouncements();
-      final updatedCache = currentCache.where((ann) => ann.id != announcementId).toList();
+      final updatedCache = currentCache
+          .where((ann) => ann.id != announcementId)
+          .toList();
       await localDataSource.cacheAnnouncements(updatedCache);
 
       // We return the success message from the API response
@@ -135,7 +138,9 @@ class AnnouncementsRepoImpl implements AnnouncementsRepo {
         data: request.toJson(),
       );
 
-      final updatedAnnouncement = AnnouncementModel.fromJson(response[ApiKeys.data]);
+      final updatedAnnouncement = AnnouncementModel.fromJson(
+        response[ApiKeys.data],
+      );
 
       // Update local cache manually
       final currentCache = localDataSource.getCachedAnnouncements();
@@ -157,7 +162,7 @@ class AnnouncementsRepoImpl implements AnnouncementsRepo {
 
   //* POST → Add comment to announcement
   @override
- Future<Either<String, Unit>> addComment({
+  Future<Either<String, Unit>> addComment({
     required String announcementId,
     required CommentRequestModel request,
   }) async {
@@ -167,7 +172,7 @@ class AnnouncementsRepoImpl implements AnnouncementsRepo {
         data: request.toJson(),
       );
 
-      return right(unit); 
+      return right(unit);
     } on ApiException catch (e) {
       return left(e.errorModel.errorMessage);
     } catch (e) {
@@ -183,7 +188,7 @@ class AnnouncementsRepoImpl implements AnnouncementsRepo {
   }) async {
     try {
       final response = await api.patch(
-        EndPoints.commentById(commentId), 
+        EndPoints.commentById(commentId),
         data: request.toJson(),
       );
 
@@ -196,7 +201,7 @@ class AnnouncementsRepoImpl implements AnnouncementsRepo {
     }
   }
 
- //* DELETE → Remove a comment
+  //* DELETE → Remove a comment
   @override
   Future<Either<String, Unit>> deleteComment({
     required String commentId,

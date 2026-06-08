@@ -6,7 +6,7 @@ class AddAnnouncementMobileView extends StatelessWidget {
   final String courseId;
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: SafeArea(child: AddAnnouncementMobileViewBody(courseId: courseId)),
     );
   }
