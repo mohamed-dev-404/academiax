@@ -13,7 +13,9 @@ import 'package:sams_app/features/assignments/presentation/view_model/cubits/ass
 import 'package:sams_app/features/course_details/presentation/view/widget/mobile/tab_bar_mobile_layout.dart';
 import 'package:sams_app/features/course_details/presentation/view/widget/web/tab_bar_web_layout.dart';
 import 'package:sams_app/features/course_details/presentation/view_models/course_navigation/course_navigation_cubit.dart';
-import 'package:sams_app/features/live_sessions/presentation/view/live_sessions_tab_view.dart';
+import 'package:sams_app/features/live_sessions/data/repos/meeting_repo.dart';
+import 'package:sams_app/features/live_sessions/presentation/view/live_session_tap_view.dart/live_sessions_tab_view.dart';
+import 'package:sams_app/features/live_sessions/presentation/view_model/cubit/meeting_cubit.dart';
 import 'package:sams_app/features/materials/presentation/view/material_tab_view/materials_tab_view.dart';
 import 'package:sams_app/features/materials/presentation/view_model/cubits/material_crud/material_crud_cubit.dart';
 import 'package:sams_app/features/materials/presentation/view_model/cubits/material_fetch/material_fetch_cubit.dart';
@@ -96,7 +98,15 @@ class CourseDetailsView extends StatelessWidget {
         child: QuizzesTabView(courseId: courseId),
       ),
 
-      'Live Sessions': LiveSessionsTabView(courseId: courseId),
+      //* Live Sessions
+      'Live Sessions': BlocProvider(
+        create: (_) =>
+            MeetingCubit(getIt<MeetingRepo>())..fetchMeetings(courseId: courseId),
+        child: LiveSessionsTabView(
+          courseId: courseId,
+          instructorId: int.tryParse(courseModel.instructor ?? '0') ?? 0,
+        ),
+      ),
     };
 
     // Return only the tabs that are visible for the current role,

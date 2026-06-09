@@ -14,6 +14,8 @@ class CustomAppButton extends StatelessWidget {
   final IconData? icon;
   final Widget? child;
   final TextStyle? textStyle;
+  final Color? overlayColor;
+  final Color? shadowColor;
 
   const CustomAppButton({
     super.key,
@@ -28,6 +30,8 @@ class CustomAppButton extends StatelessWidget {
     this.icon,
     this.child,
     this.textStyle,
+    this.overlayColor,
+    this.shadowColor,
   });
 
   @override
@@ -41,6 +45,8 @@ class CustomAppButton extends StatelessWidget {
           backgroundColor: backgroundColor ?? AppColors.secondaryHover,
           foregroundColor: textColor ?? AppColors.primaryLight,
           elevation: elevation ?? 4,
+          shadowColor: shadowColor ?? Colors.transparent,
+          overlayColor: overlayColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 14),
           ),

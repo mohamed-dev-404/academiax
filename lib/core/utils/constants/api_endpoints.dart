@@ -192,4 +192,20 @@ static String getSimilarityReport(String submissionId) =>
     required String classworkId,
   }) =>
       'instructor/courses/$courseId/classworks/$classworkId/toggle-visibility';
+
+
+  //? --- Meetings (Agora Live Sessions) --- ;
+  //* General (Student & Instructor)
+  /// Get all meetings for a specific course
+  static String getCourseMeetings(String courseId) => 'courses/$courseId/meetings';
+
+  //* Instructor Flow
+  /// Create a new meeting for a specific course
+  static String createMeeting(String courseId) => 'instructor/courses/$courseId/meetings';
+
+  /// End an ongoing meeting
+  static String endMeeting(String meetingId) => 'instructor/meetings/$meetingId/end-meeting';
+
+  /// Delete a meeting permanently
+  static String deleteMeeting(String meetingId) => 'instructor/meetings/$meetingId';
 }
