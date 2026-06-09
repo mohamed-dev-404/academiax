@@ -17,7 +17,7 @@ class LiveSessionsWebLayout extends StatelessWidget {
   const LiveSessionsWebLayout({
     super.key,
     required this.courseId,
-    this.isInstructor = true,
+    required this.isInstructor,
     this.instructorId = 0,
   });
 
