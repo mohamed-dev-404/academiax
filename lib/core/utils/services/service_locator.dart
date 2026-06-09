@@ -16,6 +16,9 @@ import 'package:sams_app/features/home/data/data_sources/home_local_data_sourse.
 import 'package:sams_app/features/home/data/repos/home_repo.dart';
 import 'package:sams_app/features/home/data/repos/home_repo_impl.dart';
 import 'package:sams_app/features/home/presentation/view_models/cubit/home_cubit.dart';
+import 'package:sams_app/features/live_sessions/data/repos/meeting_repo.dart';
+import 'package:sams_app/features/live_sessions/data/repos/meeting_repo_impl.dart';
+import 'package:sams_app/features/live_sessions/presentation/view_model/cubit/meeting_cubit.dart';
 import 'package:sams_app/features/materials/data/data_source/material_local_data_source.dart';
 import 'package:sams_app/features/materials/data/repos/material_repo.dart';
 import 'package:sams_app/features/materials/data/repos/material_repo_impl.dart';
@@ -144,5 +147,17 @@ void setupServiceLocator() {
     //* 4. Register Actions Cubit (Add, Update, Delete)
   getIt.registerFactory<CommentActionsCubit>(
     () => CommentActionsCubit(getIt<AnnouncementsRepo>()),
+  );
+
+  //! Live Sessions Feature
+
+  //* register MeetingRepo
+  getIt.registerLazySingleton<MeetingRepo>(
+    () => MeetingRepoImpl(api: getIt<ApiConsumer>()),
+  );
+
+  //* register MeetingCubit
+  getIt.registerFactory<MeetingCubit>(
+    () => MeetingCubit(getIt<MeetingRepo>()),
   );
 }
