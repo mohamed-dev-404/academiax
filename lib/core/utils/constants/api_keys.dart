@@ -13,6 +13,7 @@ abstract class ApiKeys {
   static const String name = 'name';
   static const String title = 'title';
   static const String description = 'description';
+  static const String duration = 'duration'; // quiz & live session
 
   //? User Model Keys
   static const String academicEmail = 'academicEmail';
@@ -107,7 +108,7 @@ abstract class ApiKeys {
   static const String isVisible = 'isVisible';
 
   //? create quiz request body model Keys
-  static const String duration = 'duration';
+  
   static const String classworkId = 'classworkId';
 
   //? create question request body model Keys
@@ -122,6 +123,13 @@ abstract class ApiKeys {
   static const String comments = 'comments';
   static const String commentedAt = 'commentedAt';
   static const String author = 'author';
+
+  //? --- Meeting & Agora Keys ---
+  static const String channelName = 'channelName';
+  static const String token = 'token';
+  static const String validityPeriod = 'validityPeriod';
+  static const String ongoing = 'ONGOING';
+  static const String ended = 'ENDED';
 }
 
 //! --- API VALUES (Fixed values that the server expects inside the fields) ---

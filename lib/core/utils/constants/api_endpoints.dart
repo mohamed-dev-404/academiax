@@ -95,4 +95,20 @@ class EndPoints {
   static String addComment(String announcementId) => 'announcements/$announcementId/comments';
   /// Endpoint to update or delete a specific comment.
   static String commentById(String commentId) => 'comments/$commentId';
+
+
+  //? --- Meetings (Agora Live Sessions) --- ;
+  //* General (Student & Instructor)
+  /// Get all meetings for a specific course
+  static String getCourseMeetings(String courseId) => 'courses/$courseId/meetings';
+
+  //* Instructor Flow
+  /// Create a new meeting for a specific course
+  static String createMeeting(String courseId) => 'instructor/courses/$courseId/meetings';
+
+  /// End an ongoing meeting
+  static String endMeeting(String meetingId) => 'instructor/meetings/$meetingId/end-meeting';
+
+  /// Delete a meeting permanently
+  static String deleteMeeting(String meetingId) => 'instructor/meetings/$meetingId';
 }
