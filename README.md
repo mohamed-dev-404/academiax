@@ -146,30 +146,30 @@ The system natively unifies:
 This Flutter application strictly follows a **Feature-Driven Architecture** closely aligned with Clean Architecture principles, combined with the **MVVM (Model-View-ViewModel)** pattern and the **Repository Pattern** for full data-source abstraction and unit testability.
 
 ```
-                            ┌──────────────────────────────────────────────────────────────────────┐
-                            │                      FLUTTER CLIENT (This Repo)                      │
-                            │                                                                      │
-                            │  ┌─────────────────┐   ┌──────────────────┐   ┌──────────────────┐   │
-                            │  │ Feature-Driven  │   │ Cubit/Bloc State │   │   Shared/Secure  │   │
-                            │  │  Architecture   │   │   Management     │   │       Storage    │   │
-                            │  └─────────────────┘   └──────────────────┘   └──────────────────┘   │
-                            │                                                                      │
-                            │  ┌─────────────────┐   ┌─────────────────┐   ┌──────────────────┐    │
-                            │  │   go_router     │   │   Dio + Custom  │   │    GetIt DI      │    │
-                            │  │ Declarative Nav │   │   Interceptors  │   │ Service Locator  │    │
-                            │  └─────────────────┘   └─────────────────┘   └──────────────────┘    │
-                            └───────────────────────────────┬──────────────────────────────────────┘
-                                                            │ REST API (Dio)
-                                                            ▼
-                                            ┌─────────────────────────────────┐
-                                            │        NestJS Backend           │
-                                            │  JWT Auth · MongoDB · Redis     │
-                                            └──────────────┬──────────────────┘
-                                                           │
-                                            ┌──────────────┴──────────────────┐
-                                            │     Python AI Microservice      │
-                                            │  Plagiarism Detection (NLP)     │
-                                            └─────────────────────────────────┘
+                  ┌──────────────────────────────────────────────────────────────────────┐
+                  │                      FLUTTER CLIENT (This Repo)                      │
+                  │                                                                      │
+                  │  ┌─────────────────┐   ┌──────────────────┐   ┌──────────────────┐   │
+                  │  │ Feature-Driven  │   │ Cubit/Bloc State │   │   Shared/Secure  │   │
+                  │  │  Architecture   │   │   Management     │   │       Storage    │   │
+                  │  └─────────────────┘   └──────────────────┘   └──────────────────┘   │
+                  │                                                                      │
+                  │  ┌─────────────────┐   ┌─────────────────┐   ┌──────────────────┐    │
+                  │  │   go_router     │   │   Dio + Custom  │   │    GetIt DI      │    │
+                  │  │ Declarative Nav │   │   Interceptors  │   │ Service Locator  │    │
+                  │  └─────────────────┘   └─────────────────┘   └──────────────────┘    │
+                  └───────────────────────────────┬──────────────────────────────────────┘
+                                                  │ REST API (Dio)
+                                                  ▼
+                                    ┌─────────────────────────────────┐
+                                    │        NestJS Backend           │
+                                    │  JWT Auth · MongoDB · Redis     │
+                                    └──────────────┬──────────────────┘
+                                                   │
+                                    ┌──────────────┴──────────────────┐
+                                    │     Python AI Microservice      │
+                                    │  Plagiarism Detection (NLP)     │
+                                    └─────────────────────────────────┘
 ```
 
 ### State Management Philosophy
